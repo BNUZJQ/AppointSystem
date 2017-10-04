@@ -20,6 +20,9 @@ ROLE_CHOICE = (
 class Account(models.Model):
     user = models.OneToOneField(User)
     role = models.CharField(max_length=10, choices=ROLE_CHOICE, default=0)
+    completed = models.BooleanField(default=False)
+    question = models.CharField(max_length=100, blank=True)
+    answer = models.CharField(max_length=100, blank=True)
 
     def __unicode__(self):
-        return self.user.username
+        return '{},{}'.format(self.user.username, self.role)
