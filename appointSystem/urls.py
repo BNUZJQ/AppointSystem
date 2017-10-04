@@ -15,14 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from Account.views import login, home, complete_info, forget, change_info
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', login, name='login'),
-    url(r'^home/', home, name='home'),
-    url(r'^complete_info/', complete_info),
-    url(r'^forget/', forget),
-    url(r'^change_info/', change_info),
-    url(r'api/', include('Account.urls'))
+    url(r'api/', include('Account.api.urls')),
+    url(r'^', include('Account.urls')),
 ]

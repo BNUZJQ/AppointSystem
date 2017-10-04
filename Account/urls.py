@@ -1,12 +1,11 @@
-from django.conf.urls import url, include
-from rest_framework.routers import DefaultRouter
+from django.conf.urls import url
+from Account.views import login, home, complete_info, forget, change_info
 
-from Account.api import AccountViewSet
-
-router = DefaultRouter()
-router.register(r'account', AccountViewSet)
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^$', login, name='login'),
+    url(r'^home/', home, name='home'),
+    url(r'^complete_info/', complete_info),
+    url(r'^forget/', forget),
+    url(r'^change_info/', change_info),
 ]
