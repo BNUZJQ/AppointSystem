@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+<body>
+<h2>欢迎使用会议室预约系统</h2>
+<h2>请登录(初始用户名和密码为学号)</h2>
+<p>{{ login_errors }}</p>
+<form role="form" method="post" action="" class="panel-body">
+    {% csrf_token %}
+    <div class="form-group">
+        <input name="username" type="text" placeholder="Username" class="form-control">
+    </div>
+    <div class="form-group">
+        <input name="password" type="password" placeholder="Password" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-success btn-block">登录</button>
+
+</form>
+<button onclick="window.location.href='/forget'" class="btn btn-success btn-block">忘记密码</button>
+</body>
+</html>
