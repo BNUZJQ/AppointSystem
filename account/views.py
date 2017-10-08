@@ -1,5 +1,6 @@
 # coding=utf-8
 from django.contrib.auth import login as django_login, authenticate
+from account.decorator import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from account.models import Account
@@ -32,10 +33,9 @@ def login(request):
     return HttpResponseRedirect('/home/')
 
 
+@login_required
 def home(request):
     user = request.user
-    if not user.is_authenticated():
-        return HttpResponseRedirect('/')
     # 仅有user 没有account
     if not Account.objects.filter(user=user).exists():
         return HttpResponseRedirect('/complete_info/')
@@ -43,8 +43,11 @@ def home(request):
     return render(request, 'home.html', locals())
 
 
+@login_required
 def complete_info(request):
     user = request.user
+    if Account.objects.filter(user=user).exists():
+        return HttpResponseRedirect('/home/')
     if request.method != 'POST':
         return render(request, 'complete_info.html', locals())
     question = request.POST.get('question', '')
@@ -60,6 +63,7 @@ def complete_info(request):
     return HttpResponseRedirect('/home/')
 
 
+@login_required
 def forget(request):
     if request.method != 'POST':
         return render(request, 'forget.html', locals())
