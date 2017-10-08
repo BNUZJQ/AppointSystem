@@ -77,6 +77,7 @@ def forget(request):
     return HttpResponseRedirect('/')
 
 
+@login_required
 def change_info(request):
     user = request.user
     if request.method != 'POST':
