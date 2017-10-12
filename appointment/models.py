@@ -38,10 +38,10 @@ TIME_CHOICE = (
 # Create your models here.
 class Appointment(models.Model):
     duration = models.IntegerField(choices=TIME_CHOICE, blank=False)
-    classroom = models.OneToOneField(Classroom, blank=False)
+    classroom = models.ForeignKey(Classroom, blank=False)
     custom = models.OneToOneField(Account, blank=False)
     date = models.DateTimeField(blank=False)
     reason = models.CharField(max_length=1000, blank=False)
 
     def __unicode__(self):
-        return u'{},{},{}'.format(self.classroom.name, self.duration, self.custom.user.username, self.data, self.reason)
+        return u'{},{},{}'.format(self.classroom.name, self.duration, self.custom.user.username, self.date, self.reason)
