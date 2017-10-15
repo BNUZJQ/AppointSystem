@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,39 +9,27 @@
 <h2>欢迎使用会议室预约系统</h2>
 <h2>Hello, {{ account.user.username }}</h2>
 
-<form role="form" method="post" action="/choose_classroom" class="panel-body">
-    {% csrf_token %}
-    <div class="form-group">
-    <select name="classroom">
-        <option value="500">500</option>
-        <option value="400B">400B</option>
-        <option value="400A">400A</option>
+<label>请选择classrrom</label>
+<select id="classroom">
+    <option value="500">500</option>
+    <option value="400B">400B</option>
+    <option value="400A">400A</option>
+</select>
+<button class="choose_classroom btn btn-success btn-block">确认</button>
 
-    </select>
-    </div>
-<button type="submit" class="btn btn-success btn-block">确认</button>
-</form>
-
-{% for data in appointments %}
-    <li>
-    {{data.duration}}
-    {{data.classroom}}
-    {{data.custom}}
-    {{data.date}}
-    {{data.reason}}
-
-    </li>
-{% endfor %}
+<div>
+    <p id="appointments"></p>
+</div>
 
 <form role="form" method="post" action="./post_appointment" class="panel-body">
     {% csrf_token %}
     <div class="form-group">
-    <select name="duration" placeholder="预约时间">
-        <option value="0">8:00-8:30</option>
-        <option value="1">8:30-9:00</option>
-        <option value="2">9:00-9:30</option>
-        <option value="3">9:30-10:00</option>
-    </select>
+        <select name="duration" placeholder="预约时间">
+            <option value="0">8:00-8:30</option>
+            <option value="1">8:30-9:00</option>
+            <option value="2">9:00-9:30</option>
+            <option value="3">9:30-10:00</option>
+        </select>
     </div>
     <div class="form-group">
         <input name="date" type="date" placeholder="预约日期">
@@ -49,13 +38,53 @@
         <input name="reason" type="text" class="form-control" placeholder="预约原因">
     </div>
     <div class="form-group">
-         <input name="classroom"type="text" value={{ classroom_choice }}>
+        <input name="classroom" type="text" value={{ classroom_choice }}>
     </div>
 
     <button type="submit" class="btn btn-success btn-block">预约</button>
-
 </form>
 
-
 </body>
-</html>           .
+
+<script language="JavaScript" type="text/javascript" src="{% static "js/jquery-3.2.1.min.js" %}"></script>
+<script type="text/javascript">
+    var display_appointments = function (appointments) {
+        console.log(appointments);
+        // to do
+        $("#appointments").html(appointments);
+    };
+
+    var display_my_appointments = function (my_appointments) {
+        console.log(my_appointments);
+        // to do
+        //$("#my_appointments").html(my_appointments);
+    };
+
+    $('.choose_classroom').on('click', function () {
+        var classroom = $('#classroom').val();
+        console.log("you are choosing" + classroom);
+        $("#appointments").html("");
+        $.ajax({
+            async: false,
+            url: '/choose_classroom',
+            type: 'post',
+            data: {
+                //csrfmiddlewaretoken: '{{csrf_token}}',
+                'classroom': classroom
+            },
+            success: function (data) {
+                display_appointments(data.appointments);
+                display_my_appointments(data.my_appointments);
+            }, // success
+            error: function (data) {
+                if (data.status === 400) {
+                    alert("400 error");
+                }
+                if (data.status === 403) {
+                    alert("403 error");
+                }
+            } // error
+        }); // ajax
+    });
+</script>
+</html>

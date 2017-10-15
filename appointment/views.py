@@ -1,38 +1,52 @@
 # coding=utf-8
+import datetime
+
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from rest_framework import status
+from rest_framework.renderers import JSONRenderer
 
 from account.decorator import login_required
-import datetime
-from django.contrib.auth import login as django_login, authenticate
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from appointment.models import Appointment
-from django.contrib.auth.models import User
 from account.models import Account
+from appointment.models import Appointment
+from appointment.serializer import AppointmentSerializer
 from classroom.models import Classroom
 
 
-# Create your views here.
-# 应该用ajax
+@require_POST
 @login_required
+@csrf_exempt
 def choose_classroom(request):
     user = request.user
-    if request.method == 'POST':
-        classroom_choice = request.POST.get('classroom', '')
-        today = datetime.date.today()
-        endday = today + datetime.timedelta(28)
-        classroom = Classroom.objects.get(name=classroom_choice)
-        appointments = Appointment.objects.filter(classroom=classroom,
-                                                   date__gte=today,
-                                                   date__lte=endday)
-        my_appointments = appointments.filter(custom__user=User.objects.get(id= user.id))
-        return render(request, 'main_appointment.html', locals())
+    classroom_choice = request.POST.get('classroom', None)
+    if classroom_choice is None or not Classroom.objects.filter(name=classroom_choice).exists():
+        return JsonResponse({"success": False}, status=status.HTTP_400_BAD_REQUEST)
+    today = datetime.date.today()
+    endday = today + datetime.timedelta(28)
+    classroom = Classroom.objects.get(name=classroom_choice)
+    appointments = classroom.appointment_set.filter(date__gte=today, date__lte=endday)
+    my_appointments = appointments.filter(custom__user=User.objects.get(id=user.id))
+
+    # serialize the queryset
+    appointments = AppointmentSerializer(appointments, many=True)
+    my_appointments = AppointmentSerializer(my_appointments, many=True)
+    return JsonResponse({"success": True,
+                         "appointments": JSONRenderer().render(appointments.data),
+                         "my_appointments": JSONRenderer().render(my_appointments.data)
+                         },
+                        status=status.HTTP_200_OK)
 
 
 @login_required
 def main_appoint(request):
+    account = Account.objects.get(user=request.user)
     return render(request, 'main_appointment.html', locals())
 
 
+@require_POST
 @login_required
 def post_appointment(request):
     user = request.user
@@ -49,6 +63,3 @@ def post_appointment(request):
         appointment.reason = reason_reason
         appointment.save()
         return render(request, 'main_appointment.html', locals())
-
-    # def delete_myappointment(request):
-    # if request.method == 'POST':
