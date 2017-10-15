@@ -39,8 +39,8 @@ TIME_CHOICE = (
 class Appointment(models.Model):
     duration = models.IntegerField(choices=TIME_CHOICE, blank=False)
     classroom = models.ForeignKey(Classroom, blank=False)
-    custom = models.OneToOneField(Account, blank=False)
-    date = models.DateTimeField(blank=False)
+    custom = models.ForeignKey(Account, blank=False)
+    date = models.DateField(blank=False)
     reason = models.CharField(max_length=1000, blank=False)
 
     def __unicode__(self):
