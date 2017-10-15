@@ -16,8 +16,8 @@ class Client(DjangoClient):
         else:
             return response
 
-    def get(self, url, data={}, *args, **kwargs):
+    def get(self, url, data=None, *args, **kwargs):
         return self._do_req(url, data, 'GET', *args, **kwargs)
 
-    def post(self, url, data={}, *args, **kwargs):
+    def post(self, url, data=None, *args, **kwargs):
         return self._do_req(url, data, 'POST', *args, **kwargs)
