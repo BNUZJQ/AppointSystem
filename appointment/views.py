@@ -22,8 +22,10 @@ from classroom.models import Classroom
 def choose_classroom(request):
     user = request.user
     classroom_choice = request.POST.get('classroom', None)
-    if classroom_choice is None or not Classroom.objects.filter(name=classroom_choice).exists():
+    if classroom_choice is None:
         return JsonResponse({"success": False}, status=status.HTTP_400_BAD_REQUEST)
+    if not Classroom.objects.filter(name=classroom_choice).exists():
+        return JsonResponse({"success": False}, status=status.HTTP_404_NOT_FOUND)
     today = datetime.date.today()
     endday = today + datetime.timedelta(28)
     classroom = Classroom.objects.get(name=classroom_choice)

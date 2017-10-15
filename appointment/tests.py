@@ -16,5 +16,7 @@ class AppointmentTests(TestCase):
             self.assertEqual(response.status_code, 400)
             # post with wrong name
             response = self.client.post("/choose_classroom", data={"classroom": "123"}, decode=False)
-            self.assertEqual(response.status_code, 400)
-            # without login
+            self.assertEqual(response.status_code, 404)
+        # without login
+        response = self.client.post("/choose_classroom", data={"classroom": self.classroom.name}, decode=False)
+        self.assertEqual(response.status_code, 302)
