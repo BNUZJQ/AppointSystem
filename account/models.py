@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
-from django.db import models
+
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class ROLE:
@@ -16,10 +17,25 @@ ROLE_CHOICE = (
 )
 
 
+class GENDER:
+    Male = 'Male'
+    Female = 'Female'
+
+
+GENDER_CHOICE = (
+    (GENDER.Male, 'Male'),
+    (GENDER.Female, 'Female')
+)
+
+
 # Create your models here.
 class Account(models.Model):
     user = models.OneToOneField(User)
     role = models.CharField(max_length=10, choices=ROLE_CHOICE, default=ROLE.Student)
+    student_id = models.CharField(max_length=12, blank=False)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICE, default=GENDER.Male)
+    email = models.EmailField(blank=False)
+    telephone = models.CharField(max_length=11, blank=True)
     question = models.CharField(max_length=100, blank=True)
     answer = models.CharField(max_length=100, blank=True)
 
