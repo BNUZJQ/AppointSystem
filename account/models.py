@@ -28,10 +28,22 @@ GENDER_CHOICE = (
 )
 
 
+class MAJOR:
+    EE = "EE"
+    CS = "CS"
+
+
+MAJOR_CHOICE = (
+    (MAJOR.EE, "EE"),
+    (MAJOR.CS, "CS")
+)
+
+
 # Create your models here.
 class Account(models.Model):
     user = models.OneToOneField(User)
     role = models.CharField(max_length=10, choices=ROLE_CHOICE, default=ROLE.Student)
+    major = models.CharField(max_length=10, choices=MAJOR_CHOICE, default=MAJOR.EE)
     student_id = models.CharField(max_length=12, blank=False)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICE, default=GENDER.Male)
     email = models.EmailField(blank=False)
