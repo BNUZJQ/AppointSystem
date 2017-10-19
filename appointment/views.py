@@ -36,9 +36,9 @@ from classroom.models import Classroom
 
 
 @login_required
-def main_appoint(request):
+def index(request):
     account = Account.objects.get(user=request.user)
-    return render(request, 'main_appointment.html', locals())
+    return render(request, 'index.html', locals())
 
 
 @require_POST
