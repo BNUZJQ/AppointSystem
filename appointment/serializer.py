@@ -4,6 +4,7 @@ from appointment.models import Appointment
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
+    custom = serializers.StringRelatedField()
 
     class Meta:
         model = Appointment
