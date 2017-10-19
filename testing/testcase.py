@@ -1,3 +1,4 @@
+import datetime
 from contextlib import contextmanager
 
 from django.conf import settings
@@ -5,6 +6,8 @@ from django.contrib.auth.models import User
 from django.core.cache import caches
 from django.test import TestCase as DjangoTestCase
 
+from account.models import Account
+from appointment.models import Appointment
 from classroom.models import Classroom
 from testing.client import Client
 
@@ -29,6 +32,14 @@ class TestCase(DjangoTestCase):
         classroom = Classroom.objects.create(name=name)
         classroom.save()
         return classroom
+
+    def createAppointment(self, user, classroom, start=1, end=2, reason="Test"):
+        account = Account.objects.create(user=user)
+        account.save()
+        appointment = Appointment.objects.create(custom=account, classroom=classroom, date=datetime.datetime.today(),
+                                                 start=start, end=end, reason=reason)
+        appointment.save()
+        return appointment
 
     @contextmanager
     def logged_in_user(self, user):
