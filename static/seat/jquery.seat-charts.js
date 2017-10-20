@@ -330,7 +330,8 @@
         settings.naming.columns = settings.naming.columns || (function (length) {
             var columns = [];
             for (var i = 1; i <= length; i++) {
-                columns.push((i + 7) + "-" + (i + 8));
+                columns.push(i);
+                //columns.push((i + 7) + "-" + (i + 8));
             }
             return columns;
         })(settings.map[0].split('').length);
