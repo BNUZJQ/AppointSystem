@@ -1,3 +1,4 @@
+# coding=utf-8
 from __future__ import unicode_literals
 
 from django.db import models
@@ -61,6 +62,23 @@ TIME_CHOICE = (
 )
 
 
+class STATUS:
+    waiting = 0  # 未到时间
+    opened = 1  # 门已打开
+    empty = 2  # 钥匙已被取走
+    finished = 3  # 钥匙已还
+    canceled = 4  # 预约已取消
+
+
+STATUS_CHOICE = (
+    (STATUS.waiting, '未到预约时间'),
+    (STATUS.opened, '柜门已打开'),
+    (STATUS.empty, '已取走钥匙'),
+    (STATUS.finished, '钥匙已还'),
+    (STATUS.canceled, '预约已取消')
+)
+
+
 # Create your models here.
 class Appointment(models.Model):
     start = models.CharField(max_length=2, choices=TIME_CHOICE, blank=False)
@@ -69,6 +87,9 @@ class Appointment(models.Model):
     custom = models.ForeignKey(Account, blank=False)
     date = models.DateField(blank=False)
     reason = models.CharField(max_length=1000, blank=False)
+    desk = models.BooleanField(default=False)
+    multimedia = models.BooleanField(default=False)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICE, default=STATUS.waiting)
 
     def __unicode__(self):
         return u'{},{},from {}h. to {}h.'.format(self.classroom.name, self.custom.user.username, self.start, self.end)
