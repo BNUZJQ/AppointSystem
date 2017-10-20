@@ -54,13 +54,15 @@ div.seatCharts-cell {
 
 }
 
+
+
 div.seatCharts-seat {
-    color: #FFFFFF;
+    color: #182C4E;
     cursor: pointer;
 }
 
 div.seatCharts-row {
-    height: 35px;
+    height: 35px;;
 }
 
 div.seatCharts-seat.available {

@@ -318,10 +318,10 @@
         //Generate default row ids unless user passed his own
         settings.naming.rows = settings.naming.rows || (function (length) {
             var rows = [];
-            var d = new Date();
             for (var i = 1; i <= length; i++) {
+                var d = new Date();
                 d.setDate(d.getDate() + i - 1);
-                rows.push(d.getMonth() + "-" + d.getDate());
+                rows.push((d.getMonth()+1) + "-" + d.getDate());
             }
             return rows;
         })(settings.map.length);
@@ -330,7 +330,7 @@
         settings.naming.columns = settings.naming.columns || (function (length) {
             var columns = [];
             for (var i = 1; i <= length; i++) {
-                columns.push(i);
+                columns.push((i+7) + "-" +(i+8));
             }
             return columns;
         })(settings.map[0].split('').length);
@@ -340,7 +340,7 @@
                 .addClass('seatCharts-row seatCharts-header');
 
             if (settings.naming.left) {
-                $headerRow.append($('<div></div>').addClass('seatCharts-cell'));
+                $headerRow.append($('<div></div>').addClass('seatCharts-namingleft '));
             }
 
 
@@ -363,7 +363,8 @@
             if (settings.naming.left) {
                 $row.append(
                     $('<div></div>')
-                        .addClass('seatCharts-cell seatCharts-space')
+                        .addClass('seatCharts-namingleft ')
+                     //   .addClass('seatCharts-cell seatCharts-space')
                         .text(settings.naming.rows[row])
                 );
             }
