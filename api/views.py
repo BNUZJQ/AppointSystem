@@ -10,40 +10,43 @@ from account.serializer import AccountSerializer
 from appointment.models import Appointment
 from appointment.serializer import AppointmentSerializer
 from classroom.models import Classroom
-from classroom.serializer import ClassroomSerializer
 
 
-class ClassroomViewSet(viewsets.ViewSet):
-    def list(self, request):
-        queryset = Classroom.objects.all()
-        serializer = ClassroomSerializer(queryset, many=True)
-        return Response({"size": len(queryset), "data": JSONRenderer().render(serializer.data)})
+class ClassroomViewSet(viewsets.GenericViewSet):
+    serializer_class = AppointmentSerializer
 
-    def retrieve(self, request, pk=None):
-        if not Classroom.objects.filter(name=pk).exists():
-            return Response({"message": "Not Found"}, status=404)
+    def list(self, request, **kwargs):
+        classroom = kwargs['classroom']
         user = request.user
         today = datetime.date.today()
         endday = today + datetime.timedelta(28)
-        classroom = Classroom.objects.get(name=pk)
+        classroom = Classroom.objects.get(name=classroom)
         appointments = classroom.appointment_set.filter(date__gte=today, date__lte=endday)
-        # my_appointments = appointments.filter(custom__user=User.objects.get(id=user.id))
+        size = len(appointments)
         # serialize the queryset
         appointments = AppointmentSerializer(appointments, many=True)
+        # my_appointments = appointments.filter(custom__user=User.objects.get(id=user.id))
         # my_appointments = AppointmentSerializer(my_appointments, many=True)
         return Response({"success": True,
+                         "size": size,
                          "appointments": JSONRenderer().render(appointments.data),
-                         # "my_appointments": JSONRenderer().render(my_appointments.data)
                          },
                         status=status.HTTP_200_OK)
 
-    def create(self, request, pk=None):
-        if not Classroom.objects.filter(name=pk).exists():
-            return Response({"message": "Not Found"}, status=404)
-        appointment = AppointmentSerializer(request.POST)
-        if appointment.is_valid():
+    def retrieve(self, request, **kwargs):
+        pass
+
+    def create(self, request, **kwargs):
+        classroom = kwargs["classroom"]
+        if not Classroom.objects.filter(name=classroom).exists():
+            return Response({"message": "Classroom Not Found"}, status=404)
+        classroom = Classroom.objects.get(name=classroom)
+        request.POST['classroom'] = classroom.name
+        appointment = AppointmentSerializer(data=request.POST)
+        if appointment.is_valid(raise_exception=True):
+            appointment.save(custom=Account.objects.get(user=request.user), classroom=classroom)
             return Response(status=201)
-        return Response(status=400)
+        return Response({"message": appointment.errors}, status=400)
 
     @detail_route(methods=['post'])
     def check_appointment(self, request):

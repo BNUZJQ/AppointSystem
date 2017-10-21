@@ -22,20 +22,20 @@ class TestCase(DjangoTestCase):
     def get_password(self, username):
         return username + '2014'
 
-    def createUser(self, username, email=None, is_staff=False, is_superuser=False):
+    def createAccount(self, username, email=None, is_staff=False, is_superuser=False):
         user = User.objects.create(username=username, is_staff=is_staff, is_superuser=is_superuser, email=email)
         user.set_password(self.get_password(username))
         user.save()
-        return user
+        account = Account.objects.create(user=user)
+        account.save()
+        return account
 
     def createClassroom(self, name):
         classroom = Classroom.objects.create(name=name)
         classroom.save()
         return classroom
 
-    def createAppointment(self, user, classroom, start=1, end=2, reason="Test"):
-        account = Account.objects.create(user=user)
-        account.save()
+    def createAppointment(self, account, classroom, start=1, end=2, reason="Test"):
         appointment = Appointment.objects.create(custom=account, classroom=classroom, date=datetime.datetime.today(),
                                                  start=start, end=end, reason=reason)
         appointment.save()

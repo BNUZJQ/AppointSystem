@@ -1,5 +1,7 @@
+# coding=utf-8
 from __future__ import unicode_literals
 
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from account.models import Account
@@ -34,41 +36,65 @@ class TIME:
 
 
 TIME_CHOICE = (
-    (TIME.HOUR0, '0'),
-    (TIME.HOUR1, '1'),
-    (TIME.HOUR2, '2'),
-    (TIME.HOUR3, '3'),
-    (TIME.HOUR4, '4'),
-    (TIME.HOUR5, '5'),
-    (TIME.HOUR6, '6'),
-    (TIME.HOUR7, '7'),
-    (TIME.HOUR8, '8'),
-    (TIME.HOUR9, '9'),
-    (TIME.HOUR10, '10'),
-    (TIME.HOUR11, '11'),
-    (TIME.HOUR12, '12'),
-    (TIME.HOUR13, '13'),
-    (TIME.HOUR14, '14'),
-    (TIME.HOUR15, '15'),
-    (TIME.HOUR16, '16'),
-    (TIME.HOUR17, '17'),
-    (TIME.HOUR18, '18'),
-    (TIME.HOUR19, '19'),
-    (TIME.HOUR20, '20'),
-    (TIME.HOUR21, '21'),
-    (TIME.HOUR22, '22'),
-    (TIME.HOUR23, '23'),
+    (TIME.HOUR8, 8),
+    (TIME.HOUR9, 9),
+    (TIME.HOUR10, 10),
+    (TIME.HOUR11, 11),
+    (TIME.HOUR12, 12),
+    (TIME.HOUR13, 13),
+    (TIME.HOUR14, 14),
+    (TIME.HOUR15, 15),
+    (TIME.HOUR16, 16),
+    (TIME.HOUR17, 17),
+    (TIME.HOUR18, 18),
+    (TIME.HOUR19, 19),
+    (TIME.HOUR20, 20),
+    (TIME.HOUR21, 21),
+    (TIME.HOUR22, 22),
+    (TIME.HOUR23, 23),
+)
+
+
+class STATUS:
+    waiting = 0  # 未到时间
+    opened = 1  # 门已打开
+    empty = 2  # 钥匙已被取走
+    finished = 3  # 钥匙已还
+    canceled = 4  # 预约已取消
+
+
+STATUS_CHOICE = (
+    (STATUS.waiting, '未到预约时间'),
+    (STATUS.opened, '柜门已打开'),
+    (STATUS.empty, '已取走钥匙'),
+    (STATUS.finished, '钥匙已还'),
+    (STATUS.canceled, '预约已取消')
 )
 
 
 # Create your models here.
 class Appointment(models.Model):
-    start = models.CharField(max_length=2, choices=TIME_CHOICE, blank=False)
-    end = models.CharField(max_length=2, choices=TIME_CHOICE, blank=False)
+    start = models.IntegerField(choices=TIME_CHOICE, blank=False)
+    end = models.IntegerField(choices=TIME_CHOICE, blank=False)
     classroom = models.ForeignKey(Classroom, blank=False)
     custom = models.ForeignKey(Account, blank=False)
     date = models.DateField(blank=False)
     reason = models.CharField(max_length=1000, blank=False)
+    desk = models.BooleanField(default=False)
+    multimedia = models.BooleanField(default=False)
+    status = models.IntegerField(choices=STATUS_CHOICE, default=STATUS.waiting)
+
+    class Meta:
+        ordering = ('-date', 'start')
+        unique_together = (("date", "start"))
 
     def __unicode__(self):
         return u'{},{},from {}h. to {}h.'.format(self.classroom.name, self.custom.user.username, self.start, self.end)
+
+    def save(self, *args, **kwargs):
+        # today = date.today()
+        # if self.date.__lt__(today):
+        #     raise ValidationError("date can NOT before today")
+        if self.start > self.end:
+            raise ValidationError("end can NOT before than start")
+        super(Appointment, self).save(*args, **kwargs)
