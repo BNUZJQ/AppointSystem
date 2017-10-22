@@ -1,5 +1,5 @@
 # coding=utf-8
-from __future__ import unicode_literals
+from datetime import date
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -9,30 +9,30 @@ from classroom.models import Classroom
 
 
 class TIME:
-    HOUR0 = "0"
-    HOUR1 = "1"
-    HOUR2 = "2"
-    HOUR3 = "3"
-    HOUR4 = "4"
-    HOUR5 = "5"
-    HOUR6 = "6"
-    HOUR7 = "7"
-    HOUR8 = "8"
-    HOUR9 = "9"
-    HOUR10 = "10"
-    HOUR11 = "11"
-    HOUR12 = "12"
-    HOUR13 = "13"
-    HOUR14 = "14"
-    HOUR15 = "15"
-    HOUR16 = "16"
-    HOUR17 = "17"
-    HOUR18 = "18"
-    HOUR19 = "19"
-    HOUR20 = "20"
-    HOUR21 = "21"
-    HOUR22 = "22"
-    HOUR23 = "23"
+    HOUR0 = 0
+    HOUR1 = 1
+    HOUR2 = 2
+    HOUR3 = 3
+    HOUR4 = 4
+    HOUR5 = 5
+    HOUR6 = 6
+    HOUR7 = 7
+    HOUR8 = 8
+    HOUR9 = 9
+    HOUR10 = 10
+    HOUR11 = 11
+    HOUR12 = 12
+    HOUR13 = 13
+    HOUR14 = 14
+    HOUR15 = 15
+    HOUR16 = 16
+    HOUR17 = 17
+    HOUR18 = 18
+    HOUR19 = 19
+    HOUR20 = 20
+    HOUR21 = 21
+    HOUR22 = 22
+    HOUR23 = 23
 
 
 TIME_CHOICE = (
@@ -89,12 +89,13 @@ class Appointment(models.Model):
         unique_together = (("date", "start"))
 
     def __unicode__(self):
-        return u'{},{},from {}h. to {}h.'.format(self.classroom.name, self.custom.user.username, self.start, self.end)
+        return u'{}, {}, {}, from {}h. to {}h.'.format(self.classroom.name, self.custom.user.username, self.date,
+                                                       self.start, self.end)
 
     def save(self, *args, **kwargs):
-        # today = date.today()
-        # if self.date.__lt__(today):
-        #     raise ValidationError("date can NOT before today")
+        today = date.today()
+        if self.date.__lt__(today):
+            raise ValidationError("date can NOT before today")
         if self.start > self.end:
             raise ValidationError("end can NOT before than start")
         super(Appointment, self).save(*args, **kwargs)

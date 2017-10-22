@@ -36,7 +36,7 @@ class TestCase(DjangoTestCase):
         return classroom
 
     def createAppointment(self, account, classroom, start=1, end=2, reason="Test"):
-        appointment = Appointment.objects.create(custom=account, classroom=classroom, date=datetime.datetime.today(),
+        appointment = Appointment.objects.create(custom=account, classroom=classroom, date=datetime.date.today(),
                                                  start=start, end=end, reason=reason)
         appointment.save()
         return appointment
