@@ -156,7 +156,6 @@ $(".submit").click(function () {
             "date": d.getFullYear() + '-' + thisdate,
             "start": start,
             "end": end,
-            "classroom": classroom,
             "reason": reason,
             "multimedia": multimedia,
             "desk": desk
@@ -178,6 +177,7 @@ $(".submit").click(function () {
 
         },
         success: function (msg) {
+            $(".choose_classroom").trigger("click");
             console.log(msg)
         },
         error: function () {
