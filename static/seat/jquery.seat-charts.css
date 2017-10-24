@@ -2,6 +2,34 @@ div.seatCharts-container {
     min-width: 550px;
 }
 
+div.seatCharts-namingleft {
+
+    height: 16px;
+    width: 70px;
+    margin: 3px;
+    float: left;
+    text-align: center;
+    outline: none;
+    font-size: 13px;
+    line-height: 13px;
+    color: blue;
+
+}
+
+div.seatCharts-naminghead {
+
+    height: 70px;
+    width: 16px;
+    margin: 3px;
+    float: left;
+    text-align: center;
+    outline: none;
+    font-size: 13px;
+    line-height: 13px;
+    color: red;
+
+}
+
 div.seatCharts-cell {
 
     height: 16px;

@@ -12,7 +12,7 @@
 <label>请选择classrrom</label>
 <select id="classroom">
     <option value="500">500</option>
-    <option value="400B">400B</option>
+    <option selected value="400B">400B</option>
     <option value="400A">400A</option>
 </select>
 <button class="choose_classroom btn btn-success btn-block">确认</button>
@@ -49,9 +49,18 @@
 <script language="JavaScript" type="text/javascript" src="{% static "js/jquery-3.2.1.min.js" %}"></script>
 <script type="text/javascript">
     var display_appointments = function (appointments) {
-        console.log(appointments);
-        // to do
-        $("#appointments").html(appointments);
+        var availables = [];
+        var infos = [];
+        var apppointments_json = JSON.parse(appointments);
+        for (var i = 0; i < apppointments_json.length; i++) {
+            for (var j = apppointments_json[i].start; j < apppointments_json[i].end; j++) {
+                //console.log(apppointments_json[i].date.slice(5) + "_" + j);
+                availables.push(apppointments_json[i].date.slice(5) + "_" + j);
+                infos.push("Who:" + apppointments_json[i].custom + "Reason:" + apppointments_json[i].reason);
+            }
+        }
+        console.log(availables);
+        console.log(infos);
     };
 
     var display_my_appointments = function (my_appointments) {
@@ -59,22 +68,22 @@
         // to do
         //$("#my_appointments").html(my_appointments);
     };
+    $(document).ready(function () {
+        $('.choose_classroom').click();
+    });
 
     $('.choose_classroom').on('click', function () {
         var classroom = $('#classroom').val();
-        console.log("you are choosing" + classroom);
+        console.log("you are choosing " + classroom);
         $("#appointments").html("");
         $.ajax({
             async: false,
-            url: '/choose_classroom',
-            type: 'post',
-            data: {
-                //csrfmiddlewaretoken: '{{csrf_token}}',
-                'classroom': classroom
-            },
+            url: '/api/classroom/' + classroom,
+            type: 'get',
+            data: {},
             success: function (data) {
                 display_appointments(data.appointments);
-                display_my_appointments(data.my_appointments);
+                //display_my_appointments(data.my_appointments);
             }, // success
             error: function (data) {
                 if (data.status === 400) {
