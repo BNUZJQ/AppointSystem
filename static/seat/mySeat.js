@@ -162,7 +162,7 @@ $(".submit").click(function () {
             console.log("post error!")
         }
     }); // ajax
-};
+});
 
 $('a[data-toggle="tab"]').on("click", function (e) {
     // 获取已激活的标签页的名称
