@@ -9,9 +9,9 @@
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
     <title>数字信科</title>
+
+
     <link rel="stylesheet" type="text/css" href="{% static "assets/css/jq22.css" %}"/>
-
-
     <!-- Bootstrap core CSS -->
     <link href="{% static "assets/css/bootstrap.css" %}" rel="stylesheet">
     <!--external css-->
@@ -98,9 +98,7 @@
                 <button class="choose_classroom btn btn-success btn-block">确认</button>
             </div>
             <div class="row">
-
-
-                <h2 class="title"><a href="index.html">{{ classroom }}会议室预约情况</a></h2>
+                <h1 class="title"><a href="index.html" id="title">会议室预约情况</a></h1>
                 <div class="col-md-8 col-sm-8 mb">
                     <div id="seat-map">
                         <ul id="myTab" class="nav nav-tabs">
@@ -115,11 +113,8 @@
                 <div class="col-md-4 col-sm-4 mb">
                     <div class="booking-details">
                         <h2>预定信息</h2>
-
                         <h3> 已选时段 (<span id="counter">0</span>):</h3>
                         <div id="selected-seats"></div>
-
-                        Total: <b>$<span id="total">0</span></b>
                         <div id="legend"></div>
                     </div>
 
@@ -132,6 +127,7 @@
                     <div class="form-panel">
                         <h4 class="mb"><i class="fa fa-angle-right"></i> 订单信息</h4>
                         <form class="form-horizontal style-form" method="get">
+                            <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">Default</label>
                                 <div class="col-sm-10">
@@ -145,13 +141,13 @@
                                     <span class="help-block">请明确说明使用会议室的原因.</span>
                                 </div>
                             </div>
-                        </form>
+
                         <hr>
                         <label class="checkbox-inline">
-                            <input type="checkbox" id="multimedia" value="true"> 使用多媒体
+                            <input type="checkbox" id="multimedia"> 使用多媒体
                         </label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" id="desk" value="true"> 需要移动桌椅
+                            <input type="checkbox" id="desk"> 需要移动桌椅
                         </label>
                         <label class="checkbox-inline">
                             <input type="checkbox" id="inlineCheckbox3" value="option3"> 3
@@ -164,71 +160,13 @@
                                 我已仔细阅读并承诺遵守《信息科学与技术学院会议室使用规定》&mdash;
                             </label>
                         </div>
-                    </div>
-                </div><!-- col-lg-12-->
-            </div><!-- /row -->
-
-            <button class="submit btn btn-success btn-block">submit &raquo;</button>
-
-
-
-            <h2 class="title"><a href="index.html" id="title">会议室预约情况</a></h2>
-            <div class="col-md-8 col-sm-8 mb">
-                <div id="seat-map">
-                    <div class="front-indicator">Front</div>
-
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-4 mb">
-                <div class="booking-details">
-                    <h2>预定信息</h2>
-
-                    <h3> 已选时段 (<span id="counter">0</span>):</h3>
-                    <div id="selected-seats"></div>
-
-                    Total: <b>$<span id="total">0</span></b>
-                    <div id="legend"></div>
-                </div>
-
-            </div>
-
-            </div>
-
-            <div class="row mt">
-                <div class="col-lg-12">
-                    <div class="form-panel">
-                        <h4 class="mb"><i class="fa fa-angle-right"></i> 订单信息</h4>
-                        <form class="form-horizontal style-form" method="get">
-                            <div class="form-group">
-                                <label class="col-sm-2 col-sm-2 control-label">预约原因</label>
-                                <div class="col-sm-10">
-                                    <input type="text" id="reason" class="form-control" placeholder="请说明会议室使用原因">
-                                </div>
-                                <hr>
-                                <div>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="multimedia" value="true"> 使用多媒体
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="desk" value="true"> 需要移动桌椅
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="">
-                                    我已仔细阅读并承诺遵守《信息科学与技术学院会议室使用规定》&mdash;
-                                </label>
-                            </div>
-
+                            <button class="submit btn btn-success btn-block">submit &raquo;</button>
                         </form>
-
-
                     </div>
                 </div><!-- col-lg-12-->
             </div><!-- /row -->
 
-            <button class="submit btn btn-success btn-block">submit &raquo;</button>
+
 
         </section>
     </section>

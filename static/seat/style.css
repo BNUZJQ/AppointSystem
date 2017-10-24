@@ -30,8 +30,8 @@ a {
 .booking-details {
     float: left;
     text-align: left;
-    margin-left: 35px;
-    font-size: 12px;
+    margin-left: 20px;
+    font-size: 20px;
     position: relative;
     height: 401px;
 }
@@ -115,8 +115,8 @@ span.seatCharts-legendDescription {
 }
 
 #selected-seats {
-    max-height: 90px;
+    height: 300px;
     overflow-y: scroll;
     overflow-x: none;
-    width: 170px;
+    width: 300px;
 }

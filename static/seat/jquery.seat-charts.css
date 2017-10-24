@@ -4,7 +4,7 @@ div.seatCharts-container {
 
 div.seatCharts-namingleft {
 
-    height: 16px;
+    height: 20px;
     width: 70px;
     margin: 3px;
     float: left;
@@ -32,14 +32,14 @@ div.seatCharts-naminghead {
 
 div.seatCharts-cell {
 
-    height: 16px;
-    width: 16px;
+    height: 25px;
+    width: 25px;
     margin: 3px;
     float: left;
     text-align: center;
     outline: none;
     font-size: 13px;
-    line-height: 16px;
+    line-height: 20px;
     color: blue;
 
 }

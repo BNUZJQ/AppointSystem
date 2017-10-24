@@ -1,5 +1,6 @@
 import datetime
 
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets, status
 from rest_framework.decorators import detail_route
 from rest_framework.renderers import JSONRenderer
@@ -36,6 +37,7 @@ class ClassroomViewSet(viewsets.GenericViewSet):
     def retrieve(self, request, **kwargs):
         pass
 
+    @csrf_exempt
     def create(self, request, **kwargs):
         classroom = kwargs["classroom"]
         if not Classroom.objects.filter(name=classroom).exists():
