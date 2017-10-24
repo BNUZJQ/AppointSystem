@@ -23,7 +23,7 @@ a {
 
 .container {
     margin: 0 auto;
-    width: 500px;
+    width: 1000px;
     text-align: left;
 }
 
@@ -38,12 +38,13 @@ a {
 
 .booking-details h2 {
     margin: 25px 0 20px 0;
-    font-size: 17px;
+    font-size: 25px;
 }
 
 .booking-details h3 {
     margin: 5px 5px 0 0;
-    font-size: 14px;
+    font-size: 18px;
+    color: #b71400;
 }
 
 div.seatCharts-cell {
@@ -87,7 +88,7 @@ div.seatCharts-seat.unavailable {
 
 div.seatCharts-container {
     border-right: 1px dotted #adadad;
-    width: 200px;
+    width: 700px;
     padding: 20px;
     float: left;
 }
