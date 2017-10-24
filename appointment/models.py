@@ -86,7 +86,7 @@ class Appointment(models.Model):
 
     class Meta:
         ordering = ('-date', 'start')
-        unique_together = (("date", "start"))
+        unique_together = ("date", "start")
 
     def __unicode__(self):
         return u'{}, {}, {}, from {}h. to {}h.'.format(self.classroom.name, self.custom.user.username, self.date,
@@ -98,4 +98,10 @@ class Appointment(models.Model):
             raise ValidationError("date can NOT before today")
         if self.start > self.end:
             raise ValidationError("end can NOT before than start")
+        appointments = Appointment.objects.filter(classroom=self.classroom, date__exact=self.date)
+        for appoint in appointments:
+            if appoint.start < self.start < appoint.end:
+                raise ValidationError("start time unvalid!")
+            if appoint.start < self.end < appoint.end:
+                raise ValidationError("end time unvalid!")
         super(Appointment, self).save(*args, **kwargs)
