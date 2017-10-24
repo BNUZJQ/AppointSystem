@@ -1,3 +1,6 @@
+var $cart = $('#selected-seats'),
+    $counter = $('#counter'),
+    $total = $('#total');
 var sc = $('#seat-map').seatCharts({
     map: [
         'eeeeeeeeeeeeee',
@@ -34,10 +37,12 @@ var sc = $('#seat-map').seatCharts({
         if (this.status() == 'available') {
             // console.log(this.settings.id);
             //let's create a new <li> which we'll add to the cart items
-            $('<li>' + this.settings.label + ':00<a href="#" class="cancel-cart-item">[cancel]</a></li>')
+
+            $('<li>' + this.settings.label + ':00<a href="#" class="cancel-cart-item">[cancel]</a></h3>')
                 .attr('id', 'cart-item-' + this.settings.id)
                 .data('seatId', this.settings.id)
                 .appendTo($cart);
+
             duration.push(this.settings.id);
             console.log(duration);
             /*
@@ -116,33 +121,49 @@ $(".choose_classroom").click(function () {
     }); // ajax
 });
 
+//提交函数
 $(".submit").click(function () {
-    var classroom = $("#classroom").val();
-    var reason = $("#reason").val();
-    var multimedia = $("#multimedia").val();
-    var desk = $("#desk").val();
+    var classroom = $("#classroom").val(),
+        reason = $("#reason").val(),
+        multimedia = $('input[type="checkbox"]#multimedia').checked,
+        desk = $('input[type="checkbox"]#desk').checked,
+        d = new Date(),
+        temp = [],
+        thisdate = duration[0].split("_")[0],
+        error_code = 0,
+        start = 0,
+        end = 0;
+    console.log("flag" + classroom + reason + multimedia + desk);
+    console.log(duration);
+    for (var i = 0; i < duration.length; i++) {
+        temp.push(duration[i].split("_")[1].split("-")[0]);
+        if (duration[i].split("_")[0] != thisdate) {
+            error_code = 1;//一条预约必须是同一天
+            console.log("一条预约必须是同一天");
+            alert("一条预约必须是同一天");
+        }
+    }
+    console.log(duration.length);
+    start = Math.min.apply(null, temp);
+    end = Math.max.apply(null, temp) + 1;
     // 获取未来一个月内的预约情况
     $.ajax({
         async: false,
-        url: '/api/classroom/' + classroom,
+        url: '/api/classroom/' + classroom + '/',
         type: 'post',
-        data: {},
+        data: {
+            'csrfmiddlewaretoken': $('#csrf_token').val(),
+            "date": d.getFullYear() + '-' + thisdate,
+            "start": start,
+            "end": end,
+            "classroom": classroom,
+            "reason": reason,
+            "multimedia": multimedia,
+            "desk": desk
+        },
         beforeSend: function () {
-            console.log("flag" + classroom + reason + multimedia + desk);
-            console.log(duration);
-            var temp = [];
-            var thisdate = duration[0].split("_")[0];
-            var error_code = 0;
-            for (var i = 0; i < duration.length; i++) {
-                temp.push(duration[i].split("_")[1].split("-")[0]);
-                if (duration[i].split("_")[0] != thisdate) {
-                    error_code = 1;//一条预约必须是同一天
-                    console.log("一条预约必须是同一天");
-                    alert("一条预约必须是同一天");
-                }
-            }
-            console.log(duration.length);
-            if (((Math.max.apply(null, temp)) - (Math.min.apply(null, temp)) + 1) == duration.length) {
+
+            if ((end - start) == duration.length) {
                 error_code = 0;//预约信息合法
                 console.log("预约信息合法");
             }
@@ -154,6 +175,7 @@ $(".submit").click(function () {
 
             if (error_code != 0)
                 return false;
+
         },
         success: function (msg) {
             console.log(msg)
@@ -174,10 +196,6 @@ $('a[data-toggle="tab"]').on("click", function (e) {
 $(document).ready(function () {
     console.log("begin");
     $(".choose_classroom").trigger("click");
-    var $cart = $('#selected-seats'),
-        $counter = $('#counter'),
-        $total = $('#total');
-
     //this will handle "[cancel]" link clicks
     $('#selected-seats').on('click', '.cancel-cart-item', function () {
         //let's just trigger Click event on the appropriate seat, so we don't have to repeat the logic here
