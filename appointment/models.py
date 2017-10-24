@@ -86,7 +86,7 @@ class Appointment(models.Model):
 
     class Meta:
         ordering = ('-date', 'start')
-        unique_together = ("date", "start")
+        unique_together = (("date", "start"), ("date", "end"))
 
     def __unicode__(self):
         return u'{}, {}, {}, from {}h. to {}h.'.format(self.classroom.name, self.custom.user.username, self.date,
