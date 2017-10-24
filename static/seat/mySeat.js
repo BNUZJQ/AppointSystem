@@ -152,6 +152,7 @@ $(".submit").click(function () {
         url: '/api/classroom/' + classroom + '/',
         type: 'post',
         data: {
+            'classroom': classroom,
             'csrfmiddlewaretoken': $('#csrf_token').val(),
             "date": d.getFullYear() + '-' + thisdate,
             "start": start,
