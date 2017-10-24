@@ -8,7 +8,7 @@ var display_appointments = function (appointments) {
     for (var i = 0; i < apppointments_json.length; i++) {
         for (var j = apppointments_json[i].start; j < apppointments_json[i].end; j++) {
             //console.log(apppointments_json[i].date.slice(5) + "_" + j);
-            unavailables.push(apppointments_json[i].date.slice(5) + "_" + (j+7)+"-"+(j+8));
+            unavailables.push(apppointments_json[i].date.slice(5) + "_" + (j + 7) + "-" + (j + 8));
             infos.push("Who:" + apppointments_json[i].custom + "Reason:" + apppointments_json[i].reason);
         }
     }
@@ -45,18 +45,16 @@ $(".submit").click(function () {
     // 获取未来一个月内的预约情况
     $.ajax({
         async: false,
-        url:'/api/classroom/' + classroom,
+        url: '/api/classroom/' + classroom,
         type: 'post',
         data: {},
-        beforeSend:function()
-        {
-            console.log("flag"+ classroom + reason + multimedia + desk);
+        beforeSend: function () {
+            console.log("flag" + classroom + reason + multimedia + desk);
             console.log(duration);
             var temp = [];
             var thisdate = duration[0].split("_")[0];
             var error_code = 0;
-            for( var i = 0; i<duration.length;i++)
-            {
+            for (var i = 0; i < duration.length; i++) {
                 temp.push(duration[i].split("_")[1].split("-")[0]);
                 if (duration[i].split("_")[0] != thisdate) {
                     error_code = 1;//一条预约必须是同一天
@@ -65,25 +63,34 @@ $(".submit").click(function () {
                 }
             }
             console.log(duration.length);
-            if (((Math.max.apply(null,temp))-(Math.min.apply(null,temp)) + 1) == duration.length)
-                {error_code = 0;//预约信息合法
-                console.log("预约信息合法");}
-            else
-            {error_code = 2;//预约的时间必须是连续的时间段
-                console.log("预约的时间必须是连续的时间段");alert("预约的时间必须是连续的时间段");}
+            if (((Math.max.apply(null, temp)) - (Math.min.apply(null, temp)) + 1) == duration.length) {
+                error_code = 0;//预约信息合法
+                console.log("预约信息合法");
+            }
+            else {
+                error_code = 2;//预约的时间必须是连续的时间段
+                console.log("预约的时间必须是连续的时间段");
+                alert("预约的时间必须是连续的时间段");
+            }
 
-            if(error_code != 0)
+            if (error_code != 0)
                 return false;
         },
-        success:function(msg){
+        success: function (msg) {
             console.log(msg)
         },
-        error:function(){
+        error: function () {
             console.log("post error!")
         }
     }); // ajax
 });
 
+$('a[data-toggle="tab"]').on("click", function (e) {
+    // 获取已激活的标签页的名称
+    var activeTab = $(e.target).text();
+    console.log(activeTab);
+
+});
 
 $(document).ready(function () {
     console.log("begin");
