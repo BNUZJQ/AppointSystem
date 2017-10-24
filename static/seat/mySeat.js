@@ -1,12 +1,14 @@
 var firstSeatLabel = 1;
 var unavailables = [];
+var duration = [];
 var display_appointments = function (appointments) {
+    console.log(appointments);
     var infos = [];
     var apppointments_json = JSON.parse(appointments);
     for (var i = 0; i < apppointments_json.length; i++) {
         for (var j = apppointments_json[i].start; j < apppointments_json[i].end; j++) {
             //console.log(apppointments_json[i].date.slice(5) + "_" + j);
-            unavailables.push(apppointments_json[i].date.slice(5) + "_" + j);
+            unavailables.push(apppointments_json[i].date.slice(5) + "_" + (j+7)+"-"+(j+8));
             infos.push("Who:" + apppointments_json[i].custom + "Reason:" + apppointments_json[i].reason);
         }
     }
@@ -35,11 +37,57 @@ $(".choose_classroom").click(function () {
     }); // ajax
 });
 
+$(".submit").click(function () {
+    var classroom = $("#classroom").val();
+    var reason = $("#reason").val();
+    var multimedia = $("#multimedia").val();
+    var desk = $("#desk").val();
+    // 获取未来一个月内的预约情况
+    $.ajax({
+        async: false,
+        url:'/api/classroom/' + classroom,
+        type: 'post',
+        data: {},
+        beforeSend:function()
+        {
+            console.log("flag"+ classroom + reason + multimedia + desk);
+            console.log(duration);
+            var temp = [];
+            var thisdate = duration[0].split("_")[0];
+            var error_code = 0;
+            for( var i = 0; i<duration.length;i++)
+            {
+                temp.push(duration[i].split("_")[1].split("-")[0]);
+                if (duration[i].split("_")[0] != thisdate) {
+                    error_code = 1;//一条预约必须是同一天
+                    console.log("一条预约必须是同一天");
+                    alert("一条预约必须是同一天");
+                }
+            }
+            console.log(duration.length);
+            if (((Math.max.apply(null,temp))-(Math.min.apply(null,temp)) + 1) == duration.length)
+                {error_code = 0;//预约信息合法
+                console.log("预约信息合法");}
+            else
+            {error_code = 2;//预约的时间必须是连续的时间段
+                console.log("预约的时间必须是连续的时间段");alert("预约的时间必须是连续的时间段");}
+
+            if(error_code != 0)
+                return false;
+        },
+        success:function(msg){
+            console.log(msg)
+        },
+        error:function(){
+            console.log("post error!")
+        }
+    }); // ajax
+});
+
+
 $(document).ready(function () {
     console.log("begin");
     $(".choose_classroom").trigger("click");
-
-    var duration = [];
     var $cart = $('#selected-seats'),
         $counter = $('#counter'),
         $total = $('#total'),
@@ -51,7 +99,7 @@ $(document).ready(function () {
                 'eeeeeeeeeeeeee',
                 'eeeeeeeeeeeeee',
                 'eeeeeeeeeeeeee',
-                'eeeeeeeeeeeeee',
+                'eeeeeeeeeeeeee'
 
             ],
             seats: {
@@ -85,11 +133,6 @@ $(document).ready(function () {
                         .appendTo($cart);
                     duration.push(this.settings.id);
                     console.log(duration);
-                    //   $('<li>' + this.data().category + ' Seat # ' + this.settings.label + ': <b>$' + this.data().price + '</b> <a href="#" class="cancel-cart-item">[cancel]</a></li>')
-                    //       .attr('id', 'cart-item-' + this.settings.id)
-                    //       .data('seatId', this.settings.id)
-                    //       .appendTo($cart);
-
                     /*
                      * Lets update the counter and total
                      *
@@ -106,6 +149,7 @@ $(document).ready(function () {
                     $total.text(recalculateTotal(sc) - this.data().price);
                     //remove the item from our cart
                     $('#cart-item-' + this.settings.id).remove();
+                    duration.pop(this.settings.id);
                     //seat has been vacated
                     return 'available';
                 } else if (this.status() == 'unavailable') {
