@@ -37,7 +37,6 @@ var sc = $('#seat-map').seatCharts({
         if (this.status() == 'available') {
             // console.log(this.settings.id);
             //let's create a new <li> which we'll add to the cart items
-
             $('<li>' + this.settings.label + ':00<a href="#" class="cancel-cart-item">[cancel]</a></h3>')
                 .attr('id', 'cart-item-' + this.settings.id)
                 .data('seatId', this.settings.id)
