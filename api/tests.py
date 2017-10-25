@@ -29,6 +29,7 @@ class ApiTests(TestCase):
             response = self.client.get(self.url + self.classroom1.name + "/", decode=False)
             init_size = response.data['size']
             data = {
+                "classroom": self.classroom1.name,
                 "start": 8,
                 "end": 10,
                 "date": str(self.today),
@@ -41,6 +42,7 @@ class ApiTests(TestCase):
             self.assertEqual(response.data['size'], init_size + 1)
             # 预约一个冲突的时间
             data = {
+                "classroom": self.classroom1.name,
                 "start": 9,
                 "end": 11,
                 "date": str(self.today),
@@ -56,6 +58,7 @@ class ApiTests(TestCase):
         with self.logged_in_user(self.bxy.user):
             # post with start < end
             data = {
+                "classroom": self.classroom1.name,
                 "start": "9",
                 "end": "8",
                 "date": str(self.today),
@@ -67,6 +70,7 @@ class ApiTests(TestCase):
 
             # post without reason
             data = {
+                "classroom": self.classroom1.name,
                 "start": "9",
                 "end": "10",
                 "date": str(self.today),
@@ -77,6 +81,7 @@ class ApiTests(TestCase):
 
             # post without before date
             data = {
+                "classroom": self.classroom1.name,
                 "start": "9",
                 "end": "10",
                 "date": str(self.today - datetime.timedelta(1)),

@@ -37,7 +37,6 @@ var sc = $('#seat-map').seatCharts({
         if (this.status() == 'available') {
             // console.log(this.settings.id);
             //let's create a new <li> which we'll add to the cart items
-            console.log(this.settings.naming.rows);
             $('<li>' + this.settings.label + ':00<a href="#" class="cancel-cart-item">[cancel]</a></h3>')
                 .attr('id', 'cart-item-' + this.settings.id)
                 .data('seatId', this.settings.id)
@@ -152,6 +151,7 @@ $(".submit").click(function () {
         url: '/api/classroom/' + classroom + '/',
         type: 'post',
         data: {
+            'classroom': classroom,
             'csrfmiddlewaretoken': $('#csrf_token').val(),
             "date": d.getFullYear() + '-' + thisdate,
             "start": start,
