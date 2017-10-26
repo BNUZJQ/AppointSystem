@@ -21,7 +21,7 @@ jobs:
       - checkout
 
       - run:
-        command: pip install -r requirements.txt
+          command: pip install -r requirements.txt
 
       - run:
-        command: python manage.py test
+          command: python manage.py test
