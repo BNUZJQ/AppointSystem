@@ -43,6 +43,12 @@ jobs:
             . venv/bin/activate
             python manage.py test
 
+      - run:
+          name: Run Lint
+          command: |
+            . venv/bin/activate
+            pep8
+
       - store_artifacts:
           path: test-reports/
           destination: tr1
