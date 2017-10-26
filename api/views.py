@@ -43,7 +43,6 @@ class ClassroomViewSet(viewsets.GenericViewSet):
         if not Classroom.objects.filter(name=classroom).exists():
             return Response({"message": "Classroom Not Found"}, status=404)
         classroom = Classroom.objects.get(name=classroom)
-        request.POST['classroom'] = classroom.name
         appointment = AppointmentSerializer(data=request.POST)
         if appointment.is_valid(raise_exception=True):
             appointment.save(custom=Account.objects.get(user=request.user), classroom=classroom)
