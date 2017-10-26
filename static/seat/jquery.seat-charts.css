@@ -11,9 +11,8 @@ div.seatCharts-namingleft {
     text-align: center;
     outline: none;
     font-size: 13px;
-    line-height: 13px;
-    color: blue;
-
+    color: rgba(102, 102, 102, 0.7);
+    line-height: 30px;
 }
 
 div.seatCharts-naminghead {
