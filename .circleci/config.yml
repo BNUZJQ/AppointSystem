@@ -24,6 +24,7 @@ jobs:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
 
       - run:
+          name: Install requirements
           command: |
             if [ ! -d "venv" ]; then
               virtualenv venv
@@ -37,6 +38,7 @@ jobs:
             - "venv"
 
       - run:
+          name: Run test
           command: |
             . venv/bin/activate
             python manage.py test
