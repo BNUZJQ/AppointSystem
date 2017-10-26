@@ -36,5 +36,5 @@ jobs:
 
       - run:
           command: |
-          . venv/bin/active
+          . venv/bin/activate
           python manage.py test
