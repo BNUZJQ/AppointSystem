@@ -19,5 +19,11 @@ jobs:
 
     steps:
       - checkout
-      - run: echo "hello world"
-          
+
+      - run:
+        name: Install Requirement
+        command: pip install -r requirements.txt
+
+      - run:
+        name: UnitTest
+        command: python manage.py test
