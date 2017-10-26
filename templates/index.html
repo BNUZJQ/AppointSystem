@@ -15,10 +15,8 @@
     <!-- Bootstrap core CSS -->
     <link href="{% static "assets/css/bootstrap.css" %}" rel="stylesheet">
     <!--external css-->
-    <link href="{% static "assets/font-awesome/css/font-awesome.css" %}" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="{% static "assets/css/zabuto_calendar.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "assets/js/gritter/css/jquery.gritter.css" %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static "assets/lineicons/style.css" %}">
 
     <!-- Custom styles for this template -->
     <link href="{% static "assets/css/style.css" %}" rel="stylesheet">
@@ -120,11 +118,9 @@
                     <button class=" choose_classroom btn btn-theme" type="button">确认</button>
                 </div>
             </div>
-            </div>
             <div class="row">
                 <div class="col-md-8 col-sm-8 mb">
                     <h1 class="title" id="title" style="display:inline"></h1>
-                <div class="col-md-8 col-sm-8 mb">
                     <ul id="myTab" class="nav nav-tabs">
                         <li class="active"><a href="#thisweek" data-toggle="tab">未来7天</a></li>
                         <li><a href="#next" data-toggle="tab">8-14天</a></li>
@@ -142,9 +138,7 @@
                         <div id="selected-seats"></div>
                         <div id="legend"></div>
                     </div>
-
                 </div>
-
             </div>
 
             <div class="row mt">
@@ -160,32 +154,24 @@
                                     <span class="help-block">请明确说明使用会议室的原因.</span>
                                 </div>
                             </div>
-
-
-                        <hr>
-                        <label class="checkbox-inline">
-                            <input type="checkbox" id="multimedia"> 使用多媒体
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="checkbox" id="desk"> 需要移动桌椅
-                        </label>
-
-                        </div>
-
-                            <hr>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="multimedia"> 使用多媒体
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="desk"> 需要移动桌椅
+                            </label>
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" value="">
                                     我已仔细阅读并承诺遵守《信息科学与技术学院会议室使用规定》&mdash;
                                 </label>
                             </div>
-
                             <button class="submit btn btn-success btn-block">submit &raquo;</button>
                         </form>
                     </div>
                 </div><!-- col-lg-12-->
             </div><!-- /row -->
-
+            </div>
         </section>
     </section>
 
