@@ -19,12 +19,5 @@ jobs:
 
     steps:
       - checkout
-
-
-      # run tests!
-      - run:
-          name: run tests
-          command: |
-            python manage.py test
-
+      - run: echo "hello world"
           
