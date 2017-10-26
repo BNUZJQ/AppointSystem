@@ -3,13 +3,13 @@ var $cart = $('#selected-seats'),
     $total = $('#total');
 var sc = $('#seat-map').seatCharts({
     map: [
-        'eeeeeeeeeeeeee',
-        'eeeeeeeeeeeeee',
-        'eeeeeeeeeeeeee',
-        'eeeeeeeeeeeeee',
-        'eeeeeeeeeeeeee',
-        'eeeeeeeeeeeeee',
-        'eeeeeeeeeeeeee'
+        'eeeeeeeeeeeeeee',
+        'eeeeeeeeeeeeeee',
+        'eeeeeeeeeeeeeee',
+        'eeeeeeeeeeeeeee',
+        'eeeeeeeeeeeeeee',
+        'eeeeeeeeeeeeeee',
+        'eeeeeeeeeeeeeee'
 
     ],
     seats: {
@@ -23,7 +23,7 @@ var sc = $('#seat-map').seatCharts({
     naming: {
         //top : false,
         getLabel: function (character, row, column) {
-            return column;
+            return "";
         },
     },
     legend: {
@@ -37,8 +37,8 @@ var sc = $('#seat-map').seatCharts({
         if (this.status() == 'available') {
             // console.log(this.settings.id);
             //let's create a new <li> which we'll add to the cart items
-            console.log(this.settings.naming.rows);
-            $('<li>' + this.settings.label + ':00<a href="#" class="cancel-cart-item">[cancel]</a></h3>')
+
+            $('<li>' + this.settings.id.split("_")[0].split("-")[0] + "月" + this.settings.id.split("_")[0].split("-")[1] + "日" + this.settings.id.split("_")[1] + ':00<a href="#" class="cancel-cart-item">[取消]</a>')
                 .attr('id', 'cart-item-' + this.settings.id)
                 .data('seatId', this.settings.id)
                 .appendTo($cart);
@@ -65,6 +65,14 @@ var sc = $('#seat-map').seatCharts({
             //seat has been vacated
             return 'available';
         } else if (this.status() == 'unavailable') {
+
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: 'This is a Notice Without an Image!',
+                // (string | mandatory) the text inside the notification
+                text: 'This will fade out after a certain amount of time. This note also contains a link example. Thank you so much to try Dashgum. Developed by <a href="#" style="color:#FFD777">Alvarez.is</a>.'
+            });
+
 
             confirm("我觉得这样显示就很好，点unavailable的时候，用一个alert函数就做到了。。。");
 

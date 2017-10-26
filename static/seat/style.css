@@ -3,7 +3,7 @@ body {
 }
 
 a {
-    color: #b71a4c;
+    color: #424a5d;
 }
 
 .front-indicator {
@@ -44,14 +44,14 @@ a {
 .booking-details h3 {
     margin: 5px 5px 0 0;
     font-size: 18px;
-    color: #b71400;
+    color: #424a5d;
 }
 
 div.seatCharts-cell {
-    color: #182C4E;
-    height: 25px;
-    width: 25px;
-    line-height: 25px;
+    color: #555563;
+    height: 27px;
+    width: 35px;
+    line-height: 27px;
 
 }
 
@@ -62,6 +62,8 @@ div.seatCharts-seat {
 
 div.seatCharts-row {
     height: 35px;
+    line-height: 35px;
+    color: #b71400;
 }
 
 div.seatCharts-seat.available {
@@ -88,7 +90,7 @@ div.seatCharts-seat.unavailable {
 
 div.seatCharts-container {
     border-right: 1px dotted #adadad;
-    width: 700px;
+    width: 780px;
     padding: 20px;
     float: left;
 }
@@ -115,7 +117,7 @@ span.seatCharts-legendDescription {
 }
 
 #selected-seats {
-    height: 300px;
+    height: 180px;
     overflow-y: scroll;
     overflow-x: none;
     width: 300px;

@@ -88,18 +88,42 @@
 
     <section id="main-content">
         <section class="wrapper">
+            {#            <div class="row">#}
+            {#                <div class="form-panel">#}
+            {#                    <h4 class="mb"><i class="fa fa-angle-right"></i> 请选择预约教室</h4>#}
+            {##}
+            {##}
+            {##}
+            {#                <select id="classroom">#}
+            {#                    <option selected value="500">500</option>#}
+            {#                    <option value="400B">400B</option>#}
+            {#                    <option value="400A">400A</option>#}
+            {#                </select>#}
+            {#                <br>#}
+            {#                <button class=" choose_classroom btn btn-primary btn-lg" type="button">确认</button>#}
+            {##}
+            {#            </div>#}
+            {#            </div>#}
+
             <div class="row">
-                <h4><i class="fa fa-angle-right"></i> 请选择预约教室</h4>
-                <select id="classroom">
-                    <option selected value="500">500</option>
-                    <option value="400B">400B</option>
-                    <option value="400A">400A</option>
-                </select>
-                <button class="choose_classroom btn btn-success btn-block">确认</button>
+                <div class="col-md-4 col-sm-4 mb">
+                    <h4 class="mb"><i class="fa fa-angle-right"></i> >>>请选择预约教室</h4>
+                    <select id="classroom" class=form-control>
+                        <option selected value="500">500</option>
+                        <option value="400B">400B</option>
+                        <option value="400A">400A</option>
+                    </select>
+                    <br>
+                </div>
+                <div class="col-md-2 col-sm-2 mb">
+                    <br><br><br>
+                    <button class=" choose_classroom btn btn-theme" type="button">确认</button>
+                </div>
+            </div>
             </div>
             <div class="row">
-                <h1 class="title"><a href="index.html" id="title">会议室预约情况</a></h1>
                 <div class="col-md-8 col-sm-8 mb">
+                    <h1 class="title" id="title" style="display:inline"></h1>
                     <div id="seat-map">
                         <ul id="myTab" class="nav nav-tabs">
                             <li class="active"><a href="#thisweek" data-toggle="tab">未来7天</a></li>
@@ -125,15 +149,9 @@
             <div class="row mt">
                 <div class="col-lg-12">
                     <div class="form-panel">
-                        <h4 class="mb"><i class="fa fa-angle-right"></i> 订单信息</h4>
+                        <h4 class="mb"><i class="fa fa-angle-right"></i> 请继续完善预约信息</h4>
                         <form class="form-horizontal style-form" method="get">
                             <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
-                            <div class="form-group">
-                                <label class="col-sm-2 col-sm-2 control-label">Default</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">预约原因</label>
                                 <div class="col-sm-10">
@@ -148,9 +166,6 @@
                         </label>
                         <label class="checkbox-inline">
                             <input type="checkbox" id="desk"> 需要移动桌椅
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox3" value="option3"> 3
                         </label>
 
                         <hr>
