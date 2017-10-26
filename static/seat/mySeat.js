@@ -1,83 +1,102 @@
 var $cart = $('#selected-seats'),
     $counter = $('#counter'),
     $total = $('#total');
-var sc = $('#seat-map').seatCharts({
-    map: [
-        'eeeeeeeeeeeeee',
-        'eeeeeeeeeeeeee',
-        'eeeeeeeeeeeeee',
-        'eeeeeeeeeeeeee',
-        'eeeeeeeeeeeeee',
-        'eeeeeeeeeeeeee',
-        'eeeeeeeeeeeeee'
-
-    ],
-    seats: {
-        e: {
-            price: 40,
-            classes: 'economy-class', //your custom CSS class
-            category: 'Economy Class'
-        }
-
-    },
-    naming: {
-        //top : false,
-        getLabel: function (character, row, column) {
-            return column;
-        },
-    },
-    legend: {
-        node: $('#legend'),
-        items: [
-            ['e', 'available', '可以预订'],
-            ['e', 'unavailable', '已被占用']
-        ]
-    },
-    click: function () {
-        if (this.status() == 'available') {
-            // console.log(this.settings.id);
-            //let's create a new <li> which we'll add to the cart items
-            $('<li>' + this.settings.label + ':00<a href="#" class="cancel-cart-item">[cancel]</a></h3>')
-                .attr('id', 'cart-item-' + this.settings.id)
-                .data('seatId', this.settings.id)
-                .appendTo($cart);
-
-            duration.push(this.settings.id);
-            console.log(duration);
-            /*
-             * Lets update the counter and total
-             *
-             * .find function will not find the current seat, because it will change its stauts only after return
-             * 'selected'. This is why we have to add 1 to the length and the current seat price to the total.
-             */
-            $counter.text(sc.find('selected').length + 1);
-            $total.text(recalculateTotal(sc) + this.data().price);
-            return 'selected';
-        } else if (this.status() == 'selected') {
-            //update the counter
-            $counter.text(sc.find('selected').length - 1);
-            //and total
-            $total.text(recalculateTotal(sc) - this.data().price);
-            //remove the item from our cart
-            $('#cart-item-' + this.settings.id).remove();
-            duration.pop(this.settings.id);
-            //seat has been vacated
-            return 'available';
-        } else if (this.status() == 'unavailable') {
-
-            confirm("我觉得这样显示就很好，点unavailable的时候，用一个alert函数就做到了。。。");
-
-            //seat has been already booked
-            return 'unavailable';
-        } else {
-            return this.style();
-        }
-    }
-});
+var sc;
 var unavailables = [];
 var duration = [];
+
+var fix = function (num, length) {
+    return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
+};
+
+var create_sc = function (week) {
+    //console.log("create sc with week " + week);
+    var Myrows = [];
+    for (var i = 1; i <= 7; i++) {
+        var d = new Date();
+        d.setDate(d.getDate() + i - 1 + week * 7);
+        Myrows.push(fix(d.getMonth() + 1, 2) + "-" + fix(d.getDate(), 2));
+    }
+    sc = $('#seat-map').seatCharts({
+        map: [
+            'eeeeeeeeeeeeee',
+            'eeeeeeeeeeeeee',
+            'eeeeeeeeeeeeee',
+            'eeeeeeeeeeeeee',
+            'eeeeeeeeeeeeee',
+            'eeeeeeeeeeeeee',
+            'eeeeeeeeeeeeee'
+
+        ],
+        seats: {
+            e: {
+                price: 40,
+                classes: 'economy-class', //your custom CSS class
+                category: 'Economy Class'
+            }
+
+        },
+        naming: {
+            //top : false,
+            getLabel: function (character, row, column) {
+                return column;
+            },
+            rows: [Myrows[0], Myrows[1], Myrows[2], Myrows[3], Myrows[4], Myrows[5], Myrows[6]]
+        },
+        legend: {
+            node: $('#legend'),
+            items: [
+                ['e', 'available', '可以预订'],
+                ['e', 'unavailable', '已被占用']
+            ]
+        },
+        click: function () {
+            if (this.status() === 'available') {
+                // console.log(this.settings.id);
+                //let's create a new <li> which we'll add to the cart items
+
+                $('<li>' + this.settings.label + ':00<a href="#" class="cancel-cart-item">[cancel]</a></h3>')
+                    .attr('id', 'cart-item-' + this.settings.id)
+                    .data('seatId', this.settings.id)
+                    .appendTo($cart);
+
+                duration.push(this.settings.id);
+                /*
+                 * Lets update the counter and total
+                 *
+                 * .find function will not find the current seat, because it will change its stauts only after return
+                 * 'selected'. This is why we have to add 1 to the length and the current seat price to the total.
+                 */
+                $counter.text(sc.find('selected').length + 1);
+                $total.text(recalculateTotal(sc) + this.data().price);
+                return 'selected';
+            } else if (this.status() === 'selected') {
+                //update the counter
+                $counter.text(sc.find('selected').length - 1);
+                //and total
+                $total.text(recalculateTotal(sc) - this.data().price);
+                //remove the item from our cart
+                $('#cart-item-' + this.settings.id).remove();
+                duration.pop(this.settings.id);
+                //seat has been vacated
+                return 'available';
+            } else if (this.status() === 'unavailable') {
+
+                confirm("我觉得这样显示就很好，点unavailable的时候，用一个alert函数就做到了。。。");
+
+                //seat has been already booked
+                return 'unavailable';
+            } else {
+                return this.style();
+            }
+        }
+    });
+    //console.log(unavailables);
+    sc.get(unavailables).status('unavailable');
+};
+
 var display_appointments = function (appointments) {
-    console.log(appointments);
+    //console.log(appointments);
     sc.get(unavailables).status('available');
     unavailables = [];
     var infos = [];
@@ -89,10 +108,9 @@ var display_appointments = function (appointments) {
             infos.push("Who:" + apppointments_json[i].custom + "Reason:" + apppointments_json[i].reason);
         }
     }
-    console.log(unavailables);
-    console.log(infos);
+    // console.log(unavailables);
+    // console.log(infos);
     //let's pretend some seats have already been booked
-    console.log("更新表" + unavailables);
     sc.get(unavailables).status('unavailable');
 };
 $(".choose_classroom").click(function () {
@@ -106,7 +124,6 @@ $(".choose_classroom").click(function () {
         success: function (data) {
             display_appointments(data.appointments);
             $("#title").html(classroom + "预约情况");
-            console.log(classroom + "预约情况");
         }, // success
         error: function (data) {
             if (data.status === 400) {
@@ -189,12 +206,23 @@ $(".submit").click(function () {
 $('a[data-toggle="tab"]').on("click", function (e) {
     // 获取已激活的标签页的名称
     var activeTab = $(e.target).text();
-    console.log(activeTab);
+    $('.seatCharts-row').remove();
+    $('.seatCharts-legendItem').remove();
+    $('#seat-map,#seat-map *').unbind().removeData();
+    if (activeTab === "未来7天") {
+        create_sc(0);
+    } else if (activeTab === "8-14天") {
+        create_sc(1);
+    } else if (activeTab === "15-21天") {
+        create_sc(2);
+    } else {
+        create_sc(3);
+    }
 
 });
 
 $(document).ready(function () {
-    console.log("begin");
+    create_sc(0);
     $(".choose_classroom").trigger("click");
     //this will handle "[cancel]" link clicks
     $('#selected-seats').on('click', '.cancel-cart-item', function () {
@@ -206,14 +234,3 @@ $(document).ready(function () {
     sc.get(unavailables).status('unavailable');
 
 });
-
-function recalculateTotal(sc) {
-    var total = 0;
-
-    //basically find every selected seat and sum its price
-    sc.find('selected').each(function () {
-        total += this.data().price;
-    });
-
-    return total;
-}
