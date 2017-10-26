@@ -39,7 +39,7 @@ var create_sc = function (week) {
         naming: {
             //top : false,
             getLabel: function (character, row, column) {
-                return column;
+                return "";
             },
             rows: [Myrows[0], Myrows[1], Myrows[2], Myrows[3], Myrows[4], Myrows[5], Myrows[6]]
         },
@@ -56,9 +56,9 @@ var create_sc = function (week) {
                 //let's create a new <li> which we'll add to the cart items
 
                 $('<li>' + this.settings.id.split("_")[0].split("-")[0] + "月" + this.settings.id.split("_")[0].split("-")[1] + "日" + this.settings.id.split("_")[1] + ':00<a href="#" class="cancel-cart-item">[取消]</a>')
-                .attr('id', 'cart-item-' + this.settings.id)
-                .data('seatId', this.settings.id)
-                .appendTo($cart);
+                    .attr('id', 'cart-item-' + this.settings.id)
+                    .data('seatId', this.settings.id)
+                    .appendTo($cart);
 
                 duration.push(this.settings.id);
                 /*
@@ -68,7 +68,6 @@ var create_sc = function (week) {
                  * 'selected'. This is why we have to add 1 to the length and the current seat price to the total.
                  */
                 $counter.text(sc.find('selected').length + 1);
-                $total.text(recalculateTotal(sc) + this.data().price);
                 return 'selected';
             } else if (this.status() === 'selected') {
                 //update the counter
@@ -81,12 +80,13 @@ var create_sc = function (week) {
                 //seat has been vacated
                 return 'available';
             } else if (this.status() === 'unavailable') {
-              $.gritter.add({
-                // (string | mandatory) the heading of the notification
-                title: 'This is a Notice Without an Image!',
-                // (string | mandatory) the text inside the notification
-                text: 'This will fade out after a certain amount of time. This note also contains a link example. Thank you so much to try Dashgum. Developed by <a href="#" style="color:#FFD777">Alvarez.is</a>.'
-              });
+
+                $.gritter.add({
+                    // (string | mandatory) the heading of the notification
+                    title: 'This is a Notice Without an Image!',
+                    // (string | mandatory) the text inside the notification
+                    text: 'This will fade out after a certain amount of time. This note also contains a link example. Thank you so much to try Dashgum. Developed by <a href="#" style="color:#FFD777">Alvarez.is</a>.'
+                });
                 confirm("我觉得这样显示就很好，点unavailable的时候，用一个alert函数就做到了。。。");
 
                 //seat has been already booked
@@ -158,7 +158,7 @@ $(".submit").click(function () {
     console.log(duration);
     for (var i = 0; i < duration.length; i++) {
         temp.push(duration[i].split("_")[1].split("-")[0]);
-        if (duration[i].split("_")[0] != thisdate) {
+        if (duration[i].split("_")[0] !== thisdate) {
             error_code = 1;//一条预约必须是同一天
             console.log("一条预约必须是同一天");
             alert("一条预约必须是同一天");
@@ -184,7 +184,7 @@ $(".submit").click(function () {
         },
         beforeSend: function () {
 
-            if ((end - start) == duration.length) {
+            if ((end - start) === duration.length) {
                 error_code = 0;//预约信息合法
                 console.log("预约信息合法");
             }
@@ -194,13 +194,13 @@ $(".submit").click(function () {
                 alert("预约的时间必须是连续的时间段");
             }
 
-            if (error_code != 0)
+            if (error_code !== 0)
                 return false;
 
         },
         success: function (msg) {
             $(".choose_classroom").trigger("click");
-            console.log(msg)
+            console.log(msg);
         },
         error: function () {
             console.log("post error!")
