@@ -8,7 +8,7 @@
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>数字信科</title>
+    <title>会议室自助预约系统</title>
 
 
     <link rel="stylesheet" type="text/css" href="{% static "assets/css/jq22.css" %}"/>
@@ -33,7 +33,7 @@
             <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
         </div>
         <!--logo start-->
-        <a href="index.html" class="logo"><b>数字信科</b></a>
+        <a href="index.html" class="logo"><b>会议室自助预约系统</b></a>
         <!--logo end-->
         <div class="nav notify-row" id="top_menu">
             <!--  notification start -->
@@ -46,7 +46,10 @@
         </div>
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
+                <li><h3>{{ request.user }},您好！ </h3>
+
                 <li><a class="logout" href="login.html">Logout</a></li>
+
             </ul>
         </div>
     </header>
@@ -56,9 +59,9 @@
             <!-- sidebar menu start-->
             <ul class="sidebar-menu" id="nav-accordion">
                 <!-- 用户的头像，可以先预留好位置-->
-                <p class="centered"><a href="profile.html">
-                <h5 class="centered">用户姓名 学号 专业</h5>
-
+                <h1 class="centered">{{ request.user }}</h1>
+                <h1 class="centered">{{ request.user.student_id }}</h1>
+                <h1 class="centered">{{ request.user.major }}</h1>
                 <li class="mt">
                     <a class="active" href="index.html">
                         <i class="fa fa-th"></i>
