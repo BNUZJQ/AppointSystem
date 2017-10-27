@@ -36,7 +36,7 @@ class ClassroomViewSet(viewsets.GenericViewSet):
                                            'desk',
                                            'multimedia',
                                            'status',
-                                           'custom__user__username',
+                                           'custom__user__useqrname',
                                            'custom__telephone')
         size = len(appointments)
         # serialize the queryset for return
