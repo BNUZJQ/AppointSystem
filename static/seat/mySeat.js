@@ -20,13 +20,13 @@ var create_sc = function (week) {
     }
     sc = $('#seat-map').seatCharts({
         map: [
-            'eeeeeeeeeeeeee',
-            'eeeeeeeeeeeeee',
-            'eeeeeeeeeeeeee',
-            'eeeeeeeeeeeeee',
-            'eeeeeeeeeeeeee',
-            'eeeeeeeeeeeeee',
-            'eeeeeeeeeeeeee'
+            'eeeeeeeeeeeeeee',
+            'eeeeeeeeeeeeeee',
+            'eeeeeeeeeeeeeee',
+            'eeeeeeeeeeeeeee',
+            'eeeeeeeeeeeeeee',
+            'eeeeeeeeeeeeeee',
+            'eeeeeeeeeeeeeee'
 
         ],
         seats: {
@@ -83,9 +83,10 @@ var create_sc = function (week) {
                     // (string | mandatory) the heading of the notification
                     title: '该时间段已被占用：(',
                     // (string | mandatory) the text inside the notification
-                    text: '占用信息：<br>' + this.settings.id.split("_")[0].split("-")[0] +
-                    "月" + this.settings.id.split("_")[0].split("-")[1] + "日" + this.settings.id.split("_")[1] +
-                    ':00' + '<br>' + infos[this.settings.id].split(";")[0] + '<br>' + infos[this.settings.id].split(";")[1]
+                    text: '占用信息：<br>' + "日期：" + this.settings.id.split("_")[0].split("-")[0] +
+                    "月" + this.settings.id.split("_")[0].split("-")[1] + "日" +
+                    '<br>' + infos[this.settings.id].split(";")[0] + '<br>' + infos[this.settings.id].split(";")[1]
+                    + '<br>' + infos[this.settings.id].split(";")[2] + '<br>' + infos[this.settings.id].split(";")[3]
 
                 });
                 //seat has been already booked
@@ -100,6 +101,7 @@ var create_sc = function (week) {
 };
 
 var display_appointments = function (appointments_json) {
+    console.log(appointments_json);
     sc.get(unavailables).status('available');
     unavailables = [];
     var temp_seatID;
@@ -107,7 +109,10 @@ var display_appointments = function (appointments_json) {
         for (var j = appointments_json[i].start; j < appointments_json[i].end; j++) {
             temp_seatID = appointments_json[i].date.slice(5) + "_" + j + "-" + (j + 1);
             unavailables.push(temp_seatID);
-            infos[temp_seatID] = "预约人：" + appointments_json[i].custom__user__username + ";" + "电话:" + appointments_json[i].custom__telephone + ";" + "预约原因：" + appointments_json[i].reason;
+            infos[temp_seatID] = "时间：" + appointments_json[i].start + "——" + appointments_json[i].end + "点;" +
+                "预约人：" + appointments_json[i].custom__user__username + ";" +
+                "电话:" + appointments_json[i].custom__telephone + ";" +
+                "预约原因：" + appointments_json[i].reason;
         }
     }
     // console.log(unavailables);
