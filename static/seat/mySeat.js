@@ -5,6 +5,7 @@ var sc;
 var unavailables = [];
 var duration = [];
 var infos = {};
+var appointments;
 
 var fix = function (num, length) {
     return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
@@ -79,15 +80,12 @@ var create_sc = function (week) {
                 //seat has been vacated
                 return 'available';
             } else if (this.status() === 'unavailable') {
-                $.gritter.add({
-                    // (string | mandatory) the heading of the notification
-                    title: '该时间段已被占用：(',
-                    // (string | mandatory) the text inside the notification
-                    text: '占用信息：<br>' + this.settings.id.split("_")[0].split("-")[0] +
+                var title = '改时间段已被占用';
+                var msg = '占用信息：<br>' + this.settings.id.split("_")[0].split("-")[0] +
                     "月" + this.settings.id.split("_")[0].split("-")[1] + "日" + this.settings.id.split("_")[1] +
-                    ':00' + '<br>' + infos[this.settings.id].split(";")[0] + '<br>' + infos[this.settings.id].split(";")[1]
+                    ':00' + '<br>' + infos[this.settings.id].split(";")[0] + '<br>' + infos[this.settings.id].split(";")[1];
 
-                });
+                notification(title, msg);
                 //seat has been already booked
                 return 'unavailable';
             } else {
@@ -99,7 +97,9 @@ var create_sc = function (week) {
     sc.get(unavailables).status('unavailable');
 };
 
+// 根据appointments来补充info变量，并将对应位置置为unavailable
 var display_appointments = function (appointments_json) {
+    console.log(appointments_json);
     sc.get(unavailables).status('available');
     unavailables = [];
     var temp_seatID;
@@ -111,20 +111,30 @@ var display_appointments = function (appointments_json) {
         }
     }
     // console.log(unavailables);
-    console.log(infos);
+    // console.log(infos);
     //let's pretend some seats have already been booked
     sc.get(unavailables).status('unavailable');
 };
-$(".choose_classroom").click(function () {
-    var classroom = $("#classroom").val();
-    // 获取未来一个月内的预约情况
+
+var notification = function (title, text) {
+    $.gritter.add({
+        // (string | mandatory) the heading of the notification
+        title: title,
+        // (string | mandatory) the text inside the notification
+        text: text
+    });
+};
+
+// 从api中获取classroom
+var get_appointments = function (classroom) {
     $.ajax({
         async: false,
         url: '/api/classroom/' + classroom + '/',
         type: 'get',
         data: {},
         success: function (data) {
-            display_appointments(data.appointments);
+            appointments = data.appointments;
+            display_appointments(appointments);
             $("#title").html(classroom + "预约情况");
         }, // success
         error: function (data) {
@@ -135,9 +145,46 @@ $(".choose_classroom").click(function () {
                 alert("403 error");
             }
         } // error
-
     }); // ajax
-});
+    return appointments;
+};
+
+var delete_appointments = function (classroom, date, start) {
+    get_appointments(classroom);
+    var delete_id = -1;
+    for (var i = 0; i < appointments.length; i++) {
+        if (appointments[i].date === date && appointments[i].start === start) {
+            delete_id = appointments[i].id
+        }
+    }
+    if (delete_id === -1) {
+        notification("NOT FOUND", "请重新选择需要取消的预约");
+        return;
+    }
+    $.ajax({
+        async: false,
+        url: '/api/classroom/' + classroom + '/' + delete_id + '/',
+        type: 'DELETE',
+        data: {
+            csrfmiddlewaretoken: Cookies.get('csrftoken')
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function (data) {
+            notification("操作成功", "已取消预约");
+        },
+        error: function (data) {
+            if (data.status === 400) {
+                notification("400 Error", data.msg);
+            }
+            if (data.status === 404) {
+                notification("404 NOT FOUND", data.msg)
+            }
+        }
+    })
+};
+
 
 //提交函数
 $(".submit").click(function () {
@@ -160,12 +207,7 @@ $(".submit").click(function () {
             error_code = 1;//一条预约必须是同一天
             error_reason = '一条预约必须为同一天';
             console.log(error_reason);
-            $.gritter.add({
-                // (string | mandatory) the heading of the notification
-                title: '预约信息不合法！' + '    error_code = ' + error_code,
-                // (string | mandatory) the text inside the notification
-                text: error_reason
-            });
+            notification('预约信息不合法！' + '    error_code = ' + error_code, error_reason);
             return false;
             //alert("一条预约必须是同一天");
         }
@@ -183,12 +225,7 @@ $(".submit").click(function () {
         error_code = 2;//预约的时间必须是连续的时间段
         error_reason = '预约的时间必须是连续的时间段';
         console.log(error_reason);
-        $.gritter.add({
-            // (string | mandatory) the heading of the notification
-            title: '预约信息不合法！' + '    error_code = ' + error_code,
-            // (string | mandatory) the text inside the notification
-            text: error_reason
-        });
+        notification('预约信息不合法！' + '    error_code = ' + error_code, error_reason);
         //alert("预约的时间必须是连续的时间段");
     }
 
@@ -218,14 +255,9 @@ $(".submit").click(function () {
         },
         error: function () {
             console.log("post error!");
-
-            $.gritter.add({
-                // (string | mandatory) the heading of the notification
-                title: '预约信息不合法！' + '    error_code = post error!',
-                // (string | mandatory) the text inside the notification
-                text: '请务必填写预约原因！'
-            });
-
+            var title = '预约信息不合法！' + '    error_code = post error';
+            var text = '请务必填写预约原因！';
+            notification(title, text);
         }
     }); // ajax
 });
@@ -250,7 +282,10 @@ $('a[data-toggle="tab"]').on("click", function (e) {
 
 $(document).ready(function () {
     create_sc(0);
-    $(".choose_classroom").trigger("click");
+    $(".choose_classroom").click(function () {
+        var classroom = $("#classroom").val();
+        get_appointments(classroom);
+    }).trigger('click');
     //this will handle "[cancel]" link clicks
     $('#selected-seats').on('click', '.cancel-cart-item', function () {
         //let's just trigger Click event on the appropriate seat, so we don't have to repeat the logic here
