@@ -79,8 +79,6 @@ var create_sc = function (week) {
                 //seat has been vacated
                 return 'available';
             } else if (this.status() === 'unavailable') {
-
-
                 $.gritter.add({
                     // (string | mandatory) the heading of the notification
                     title: '该时间段已被占用：(',
@@ -90,8 +88,6 @@ var create_sc = function (week) {
                     ':00' + '<br>' + infos[this.settings.id].split(";")[0] + '<br>' + infos[this.settings.id].split(";")[1]
 
                 });
-
-
                 //seat has been already booked
                 return 'unavailable';
             } else {
@@ -217,16 +213,11 @@ $(".submit").click(function () {
             "multimedia": multimedia,
             "desk": desk
         },
-        // beforeSend: function () {
-        //
-        // },
         success: function (msg) {
             // To do 刷新
             location.reload();
             $("#classroom").val(classroom);
             $(".choose_classroom").trigger("click");
-            console.log($("#classroom").val());
-            console.log(msg);
         },
         error: function () {
             console.log("post error!");
