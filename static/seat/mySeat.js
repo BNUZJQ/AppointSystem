@@ -99,18 +99,15 @@ var create_sc = function (week) {
     sc.get(unavailables).status('unavailable');
 };
 
-var display_appointments = function (appointments) {
-    console.log(appointments);
+var display_appointments = function (appointments_json) {
     sc.get(unavailables).status('available');
     unavailables = [];
     var temp_seatID;
-    var apppointments_json = JSON.parse(appointments);
-    for (var i = 0; i < apppointments_json.length; i++) {
-        for (var j = apppointments_json[i].start; j < apppointments_json[i].end; j++) {
-            //console.log(apppointments_json[i].date.slice(5) + "_" + j);
-            temp_seatID = apppointments_json[i].date.slice(5) + "_" + j + "-" + (j + 1);
+    for (var i = 0; i < appointments_json.length; i++) {
+        for (var j = appointments_json[i].start; j < appointments_json[i].end; j++) {
+            temp_seatID = appointments_json[i].date.slice(5) + "_" + j + "-" + (j + 1);
             unavailables.push(temp_seatID);
-            infos[temp_seatID] = "预约人：" + apppointments_json[i].custom + ";" + "预约原因：" + apppointments_json[i].reason;
+            infos[temp_seatID] = "预约人：" + appointments_json[i].custom__user__username + ";" + "电话:" + appointments_json[i].custom__telephone + ";" + "预约原因：" + appointments_json[i].reason;
         }
     }
     // console.log(unavailables);
