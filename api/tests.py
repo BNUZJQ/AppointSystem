@@ -1,6 +1,5 @@
 # coding=utf-8
 import datetime
-import json
 
 from testing.testcase import TestCase
 
@@ -18,8 +17,7 @@ class ApiTests(TestCase):
         response = self.client.get(self.url + self.classroom1.name + "/", decode=False)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['success'], True)
-        data = json.loads(response.data['appointments'])
-        self.assertEqual(len(data), 1)
+        self.assertEqual(len(response.data['appointments']), 1)
         # get a wrong name
         response = self.client.get(self.url + "/" + self.classroom1.name + "12", decode=False)
         self.assertEqual(response.status_code, 404)

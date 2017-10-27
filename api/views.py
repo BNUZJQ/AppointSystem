@@ -3,7 +3,6 @@ import datetime
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets, status
 from rest_framework.decorators import detail_route
-from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 from account.models import Account
@@ -22,15 +21,20 @@ class ClassroomViewSet(viewsets.GenericViewSet):
         today = datetime.date.today()
         endday = today + datetime.timedelta(28)
         classroom = Classroom.objects.get(name=classroom)
-        appointments = classroom.appointment_set.filter(date__gte=today, date__lte=endday)
+        appointments = classroom.appointment_set.filter(date__gte=today, date__lte=endday).values('reason', 'date',
+                                                                                                  'start', 'end',
+                                                                                                  'desk', 'multimedia',
+                                                                                                  'custom__user__username',
+                                                                                                  'custom__telephone')
         size = len(appointments)
-        # serialize the queryset
-        appointments = AppointmentSerializer(appointments, many=True)
+        # serialize the queryset for return
+        # or it will be
+        # appointments = AppointmentSerializer(appointments, many=True)
         # my_appointments = appointments.filter(custom__user=User.objects.get(id=user.id))
         # my_appointments = AppointmentSerializer(my_appointments, many=True)
         return Response({"success": True,
                          "size": size,
-                         "appointments": JSONRenderer().render(appointments.data),
+                         "appointments": appointments,
                          },
                         status=status.HTTP_200_OK)
 
