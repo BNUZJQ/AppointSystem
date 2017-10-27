@@ -1,6 +1,7 @@
 # coding=utf-8
 import datetime
 
+from appointment.models import Appointment
 from testing.testcase import TestCase
 
 
@@ -88,3 +89,32 @@ class ApiTests(TestCase):
             response = self.client.post(self.url + self.classroom1.name + "/", data=data, decode=False)
             self.assertEqual(response.status_code, 400)
             self.assertEqual('non_field_errors' in response.data, True)
+
+    def test_delete(self):
+        with self.logged_in_user(self.bxy.user):
+            response = self.client.get(self.url + self.classroom2.name + "/", decode=False)
+            init_size = response.data['size']
+            data = {
+                "classroom": self.classroom2.name,
+                "start": 8,
+                "end": 10,
+                "date": str(self.today),
+                "reason": "test",
+            }
+            response = self.client.post(self.url + self.classroom2.name + "/", data=data, decode=False)
+            self.assertEqual(response.status_code, 201)
+            # 检查预约的个数是否增加了
+            response = self.client.get(self.url + self.classroom2.name + "/", decode=False)
+            self.assertEqual(response.data['size'], init_size + 1)
+
+            # 删除刚刚创建的预约
+            id = Appointment.objects.get(classroom=self.classroom2, date=self.today, start=8).id
+            response = self.client.delete(self.url + self.classroom2.name + "/" + str(id) + "/", decode=False)
+            self.assertEqual(response.status_code, 204)
+            # 检查预约个数是否减少
+            response = self.client.get(self.url + self.classroom2.name + "/", decode=False)
+            self.assertEqual(response.data['size'], init_size)
+
+            # 删除一个不存在的appoint
+            response = self.client.delete(self.url + self.classroom2.name + "/" + str(id + 1000) + "/", decode=False)
+            self.assertEqual(response.status_code, 404)
