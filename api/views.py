@@ -26,8 +26,7 @@ class ClassroomViewSet(viewsets.GenericViewSet):
         classroom = Classroom.objects.get(name=classroom)
         appointments = classroom.appointment_set.filter(date__gte=today,
                                                         date__lte=endday,
-                                                        classroom__appointment__status__in=(
-                                                        STATUS.waiting, STATUS.opened)).distinct()
+                                                        classroom__appointment__status__in=(STATUS.waiting, STATUS.opened)).distinct()
         appointments = appointments.values('id',
                                            'reason',
                                            'date',
@@ -36,7 +35,7 @@ class ClassroomViewSet(viewsets.GenericViewSet):
                                            'desk',
                                            'multimedia',
                                            'status',
-                                           'custom__user__useqrname',
+                                           'custom__user__username',
                                            'custom__telephone')
         size = len(appointments)
         # serialize the queryset for return
