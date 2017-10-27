@@ -2,12 +2,13 @@ import datetime
 
 from rest_framework import serializers
 
-from appointment.models import Appointment
+from appointment.models import Appointment, STATUS_CHOICE, STATUS
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
     custom = serializers.StringRelatedField(read_only=True)
     classroom = serializers.StringRelatedField(read_only=True)
+    status = serializers.ChoiceField(STATUS_CHOICE, default=STATUS.waiting)
 
     def validate(self, data):
         data["start"] = int(data["start"])
@@ -28,4 +29,4 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ('date', 'start', 'end', 'reason', 'desk', 'multimedia', 'custom', 'classroom')
+        fields = ('date', 'start', 'end', 'reason', 'desk', 'multimedia', 'status', 'custom', 'classroom')
