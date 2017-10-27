@@ -37,12 +37,9 @@ class ClassroomViewSet(viewsets.GenericViewSet):
                                            'status',
                                            'custom__user__username',
                                            'custom__telephone')
+        if 'mine' in request.GET:
+            appointments = appointments.filter(custom__user=user)
         size = len(appointments)
-        # serialize the queryset for return
-        # or it will be
-        # appointments = AppointmentSerializer(appointments, many=True)
-        # my_appointments = appointments.filter(custom__user=User.objects.get(id=user.id))
-        # my_appointments = AppointmentSerializer(my_appointments, many=True)
         return Response({"success": True,
                          "size": size,
                          "appointments": appointments,
