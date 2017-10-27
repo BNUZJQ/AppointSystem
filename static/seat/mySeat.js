@@ -4,6 +4,7 @@ var $cart = $('#selected-seats'),
 var sc;
 var unavailables = [];
 var duration = [];
+var infos = {};
 
 var fix = function (num, length) {
     return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
@@ -73,21 +74,23 @@ var create_sc = function (week) {
                 //update the counter
                 $counter.text(sc.find('selected').length - 1);
                 //and total
-                $total.text(recalculateTotal(sc) - this.data().price);
-                //remove the item from our cart
                 $('#cart-item-' + this.settings.id).remove();
                 duration.pop(this.settings.id);
                 //seat has been vacated
                 return 'available';
             } else if (this.status() === 'unavailable') {
 
+
                 $.gritter.add({
                     // (string | mandatory) the heading of the notification
-                    title: 'This is a Notice Without an Image!',
+                    title: '该时间段已被占用：(',
                     // (string | mandatory) the text inside the notification
-                    text: 'This will fade out after a certain amount of time. This note also contains a link example. Thank you so much to try Dashgum. Developed by <a href="#" style="color:#FFD777">Alvarez.is</a>.'
+                    text: '占用信息：<br>' + this.settings.id.split("_")[0].split("-")[0] +
+                    "月" + this.settings.id.split("_")[0].split("-")[1] + "日" + this.settings.id.split("_")[1] +
+                    ':00' + '<br>' + infos[this.settings.id].split(";")[0] + '<br>' + infos[this.settings.id].split(";")[1]
+
                 });
-                confirm("我觉得这样显示就很好，点unavailable的时候，用一个alert函数就做到了。。。");
+
 
                 //seat has been already booked
                 return 'unavailable';
@@ -101,20 +104,21 @@ var create_sc = function (week) {
 };
 
 var display_appointments = function (appointments) {
-    //console.log(appointments);
+    console.log(appointments);
     sc.get(unavailables).status('available');
     unavailables = [];
-    var infos = [];
+    var temp_seatID;
     var apppointments_json = JSON.parse(appointments);
     for (var i = 0; i < apppointments_json.length; i++) {
         for (var j = apppointments_json[i].start; j < apppointments_json[i].end; j++) {
             //console.log(apppointments_json[i].date.slice(5) + "_" + j);
-            unavailables.push(apppointments_json[i].date.slice(5) + "_" + j + "-" + (j + 1));
-            infos.push("Who:" + apppointments_json[i].custom + "Reason:" + apppointments_json[i].reason);
+            temp_seatID = apppointments_json[i].date.slice(5) + "_" + j + "-" + (j + 1);
+            unavailables.push(temp_seatID);
+            infos[temp_seatID] = "预约人：" + apppointments_json[i].custom + ";" + "预约原因：" + apppointments_json[i].reason;
         }
     }
     // console.log(unavailables);
-    // console.log(infos);
+    console.log(infos);
     //let's pretend some seats have already been booked
     sc.get(unavailables).status('unavailable');
 };
@@ -153,20 +157,51 @@ $(".submit").click(function () {
         thisdate = duration[0].split("_")[0],
         error_code = 0,
         start = 0,
-        end = 0;
+        end = 0,
+        error_reason = '';
     console.log("flag" + classroom + reason + multimedia + desk);
     console.log(duration);
     for (var i = 0; i < duration.length; i++) {
         temp.push(duration[i].split("_")[1].split("-")[0]);
         if (duration[i].split("_")[0] !== thisdate) {
             error_code = 1;//一条预约必须是同一天
-            console.log("一条预约必须是同一天");
-            alert("一条预约必须是同一天");
+            error_reason = '一条预约必须为同一天';
+            console.log(error_reason);
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '预约信息不合法！' + '    error_code = ' + error_code,
+                // (string | mandatory) the text inside the notification
+                text: error_reason
+            });
+            return false;
+            //alert("一条预约必须是同一天");
         }
     }
     console.log(duration.length);
     start = Math.min.apply(null, temp);
     end = Math.max.apply(null, temp) + 1;
+    if ((end - start) === duration.length) {
+        error_code = 0;//预约信息合法
+        error_reason = '预约信息合法';
+        console.log(error_reason);
+
+    }
+    else {
+        error_code = 2;//预约的时间必须是连续的时间段
+        error_reason = '预约的时间必须是连续的时间段';
+        console.log(error_reason);
+        $.gritter.add({
+            // (string | mandatory) the heading of the notification
+            title: '预约信息不合法！' + '    error_code = ' + error_code,
+            // (string | mandatory) the text inside the notification
+            text: error_reason
+        });
+        //alert("预约的时间必须是连续的时间段");
+    }
+
+    if (error_code !== 0)
+        return false;
+
     // 获取未来一个月内的预约情况
     $.ajax({
         async: false,
@@ -182,28 +217,27 @@ $(".submit").click(function () {
             "multimedia": multimedia,
             "desk": desk
         },
-        beforeSend: function () {
-
-            if ((end - start) === duration.length) {
-                error_code = 0;//预约信息合法
-                console.log("预约信息合法");
-            }
-            else {
-                error_code = 2;//预约的时间必须是连续的时间段
-                console.log("预约的时间必须是连续的时间段");
-                alert("预约的时间必须是连续的时间段");
-            }
-
-            if (error_code !== 0)
-                return false;
-
-        },
+        // beforeSend: function () {
+        //
+        // },
         success: function (msg) {
+            // To do 刷新
+            location.reload();
+            $("#classroom").val(classroom);
             $(".choose_classroom").trigger("click");
+            console.log($("#classroom").val());
             console.log(msg);
         },
         error: function () {
-            console.log("post error!")
+            console.log("post error!");
+
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '预约信息不合法！' + '    error_code = post error!',
+                // (string | mandatory) the text inside the notification
+                text: '请务必填写预约原因！'
+            });
+
         }
     }); // ajax
 });
