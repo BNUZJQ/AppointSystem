@@ -7,7 +7,7 @@ class AppointmentPermission(permissions.BasePermission):
     message = 'Adding customers not allowed.'
 
     def has_permission(self, request, view):
-        if request.user is None or request.user.is_authenticated is False:
+        if request.user is None or request.user.is_authenticated() is False:
             return False
         if request.method in permissions.SAFE_METHODS:
             return True
