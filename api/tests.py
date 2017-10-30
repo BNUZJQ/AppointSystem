@@ -45,6 +45,7 @@ class ApiTests(TestCase):
                 "end": 10,
                 "date": str(self.today),
                 "reason": "test",
+                "boss": "xiqi"
             }
             response = self.client.post(self.url + self.classroom1.name + "/", data=data, decode=False)
             self.assertEqual(response.status_code, 201)
@@ -58,6 +59,7 @@ class ApiTests(TestCase):
                 "end": 11,
                 "date": str(self.today),
                 "reason": "test",
+                "boss": '稀奇'
             }
             response = self.client.post(self.url + self.classroom1.name + "/", data=data, decode=False)
             self.assertEqual(response.status_code, 400)
@@ -74,6 +76,7 @@ class ApiTests(TestCase):
                 "end": "8",
                 "date": str(self.today),
                 "reason": "test",
+                "boss": '稀奇'
             }
             response = self.client.post(self.url + self.classroom1.name + "/", data=data, decode=False)
             self.assertEqual(response.status_code, 400)
@@ -85,6 +88,7 @@ class ApiTests(TestCase):
                 "start": "9",
                 "end": "10",
                 "date": str(self.today),
+                "boss": '稀奇'
             }
             response = self.client.post(self.url + self.classroom1.name + "/", data=data, decode=False)
             self.assertEqual(response.status_code, 400)
@@ -96,7 +100,8 @@ class ApiTests(TestCase):
                 "start": "9",
                 "end": "10",
                 "date": str(self.today - datetime.timedelta(1)),
-                "reason": "test"
+                "reason": "test",
+                "boss": '稀奇'
             }
             response = self.client.post(self.url + self.classroom1.name + "/", data=data, decode=False)
             self.assertEqual(response.status_code, 400)
@@ -112,6 +117,7 @@ class ApiTests(TestCase):
                 "end": 10,
                 "date": str(self.today),
                 "reason": "test",
+                "boss": '稀奇'
             }
             response = self.client.post(self.url + self.classroom2.name + "/", data=data, decode=False)
             self.assertEqual(response.status_code, 201)

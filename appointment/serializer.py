@@ -29,4 +29,4 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ('date', 'start', 'end', 'reason', 'desk', 'multimedia', 'status', 'custom', 'classroom')
+        fields = ('date', 'start', 'end', 'reason', 'desk', 'multimedia', 'status', 'custom', 'classroom', 'boss', 'director', 'director_phone')
