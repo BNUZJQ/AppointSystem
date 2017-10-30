@@ -173,7 +173,7 @@ class ApiTests(TestCase):
                                         decode=False)
             self.assertEqual(response.status_code, 404)
 
-    def test_make_blacklist(self):
+    def test_change_role(self):
         url = "/api/account/change_role/"
         # without login
         response = self.client.post(url, data={'username': self.bxy.user.username, 'role': 'Blacklist'}, decode=False)
@@ -194,3 +194,14 @@ class ApiTests(TestCase):
             self.assertEqual(response.status_code, 202)
             self.bxy = Account.objects.get(user_id=self.bxy.user.id)
             self.assertEqual(self.bxy.role, ROLE.Student)
+
+    def test_get_account(self):
+        url = "/api/account/"
+        with self.logged_in_user(self.xiqi.user):
+            response = self.client.get(url+"student/", decode=False)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.data["size"], 1)
+
+            response = self.client.get(url + "blacklist/", decode=False)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.data["size"], 1)

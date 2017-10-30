@@ -111,6 +111,18 @@ class AccountViewSet(viewsets.ModelViewSet):
         stu.save()
         return Response({"success": True}, status=status.HTTP_202_ACCEPTED)
 
+    @list_route(methods=['get'])
+    def student(self, request):
+        queryset = Account.objects.filter(role=ROLE.Student)
+        data = queryset.values('user__username', 'gender', 'email', 'telephone', 'student_id')
+        return Response({"size": len(queryset), "data": data})
+
+    @list_route(methods=['get'])
+    def blacklist(self, request):
+        queryset = Account.objects.filter(role=ROLE.Blacklist)
+        data = queryset.values('user__username', 'gender', 'email', 'telephone', 'student_id')
+        return Response({"size": len(queryset), "data": data})
+
 
 class AppointmentViewSet(viewsets.ModelViewSet):
     queryset = Appointment.objects.all()
