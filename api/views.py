@@ -10,12 +10,14 @@ from rest_framework.response import Response
 from account.models import Account
 from account.serializer import AccountSerializer
 from appointment.models import Appointment, STATUS
+from appointment.permissions import AppointmentPermission
 from appointment.serializer import AppointmentSerializer
 from classroom.models import Classroom
 
 
 class ClassroomViewSet(viewsets.GenericViewSet):
     serializer_class = AppointmentSerializer
+    permission_classes = (AppointmentPermission, )
 
     # STATUS为 cancaled的订单信息不会返回
     def list(self, request, **kwargs):
@@ -24,11 +26,15 @@ class ClassroomViewSet(viewsets.GenericViewSet):
         today = datetime.date.today()
         endday = today + datetime.timedelta(28)
         classroom = Classroom.objects.get(name=classroom)
-        appointments = classroom.appointment_set.filter(date__gte=today,
-                                                        date__lte=endday,
-                                                        status=STATUS.waiting).distinct()
+        appointments = classroom.appointment_set
         if 'mine' in request.GET:
             appointments = appointments.filter(custom__user=user)
+        if 'previous' in request.GET:
+            appointments = appointments.filter(date__lte=today).order_by('-date')
+        else:
+            appointments = appointments.filter(date__gte=today,
+                                               date__lte=endday,
+                                               status=STATUS.waiting).distinct().order_by('date', 'start')
         appointments = appointments.values('id',
                                            'reason',
                                            'date',
