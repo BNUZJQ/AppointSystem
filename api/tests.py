@@ -1,14 +1,15 @@
 # coding=utf-8
 import datetime
 
+from account.models import ROLE
 from appointment.models import Appointment
 from testing.testcase import TestCase
 
 
 class ApiTests(TestCase):
     def setUp(self):
-        self.bxy = self.createAccount('BXY', "123456789")
-        self.zjq = self.createAccount('ZJQ', "ZJQ_IS_SB")
+        self.bxy = self.createAccount('BXY', role=ROLE.Student)
+        self.zjq = self.createAccount('ZJQ', role=ROLE.Blacklist)
         self.classroom1 = self.createClassroom("500")
         self.classroom2 = self.createClassroom("400A")
         self.url = "/api/classroom/"
@@ -16,6 +17,10 @@ class ApiTests(TestCase):
 
     def test_list(self):
         self.createAppointment(self.bxy, self.classroom1)
+        # without login
+        response = self.client.get(self.url + self.classroom1.name + "/", decode=False)
+        self.assertEqual(response.status_code, 403)
+        # with normal student user
         with self.logged_in_user(self.bxy.user):
             response = self.client.get(self.url + self.classroom1.name + "/", decode=False)
             self.assertEqual(response.status_code, 200)
@@ -24,6 +29,7 @@ class ApiTests(TestCase):
             # get a wrong name
             response = self.client.get(self.url + "/" + self.classroom1.name + "12", decode=False)
             self.assertEqual(response.status_code, 404)
+        # with Blacklist user(ok for list)
         with self.logged_in_user(self.zjq.user):
             response = self.client.get(self.url + self.classroom1.name + "/", decode=False)
             self.assertEqual(response.status_code, 200)
@@ -34,6 +40,31 @@ class ApiTests(TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.data['success'], True)
             self.assertEqual(len(response.data['appointments']), 0)
+
+    def test_create_without_login(self):
+        data = {
+            "classroom": self.classroom1.name,
+            "start": 8,
+            "end": 10,
+            "date": str(self.today),
+            "reason": "test",
+            "boss": "xiqi"
+        }
+        response = self.client.post(self.url + self.classroom1.name + "/", data=data, decode=False)
+        self.assertEqual(response.status_code, 403)
+
+    def test_create_with_blacklist_user(self):
+        with self.logged_in_user(self.zjq.user):
+            data = {
+                "classroom": self.classroom1.name,
+                "start": 8,
+                "end": 10,
+                "date": str(self.today),
+                "reason": "test",
+                "boss": "xiqi"
+            }
+            response = self.client.post(self.url + self.classroom1.name + "/", data=data, decode=False)
+            self.assertEqual(response.status_code, 403)
 
     def test_create_conflict_time(self):
         with self.logged_in_user(self.bxy.user):
