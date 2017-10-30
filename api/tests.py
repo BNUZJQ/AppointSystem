@@ -1,7 +1,7 @@
 # coding=utf-8
 import datetime
 
-from account.models import ROLE
+from account.models import ROLE, Account
 from appointment.models import Appointment
 from testing.testcase import TestCase
 
@@ -10,6 +10,7 @@ class ApiTests(TestCase):
     def setUp(self):
         self.bxy = self.createAccount('BXY', role=ROLE.Student)
         self.zjq = self.createAccount('ZJQ', role=ROLE.Blacklist)
+        self.xiqi = self.createAccount('XIQI', role=ROLE.Teacher)
         self.classroom1 = self.createClassroom("500")
         self.classroom2 = self.createClassroom("400A")
         self.url = "/api/classroom/"
@@ -159,7 +160,8 @@ class ApiTests(TestCase):
             # 删除刚刚创建的预约
             id = Appointment.objects.get(classroom=self.classroom2, date=self.today, start=8).id
             # response = self.client.delete(self.url +self.classroom.name + "/" + str(id) + "/", decode=False)
-            response = self.client.post(self.url + self.classroom2.name + "/" + str(id) + "/delete_appoint/", decode=False)
+            response = self.client.post(self.url + self.classroom2.name + "/" + str(id) + "/delete_appoint/",
+                                        decode=False)
             self.assertEqual(response.status_code, 204)
             # 检查预约个数是否减少
             response = self.client.get(self.url + self.classroom2.name + "/", decode=False)
@@ -167,5 +169,28 @@ class ApiTests(TestCase):
 
             # 删除一个不存在的appoint
             # response = self.client.delete(self.url + self.classroom2.name + "/" + str(id + 1000) + "/", decode=False)
-            response = self.client.post(self.url + self.classroom2.name + "/" + str(id + 1000) + "/delete_appointe/", decode=False)
+            response = self.client.post(self.url + self.classroom2.name + "/" + str(id + 1000) + "/delete_appointe/",
+                                        decode=False)
             self.assertEqual(response.status_code, 404)
+
+    def test_make_blacklist(self):
+        url = "/api/account/change_role/"
+        # without login
+        response = self.client.post(url, data={'username': self.bxy.user.username, 'role': 'Blacklist'}, decode=False)
+        self.assertEqual(response.status_code, 403)
+        # with not teacher
+        with self.logged_in_user(self.zjq.user):
+            response = self.client.post(url, data={'username': self.bxy.user.username, 'role': 'Blacklist'}, decode=False)
+            self.assertEqual(response.status_code, 403)
+
+        with self.logged_in_user(self.xiqi.user):
+            response = self.client.post(url, data={'username': self.bxy.user.username, 'role': 'Blacklist'}, decode=False)
+            self.assertEqual(response.status_code, 202)
+            # 这里很奇怪 需要重新对bxy赋值 深拷贝浅拷贝问题？
+            self.bxy = Account.objects.get(user_id=self.bxy.user.id)
+            self.assertEqual(self.bxy.role, ROLE.Blacklist)
+
+            response = self.client.post(url, data={'username': self.bxy.user.username, 'role': 'Student'}, decode=False)
+            self.assertEqual(response.status_code, 202)
+            self.bxy = Account.objects.get(user_id=self.bxy.user.id)
+            self.assertEqual(self.bxy.role, ROLE.Student)

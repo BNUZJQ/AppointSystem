@@ -3,11 +3,12 @@ import datetime
 
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets, status
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
-from account.models import Account
+from account.models import Account, ROLE
+from account.permissions import AccountPermission
 from account.serializer import AccountSerializer
 from appointment.models import Appointment, STATUS
 from appointment.permissions import AppointmentPermission
@@ -92,6 +93,23 @@ class ClassroomViewSet(viewsets.GenericViewSet):
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
+    permission_classes = (AccountPermission, )
+
+    @list_route(methods=['post'])
+    def change_role(self, request):
+        if 'username' not in request.POST or 'role' not in request.POST:
+            return Response({"message": "you should input student name"}, status=status.HTTP_400_BAD_REQUEST)
+        user_account = Account.objects.get(user=request.user)
+        stu = get_object_or_404(Account, user__username=request.POST['username'])
+        # 如果操作者不是teacher 就403
+        if user_account.role != ROLE.Teacher:
+            return Response({"success": False}, status=status.HTTP_403_FORBIDDEN)
+        if request.POST['role'] == 'Blacklist':
+            stu.role = ROLE.Blacklist
+        else:
+            stu.role = ROLE.Student
+        stu.save()
+        return Response({"success": True}, status=status.HTTP_202_ACCEPTED)
 
 
 class AppointmentViewSet(viewsets.ModelViewSet):
