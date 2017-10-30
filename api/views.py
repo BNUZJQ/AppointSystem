@@ -82,18 +82,6 @@ class ClassroomViewSet(viewsets.GenericViewSet):
         appointment.save()
         return Response({"message": "cancel this appointment"}, status=status.HTTP_204_NO_CONTENT)
 
-    @detail_route(methods=['post'])
-    def check_appointment(self, request):
-        account = Account.objects.get(student_id=request.POST.get('student_id'))
-        today = datetime.datetime.today()
-        appointments = account.appointment_set.filter(date__day=today)
-        for appoint in appointments:
-            if today.hour == appoint.start - 1:
-                result = {"classroom": appoint.classroom.name,
-                          "open": True
-
-                          }
-
 
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
