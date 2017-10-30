@@ -121,12 +121,14 @@ class ApiTests(TestCase):
 
             # 删除刚刚创建的预约
             id = Appointment.objects.get(classroom=self.classroom2, date=self.today, start=8).id
-            response = self.client.delete(self.url + self.classroom2.name + "/" + str(id) + "/", decode=False)
+            # response = self.client.delete(self.url +self.classroom.name + "/" + str(id) + "/", decode=False)
+            response = self.client.post(self.url + self.classroom2.name + "/" + str(id) + "/delete_appoint/", decode=False)
             self.assertEqual(response.status_code, 204)
             # 检查预约个数是否减少
             response = self.client.get(self.url + self.classroom2.name + "/", decode=False)
             self.assertEqual(response.data['size'], init_size)
 
             # 删除一个不存在的appoint
-            response = self.client.delete(self.url + self.classroom2.name + "/" + str(id + 1000) + "/", decode=False)
+            # response = self.client.delete(self.url + self.classroom2.name + "/" + str(id + 1000) + "/", decode=False)
+            response = self.client.post(self.url + self.classroom2.name + "/" + str(id + 1000) + "/delete_appointe/", decode=False)
             self.assertEqual(response.status_code, 404)

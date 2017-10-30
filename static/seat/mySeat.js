@@ -167,16 +167,18 @@ var delete_appointments = function (classroom, date, start) {
     }
     $.ajax({
         async: false,
-        url: '/api/classroom/' + classroom + '/' + delete_id + '/',
-        type: 'DELETE',
+        url: '/api/classroom/' + classroom + '/' + delete_id + '/delete_appoint/' ,
+        type: 'POST',
         data: {
-            csrfmiddlewaretoken: Cookies.get('csrftoken')
+            'id': delete_id,
+            'csrfmiddlewaretoken': $('#csrf_token').val()
         },
         beforeSend: function (xhr) {
             xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
         },
         success: function (data) {
             notification("操作成功", "已取消预约");
+            location.reload();
         },
         error: function (data) {
             if (data.status === 400) {
