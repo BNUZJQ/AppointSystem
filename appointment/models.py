@@ -83,6 +83,9 @@ class Appointment(models.Model):
     desk = models.BooleanField(default=False)
     multimedia = models.BooleanField(default=False)
     status = models.IntegerField(choices=STATUS_CHOICE, default=STATUS.waiting)
+    boss = models.CharField(max_length=100, blank=False)
+    director = models.CharField(max_length=100, blank=True)
+    director_phone = models.CharField(max_length=11, blank=True)
 
     class Meta:
         ordering = ('-date', 'start')
@@ -104,4 +107,6 @@ class Appointment(models.Model):
                 raise ValidationError("start time unvalid!")
             if appoint.start < self.end < appoint.end:
                 raise ValidationError("end time unvalid!")
+        if (self.director == "" and self.director_phone != "") or (self.director != "" and self.director_phone == ""):
+            raise ValidationError("director & dicrector_phone should both exist or noexist")
         super(Appointment, self).save(*args, **kwargs)

@@ -3,19 +3,22 @@ import datetime
 
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets, status
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
-from account.models import Account
+from account.models import Account, ROLE
+from account.permissions import AccountPermission
 from account.serializer import AccountSerializer
 from appointment.models import Appointment, STATUS
+from appointment.permissions import AppointmentPermission
 from appointment.serializer import AppointmentSerializer
 from classroom.models import Classroom
 
 
 class ClassroomViewSet(viewsets.GenericViewSet):
     serializer_class = AppointmentSerializer
+    permission_classes = (AppointmentPermission, )
 
     # STATUS为 cancaled的订单信息不会返回
     def list(self, request, **kwargs):
@@ -24,11 +27,15 @@ class ClassroomViewSet(viewsets.GenericViewSet):
         today = datetime.date.today()
         endday = today + datetime.timedelta(28)
         classroom = Classroom.objects.get(name=classroom)
-        appointments = classroom.appointment_set.filter(date__gte=today,
-                                                        date__lte=endday,
-                                                        status=STATUS.waiting).distinct()
+        appointments = classroom.appointment_set
         if 'mine' in request.GET:
             appointments = appointments.filter(custom__user=user)
+        if 'previous' in request.GET:
+            appointments = appointments.filter(date__lte=today).order_by('-date')
+        else:
+            appointments = appointments.filter(date__gte=today,
+                                               date__lte=endday,
+                                               status=STATUS.waiting).distinct().order_by('date', 'start')
         appointments = appointments.values('id',
                                            'reason',
                                            'date',
@@ -86,6 +93,35 @@ class ClassroomViewSet(viewsets.GenericViewSet):
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
+    permission_classes = (AccountPermission, )
+
+    @list_route(methods=['post'])
+    def change_role(self, request):
+        if 'username' not in request.POST or 'role' not in request.POST:
+            return Response({"message": "you should input student name"}, status=status.HTTP_400_BAD_REQUEST)
+        user_account = Account.objects.get(user=request.user)
+        stu = get_object_or_404(Account, user__username=request.POST['username'])
+        # 如果操作者不是teacher 就403
+        if user_account.role != ROLE.Teacher:
+            return Response({"success": False}, status=status.HTTP_403_FORBIDDEN)
+        if request.POST['role'] == 'Blacklist':
+            stu.role = ROLE.Blacklist
+        else:
+            stu.role = ROLE.Student
+        stu.save()
+        return Response({"success": True}, status=status.HTTP_202_ACCEPTED)
+
+    @list_route(methods=['get'])
+    def student(self, request):
+        queryset = Account.objects.filter(role=ROLE.Student)
+        data = queryset.values('user__username', 'gender', 'email', 'telephone', 'student_id')
+        return Response({"size": len(queryset), "data": data})
+
+    @list_route(methods=['get'])
+    def blacklist(self, request):
+        queryset = Account.objects.filter(role=ROLE.Blacklist)
+        data = queryset.values('user__username', 'gender', 'email', 'telephone', 'student_id')
+        return Response({"size": len(queryset), "data": data})
 
 
 class AppointmentViewSet(viewsets.ModelViewSet):

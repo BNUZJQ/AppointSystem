@@ -22,11 +22,12 @@ class TestCase(DjangoTestCase):
     def get_password(self, username):
         return username + '2014'
 
-    def createAccount(self, username, email=None, is_staff=False, is_superuser=False):
+    def createAccount(self, username, role, email="123456789@qq.com", is_staff=False, is_superuser=False):
         user = User.objects.create(username=username, is_staff=is_staff, is_superuser=is_superuser, email=email)
         user.set_password(self.get_password(username))
         user.save()
         account = Account.objects.create(user=user)
+        account.role = role
         account.save()
         return account
 

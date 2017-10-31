@@ -8,12 +8,14 @@ class ROLE:
     Student = 'Student'
     Teacher = 'Teacher'
     Admin = 'Admin'
+    Blacklist = 'Blacklist'
 
 
 ROLE_CHOICE = (
     (ROLE.Student, 'Student'),
     (ROLE.Teacher, 'Teacher'),
-    (ROLE.Admin, 'Admin')
+    (ROLE.Admin, 'Admin'),
+    (ROLE.Blacklist, 'Blacklist')
 )
 
 
