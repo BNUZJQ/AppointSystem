@@ -4,10 +4,16 @@ from rest_framework import serializers
 
 from appointment.models import Appointment, STATUS_CHOICE, STATUS
 
+CLASSROOM_CHOICE = (
+    ('500', '500'),
+    ('400A', '400A'),
+    ('400B', '400B'),
+)
+
 
 class AppointmentSerializer(serializers.ModelSerializer):
     custom = serializers.StringRelatedField(read_only=True)
-    classroom = serializers.StringRelatedField(read_only=True)
+    classroom = serializers.ChoiceField(CLASSROOM_CHOICE)
     status = serializers.ChoiceField(STATUS_CHOICE, default=STATUS.waiting)
 
     def validate(self, data):
@@ -18,7 +24,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
         today = datetime.date.today()
         if data["date"].__lt__(today):
             raise serializers.ValidationError("you can not choose date before today")
-        appointments = Appointment.objects.filter(classroom__name=self.initial_data['classroom'],
+        appointments = Appointment.objects.filter(classroom__name=data['classroom'],
                                                   date__exact=data['date'])
         for appoint in appointments:
             if appoint.start < data['start'] < appoint.end:
@@ -29,4 +35,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ('date', 'start', 'end', 'reason', 'desk', 'multimedia', 'status', 'custom', 'classroom', 'boss', 'director', 'director_phone')
+        fields = (
+        'date', 'start', 'end', 'reason', 'desk', 'multimedia', 'status', 'custom', 'classroom', 'boss', 'director',
+        'director_phone')
