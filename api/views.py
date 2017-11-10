@@ -16,84 +16,10 @@ from appointment.serializer import AppointmentSerializer
 from classroom.models import Classroom
 
 
-class ClassroomViewSet(viewsets.GenericViewSet):
-    serializer_class = AppointmentSerializer
-    permission_classes = (AppointmentPermission, )
-
-    # STATUS为 cancaled的订单信息不会返回
-    def list(self, request, **kwargs):
-        classroom = kwargs['classroom']
-        user = request.user
-        today = datetime.date.today()
-        endday = today + datetime.timedelta(28)
-        classroom = Classroom.objects.get(name=classroom)
-        appointments = classroom.appointment_set
-        if 'mine' in request.GET:
-            appointments = appointments.filter(custom__user=user)
-        if 'previous' in request.GET:
-            appointments = appointments.filter(date__lte=today).order_by('-date')
-        else:
-            appointments = appointments.filter(date__gte=today,
-                                               date__lte=endday,
-                                               status=STATUS.waiting).distinct().order_by('date', 'start')
-        appointments = appointments.values('id',
-                                           'reason',
-                                           'date',
-                                           'start',
-                                           'end',
-                                           'desk',
-                                           'multimedia',
-                                           'status',
-                                           'custom__user__username',
-                                           'custom__telephone')
-        size = len(appointments)
-        return Response({"success": True,
-                         "size": size,
-                         "appointments": appointments,
-                         },
-                        status=status.HTTP_200_OK)
-
-    def retrieve(self, request, pk, **kwargs):
-        classroom = get_object_or_404(Classroom, name=kwargs['classroom'])
-        appointment = get_object_or_404(classroom.appointment_set, id=pk)
-        serializer = AppointmentSerializer(appointment)
-        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
-
-    @csrf_exempt
-    def create(self, request, **kwargs):
-        classroom = kwargs["classroom"]
-        if not Classroom.objects.filter(name=classroom).exists():
-            return Response({"message": "Classroom Not Found"}, status=404)
-        classroom = Classroom.objects.get(name=classroom)
-        appointment = AppointmentSerializer(data=request.POST)
-        if appointment.is_valid(raise_exception=True):
-            appointment.save(custom=Account.objects.get(user=request.user), classroom=classroom)
-            return Response(status=201)
-        return Response({"message": appointment.errors}, status=400)
-
-    # # delete并非真正删除，而是将status置为canceled
-    # def delete(self, request, pk, **kwargs):
-    #     classroom = get_object_or_404(Classroom, name=kwargs['classroom'])
-    #     appointment = get_object_or_404(classroom.appointment_set, id=pk)
-    #     appointment.status = STATUS.canceled
-    #     appointment.save()
-    #     return Response({"message": "cancel this appointment"}, status=status.HTTP_204_NO_CONTENT)
-
-    # 这种写法实际上是不符合REST的规范的
-    @csrf_exempt
-    @detail_route(methods=['post'])
-    def delete_appoint(self, request, pk, **kwargs):
-        classroom = get_object_or_404(Classroom, name=kwargs['classroom'])
-        appointment = get_object_or_404(classroom.appointment_set, id=pk)
-        appointment.status = STATUS.canceled
-        appointment.save()
-        return Response({"message": "cancel this appointment"}, status=status.HTTP_204_NO_CONTENT)
-
-
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    permission_classes = (AccountPermission, )
+    permission_classes = (AccountPermission,)
 
     @list_route(methods=['post'])
     def change_role(self, request):
@@ -124,6 +50,78 @@ class AccountViewSet(viewsets.ModelViewSet):
         return Response({"size": len(queryset), "data": data})
 
 
-class AppointmentViewSet(viewsets.ModelViewSet):
-    queryset = Appointment.objects.all()
+class AppointmentViewSet(viewsets.GenericViewSet):
     serializer_class = AppointmentSerializer
+    permission_classes = (AppointmentPermission,)
+
+    # STATUS为 cancaled的订单信息不会返回
+    def list(self, request):
+        user = request.user
+        today = datetime.date.today()
+        endday = today + datetime.timedelta(28)
+
+        appointments = Appointment.objects.all()
+        # 根据request.GET的字段来筛选返回数据
+        if 'classroom' in request.GET:
+            classroom = Classroom.objects.get(name=request.GET['classroom'])
+            appointments = classroom.appointment_set
+        if 'mine' in request.GET:
+            appointments = appointments.filter(custom__user=user)
+        if 'previous' in request.GET:
+            appointments = appointments.filter(date__lte=today).order_by('-date')
+        else:
+            appointments = appointments.filter(date__gte=today,
+                                               date__lte=endday,
+                                               status=STATUS.waiting).distinct().order_by('date', 'start')
+        appointments = appointments.values('id',
+                                           'classroom',
+                                           'reason',
+                                           'date',
+                                           'start',
+                                           'end',
+                                           'desk',
+                                           'multimedia',
+                                           'status',
+                                           'custom__user__username',
+                                           'custom__telephone')
+        size = len(appointments)
+        return Response({"success": True,
+                         "size": size,
+                         "appointments": appointments,
+                         },
+                        status=status.HTTP_200_OK)
+
+    def retrieve(self, request, pk):
+        appointment = get_object_or_404(Appointment, id=pk)
+        serializer = AppointmentSerializer(appointment)
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+
+    @csrf_exempt
+    def create(self, request):
+        classroom = request.POST['classroom']
+        if not Classroom.objects.filter(name=classroom).exists():
+            return Response({"message": "Classroom Not Found"}, status=404)
+        classroom = Classroom.objects.get(name=classroom)
+        appointment = AppointmentSerializer(data=request.POST)
+        if appointment.is_valid(raise_exception=True):
+            appointment.save(custom=Account.objects.get(user=request.user), classroom=classroom)
+            return Response(status=201)
+        return Response({"message": appointment.errors}, status=400)
+
+    # delete并非真正删除，而是将status置为canceled
+    # TODO 解决这里的crsf问题
+    # def delete(self, request, pk):
+    #     appointment = get_object_or_404(Appointment, id=pk)
+    #     appointment.status = STATUS.canceled
+    #     appointment.save()
+    #     return Response({"message": "cancel this appointment"}, status=status.HTTP_204_NO_CONTENT)
+
+    # 这种写法实际上是不符合REST的规范的
+    @csrf_exempt
+    @detail_route(methods=['post'])
+    def delete_appoint(self, request, pk):
+
+        appointment = get_object_or_404(Appointment, id=pk)
+        appointment.status = STATUS.canceled
+        appointment.save()
+        return Response({"message": "cancel this appointment"}, status=status.HTTP_204_NO_CONTENT)
