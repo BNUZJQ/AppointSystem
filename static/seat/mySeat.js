@@ -133,9 +133,11 @@ var notification = function (title, text) {
 var get_appointments = function (classroom) {
     $.ajax({
         async: false,
-        url: '/api/classroom/' + classroom + '/',
+        url: '/api/appointment/',
         type: 'get',
-        data: {},
+        data: {
+            "classroom": classroom
+        },
         success: function (data) {
             appointments = data.appointments;
             display_appointments(appointments);
@@ -196,6 +198,9 @@ var delete_appointments = function (classroom, date, start) {
 $(".submit").click(function () {
     var classroom = $("#classroom").val(),
         reason = $("#reason").val(),
+        boss = $("#boss").val(),
+        director = $("#director").val(),
+        director_phone = $("#director_phone").val(),
         multimedia = $('input[type="checkbox"]#multimedia').checked,
         desk = $('input[type="checkbox"]#desk').checked,
         d = new Date(),
@@ -205,7 +210,7 @@ $(".submit").click(function () {
         start = 0,
         end = 0,
         error_reason = '';
-    console.log("flag" + classroom + reason + multimedia + desk);
+    console.log("flag" + classroom + reason + boss + director + director_phone);
     console.log(duration);
     for (var i = 0; i < duration.length; i++) {
         temp.push(duration[i].split("_")[1].split("-")[0]);
@@ -238,10 +243,10 @@ $(".submit").click(function () {
     if (error_code !== 0)
         return false;
 
-    // 获取未来一个月内的预约情况
+    // post信息
     $.ajax({
         async: false,
-        url: '/api/classroom/' + classroom + '/',
+        url: '/api/appointment/',
         type: 'post',
         data: {
             'classroom': classroom,
@@ -251,7 +256,10 @@ $(".submit").click(function () {
             "end": end,
             "reason": reason,
             "multimedia": multimedia,
-            "desk": desk
+            "desk": desk,
+            "boss": boss,
+            "director": director,
+            "director_phone": director_phone
         },
         success: function (msg) {
             // To do 刷新
@@ -261,8 +269,8 @@ $(".submit").click(function () {
         },
         error: function () {
             console.log("post error!");
-            var title = '预约信息不合法！' + '    error_code = post error';
-            var text = '请务必填写预约原因！';
+            var title = '预约信息不合法！' + ' error_code = post error';
+            var text = '请检查必填项是否填写完整！';
             notification(title, text);
         }
     }); // ajax

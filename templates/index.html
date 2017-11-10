@@ -73,15 +73,16 @@
                 </li>
 
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a href="myappointment.html">
                         <i class="fa fa-desktop"></i>
+                        <span>我的预约</span>
+                    </a>
+                </li>
+                <li class="sub-menu">
+                    <a href="myappointment.html">
+                        <i class="fa fa-cogs"></i>
                         <span>个人信息</span>
                     </a>
-                    <ul class="sub">
-                        <li><a href="general.html">General</a></li>
-                        <li><a href="buttons.html">Buttons</a></li>
-                        <li><a href="panels.html">Panels</a></li>
-                    </ul>
                 </li>
             </ul>
             <!-- sidebar menu end-->
@@ -90,22 +91,6 @@
 
     <section id="main-content">
         <section class="wrapper">
-            {#            <div class="row">#}
-            {#                <div class="form-panel">#}
-            {#                    <h4 class="mb"><i class="fa fa-angle-right"></i> 请选择预约教室</h4>#}
-            {##}
-            {##}
-            {##}
-            {#                <select id="classroom">#}
-            {#                    <option selected value="500">500</option>#}
-            {#                    <option value="400B">400B</option>#}
-            {#                    <option value="400A">400A</option>#}
-            {#                </select>#}
-            {#                <br>#}
-            {#                <button class=" choose_classroom btn btn-primary btn-lg" type="button">确认</button>#}
-            {##}
-            {#            </div>#}
-            {#            </div>#}
 
             <div class="row">
                 <div class="col-md-4 col-sm-4 mb">
@@ -151,11 +136,27 @@
                         <h4 class="mb"><i class="fa fa-angle-right"></i> 请继续完善预约信息</h4>
                             <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
                             <div class="form-group">
-                                <label class="col-sm-2 col-sm-2 control-label">预约原因</label>
+                                <label class="col-sm-2 col-sm-2 control-label">预约原因*</label>
                                 <div class="col-sm-10">
                                     <input type="text" id="reason" class="form-control">
-                                    <span class="help-block">请明确说明使用会议室的原因.</span>
+                                    <span class="help-block">请明确说明使用会议室的原因（必填）.</span>
                                 </div>
+                                <label class="col-sm-2 col-sm-2 control-label">负责老师姓名*</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="boss" class="form-control">
+                                    <span class="help-block">填写活动负责老师的姓名（必填）.</span>
+                                </div>
+                                <label class="col-sm-2 col-sm-2 control-label">使用者姓名</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="director" class="form-control">
+                                    <span class="help-block">若非本人使用，请填写实际使用者姓名.</span>
+                                </div>
+                                <label class="col-sm-2 col-sm-2 control-label">使用者电话</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="director_phone" class="form-control">
+                                    <span class="help-block">填写实际使用者的电话.</span>
+                                </div>
+
                             </div>
                             <label class="checkbox-inline">
                                 <input type="checkbox" id="multimedia"> 使用多媒体
@@ -201,8 +202,6 @@
 <script src="{% static "assets/js/common-scripts.js" %}"></script>
 <script src="{% static "seat/mySeat.js" %}"></script>
 <script src="{% static "js/js.cookie.js" %}"></script>
-
-
 <script type="text/javascript" src="{% static "assets/js/gritter/js/jquery.gritter.js" %}"></script>
 <script type="text/javascript" src="{% static "assets/js/gritter-conf.js" %}"></script>
 
