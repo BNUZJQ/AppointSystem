@@ -26,11 +26,13 @@ class AppointmentSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("you can not choose date before today")
         appointments = Appointment.objects.filter(classroom__name=data['classroom'],
                                                   date__exact=data['date'])
+
         for appoint in appointments:
-            if appoint.start < data['start'] < appoint.end:
-                raise serializers.ValidationError("start time unvalid!")
-            if appoint.start < data['end'] < appoint.end:
-                raise serializers.ValidationError("end time unvalid!")
+            if data['classroom'] == appoint.classroom:
+                if appoint.start < data['start'] < appoint.end:
+                    raise serializers.ValidationError("start time unvalid!")
+                if appoint.start < data['end'] < appoint.end:
+                    raise serializers.ValidationError("end time unvalid!")
         return data
 
     class Meta:

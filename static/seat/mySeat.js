@@ -133,9 +133,11 @@ var notification = function (title, text) {
 var get_appointments = function (classroom) {
     $.ajax({
         async: false,
-        url: '/api/classroom/' + classroom + '/',
+        url: '/api/appointment/',
         type: 'get',
-        data: {},
+        data: {
+            "classroom": classroom
+        },
         success: function (data) {
             appointments = data.appointments;
             display_appointments(appointments);
@@ -244,10 +246,10 @@ $(".submit").click(function () {
     // post信息
     $.ajax({
         async: false,
-        url: '/api/classroom/' + classroom + '/',
+        url: '/api/appointment/',
         type: 'post',
         data: {
-            //'classroom': classroom,
+            'classroom': classroom,
             'csrfmiddlewaretoken': $('#csrf_token').val(),
             "date": d.getFullYear() + '-' + thisdate,
             "start": start,
