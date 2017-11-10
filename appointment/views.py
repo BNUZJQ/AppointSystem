@@ -41,6 +41,12 @@ def index(request):
     return render(request, 'index.html', locals())
 
 
+@login_required
+def myappointment(request):
+    account = Account.objects.get(user=request.user)
+    return render(request, 'myappointment.html', locals())
+
+
 @require_POST
 @login_required
 def post_appointment(request):
