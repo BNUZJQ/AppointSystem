@@ -28,10 +28,9 @@ class AppointmentSerializer(serializers.ModelSerializer):
                                                   date__exact=data['date'])
 
         for appoint in appointments:
-            if data['classroom'] == appoint.classroom:
-                if appoint.start < data['start'] < appoint.end:
+            if appoint.start < data['start'] < appoint.end:
                     raise serializers.ValidationError("start time unvalid!")
-                if appoint.start < data['end'] < appoint.end:
+            if appoint.start < data['end'] < appoint.end:
                     raise serializers.ValidationError("end time unvalid!")
         return data
 
