@@ -55,10 +55,10 @@
             <ul class="sidebar-menu" id="nav-accordion">
                 <!-- 用户的头像，可以先预留好位置-->
                 <h1 class="centered">{{ request.user }}</h1>
-                <h1 class="centered">{{ request.user.student_id }}</h1>
-                <h1 class="centered">{{ request.user.major }}</h1>
+                <h4 class="centered">{{ account.student_id }}</h4>
+                <h4 class="centered">{{ account.major }}</h4>
                 <li class="mt">
-                    <a class="active" href="#">
+                    <a href="/index">
                         <i class="fa fa-th"></i>
                         <!--<i class="fa fa-dashboard"></i>-->
                         <span>会议室预约</span>
@@ -66,13 +66,13 @@
                 </li>
 
                 <li class="sub-menu">
-                    <a href="myappointment.html">
+                    <a class="active" href="/myappointment">
                         <i class="fa fa-desktop"></i>
                         <span>我的预约</span>
                     </a>
                 </li>
                 <li class="sub-menu">
-                    <a href="myappointment.html">
+                    <a href="/change_info">
                         <i class="fa fa-cogs"></i>
                         <span>个人信息</span>
                     </a>
@@ -98,12 +98,8 @@
                             <th><i class=" fa fa-edit"></i> 负责人</th>
                             <th></th>
                             </thead>
-                            <tbody>
-                            <div id="myappinfo">
-                            </div>
+                            <tbody id="myappinfo">
                             </tbody>
-
-
                         </table>
                     </div>
                 </div>

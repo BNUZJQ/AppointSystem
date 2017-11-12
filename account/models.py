@@ -1,3 +1,4 @@
+# coding=utf-8
 from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
@@ -31,13 +32,15 @@ GENDER_CHOICE = (
 
 
 class MAJOR:
-    EE = "EE"
-    CS = "CS"
+    EE = "电子"
+    CS = "计算机"
+    CST = "计算机师范"
 
 
 MAJOR_CHOICE = (
-    (MAJOR.EE, "EE"),
-    (MAJOR.CS, "CS")
+    (MAJOR.EE, "电子"),
+    (MAJOR.CS, "计算机"),
+    (MAJOR.CST, "计算机师范")
 )
 
 

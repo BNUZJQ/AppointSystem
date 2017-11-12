@@ -155,45 +155,6 @@ var get_appointments = function (classroom) {
     return appointments;
 };
 
-var delete_appointments = function (classroom, date, start) {
-    get_appointments(classroom);
-    var delete_id = -1;
-    for (var i = 0; i < appointments.length; i++) {
-        if (appointments[i].date === date && appointments[i].start === start) {
-            delete_id = appointments[i].id
-        }
-    }
-    if (delete_id === -1) {
-        notification("NOT FOUND", "请重新选择需要取消的预约");
-        return;
-    }
-    $.ajax({
-        async: false,
-        url: '/api/classroom/' + classroom + '/' + delete_id + '/delete_appoint/' ,
-        type: 'POST',
-        data: {
-            'id': delete_id,
-            'csrfmiddlewaretoken': $('#csrf_token').val()
-        },
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-        },
-        success: function (data) {
-            notification("操作成功", "已取消预约");
-            location.reload();
-        },
-        error: function (data) {
-            if (data.status === 400) {
-                notification("400 Error", data.msg);
-            }
-            if (data.status === 404) {
-                notification("404 NOT FOUND", data.msg)
-            }
-        }
-    })
-};
-
-
 //提交函数
 $(".submit").click(function () {
     var classroom = $("#classroom").val(),

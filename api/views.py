@@ -77,6 +77,7 @@ class AppointmentViewSet(viewsets.GenericViewSet):
                                            'classroom',
 
                                            'classroom__name',
+                                           'boss',
 
                                            'reason',
                                            'date',
