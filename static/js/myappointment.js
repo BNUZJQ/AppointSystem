@@ -63,7 +63,7 @@ $(document).ready(function () {
             }
             $.ajax({
                 async: false,
-                url: '/api/appointment/',
+                url: '/api/appointment/' + delete_id + '/delete_appoint/',
                 type: 'POST',
                 data: {
                     'id': delete_id,
@@ -81,7 +81,7 @@ $(document).ready(function () {
                         notification("400 Error", data.msg);
                     }
                     if (data.status === 404) {
-                        alert("404 NOT FOUND", data.msg)
+                        notification("404 NOT FOUND", data.msg)
                     }
                 }
             })
@@ -89,6 +89,29 @@ $(document).ready(function () {
 
         }
     });
-    return appointments;
+    $(".search").click(function () {
+        var id = $(this).attr("name");
+        console.log(id);
+        for (var i = 0; i < appointments.length; i++) {
+            if (appointments[i].id == id) {
+                notification("其他信息", "使用原因：" + appointments[i].reason + '<br>' +
+                    "使用者：" + appointments[i].directior + '<br>' +
+                    "使用者电话： " + appointments[i].directior_phone + '<br>' +
+                    "是否移动桌椅： " + appointments[i].desk + '<br>' +
+                    "是否使用多媒体 ：" + appointments[i].multimedia);
+            }
+        }
 
+
+    });
+    return appointments;
 });
+
+var notification = function (title, text) {
+    $.gritter.add({
+        // (string | mandatory) the heading of the notification
+        title: title,
+        // (string | mandatory) the text inside the notification
+        text: text
+    });
+};

@@ -50,7 +50,7 @@ a {
 div.seatCharts-cell {
     color: #555563;
     height: 27px;
-    width: 35px;
+    width: 34px;
     line-height: 27px;
 
 }
@@ -90,7 +90,7 @@ div.seatCharts-seat.unavailable {
 
 div.seatCharts-container {
     border-right: 1px dotted #adadad;
-    width: 780px;
+    width: 730px;
     padding: 20px;
     float: left;
 }

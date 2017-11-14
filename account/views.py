@@ -1,10 +1,11 @@
 # coding=utf-8
-from django.contrib.auth import login as django_login, authenticate
-from account.decorator import login_required
+from django.contrib.auth import login as django_login
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+
+from account.decorator import login_required
 from account.models import Account
-from django.contrib.auth.models import User
 
 
 def login(request):
@@ -93,3 +94,9 @@ def change_info(request):
     account.completed = True
     account.save()
     return HttpResponseRedirect('/home/')
+
+
+@login_required
+def personal_info(request):
+    account = Account.objects.get(user=request.user)
+    return render(request, 'personal_info.html', locals())

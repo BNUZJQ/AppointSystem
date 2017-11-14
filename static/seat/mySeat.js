@@ -84,7 +84,7 @@ var create_sc = function (week) {
                 var msg = '占用信息：<br>' + "日期：" + this.settings.id.split("_")[0].split("-")[0] +
                     "月" + this.settings.id.split("_")[0].split("-")[1] + "日" +
                     '<br>' + infos[this.settings.id].split(";")[0] + '<br>' + infos[this.settings.id].split(";")[1]
-                    + '<br>' + infos[this.settings.id].split(";")[2] + '<br>' + infos[this.settings.id].split(";")[3]
+                    + '<br>' + infos[this.settings.id].split(";")[2] + '<br>' + infos[this.settings.id].split(";")[3];
 
                 notification(title, msg);
                 //seat has been already booked
@@ -200,7 +200,13 @@ $(".submit").click(function () {
         notification('预约信息不合法！' + '    error_code = ' + error_code, error_reason);
         //alert("预约的时间必须是连续的时间段");
     }
-
+    /*if ((director) && ~(director_phone))
+    {
+        error_code=3;
+        error_reason = "使用者姓名和电话必须都填写或者都不填写";
+        notification('预约信息不合法！' + '    error_code = ' + error_code, error_reason);
+    }
+*/
     if (error_code !== 0)
         return false;
 
@@ -238,11 +244,18 @@ $(".submit").click(function () {
 });
 
 $('a[data-toggle="tab"]').on("click", function (e) {
+    //清空当前选择的位置
+    var selected_seats = $('#selected-seats li');
+    var len = selected_seats.length;
+    for (var i = 0; i < len; i++) {
+        sc.get(selected_seats[i].id.replace("cart-item-", "")).click();
+    }
     // 获取已激活的标签页的名称
     var activeTab = $(e.target).text();
     $('.seatCharts-row').remove();
     $('.seatCharts-legendItem').remove();
     $('#seat-map,#seat-map *').unbind().removeData();
+    //$cart.;
     if (activeTab === "未来7天") {
         create_sc(0);
     } else if (activeTab === "8-14天") {

@@ -40,7 +40,8 @@ class AccountViewSet(viewsets.ModelViewSet):
     @list_route(methods=['get'])
     def student(self, request):
         queryset = Account.objects.filter(role=ROLE.Student)
-        data = queryset.values('user__username', 'gender', 'email', 'telephone', 'student_id')
+        data = queryset.values('user__username', 'gender', 'email', 'telephone', 'student_id', 'major', 'role',
+                               'question', 'answer')
         return Response({"size": len(queryset), "data": data})
 
     @list_route(methods=['get'])
