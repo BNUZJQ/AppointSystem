@@ -25,7 +25,8 @@ class AppointmentSerializer(serializers.ModelSerializer):
         if data["date"].__lt__(today):
             raise serializers.ValidationError("you can not choose date before today")
         appointments = Appointment.objects.filter(classroom__name=data['classroom'],
-                                                  date__exact=data['date'])
+                                                  date__exact=data['date'],
+                                                  status=STATUS.waiting)
 
         for appoint in appointments:
             if appoint.start < data['start'] < appoint.end:

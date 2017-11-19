@@ -109,6 +109,10 @@
                                 <th id="major"></th>
                             </tr>
                             <tr>
+                                <th><i class="fa fa-check"></i> 年级</th>
+                                <th id="grade"></th>
+                            </tr>
+                            <tr>
                                 <th><i class="fa fa-male"></i> 性别</th>
                                 <th id="gender"></th>
                             </tr>
@@ -120,37 +124,38 @@
                                 <th><i class="fa fa-mobile-phone"></i> 电话</th>
                                 <th id="telephone"></th>
                             </tr>
-                            <tr>
-                                <th><i class="fa fa-question"></i> 密码提示问题</th>
-                                <th id="question"></th>
-                            </tr>
-                            <tr>
-                                <th><i class="fa fa-check"></i> 密码提示答案</th>
-                                <th id="answer"></th>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-panel">
-                        <h4 class="mb"><i class="fa fa-angle-right"></i> 请填写修改信息</h4>
-                        <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
-                        <div class="form-group">
-                            <label class=" control-label">联系电话*</label>
+                        <form method="post">
+                            {% csrf_token %}
+                            <h4 class="mb"><i class="fa fa-angle-right"></i> 请填写修改信息</h4>
+                            <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+                            <div class="form-group">
 
-                            <input type="text" id="re_telephone" class="form-control">
-                            <span class="help-block">（非常重要）.</span>
+                                <label class=" control-label">联系电话*</label>
 
-                            <label class=" control-label">邮箱*</label>
-                            <input type="text" id="re_email" class="form-control">
-                            <label class=" control-label">密码提示问题</label>
-                            <input type="text" id="re_question" class="form-control">
+                                <input type="text" name="re_telephone" class="form-control"
+                                       value={{ account.telephone }}>
+                                <span class="help-block">（非常重要）.</span>
 
-                            <label class=" control-label">密码提示问题答案</label>
-                            <input type="text" id="re_answer" class="form-control">
-                        </div>
-                        <button class="submit btn btn-success btn-block">submit &raquo;</button>
+                                <label class=" control-label">邮箱*</label>
+                                <input type="text" name="re_email" class="form-control" value={{ account.email }}>
+                                <span class="help-block">（非常重要）.</span>
+                                <label class=" control-label">年级</label>
+                                <input type="text" name="re_grade" class="form-control" value={{ account.grade }}>
+
+                                <label class=" control-label">专业</label>
+                                <input type="text" name="re_major" class="form-control" value={{ account.major }}>
+                            </div>
+                            <button onclick="window.location.href='/change_info'" class="btn btn-success btn-block">
+                                submit &raquo;
+                            </button>
+                        </form>
+
                     </div>
                 </div>
 

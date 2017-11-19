@@ -18,8 +18,9 @@ $(document).ready(function () {
             $("#email").html($infos.email);
             $("#major").html($infos.major);
             $("#role").html($infos.role);
-            $("#question").html($infos.question);
-            $("#answer").html($infos.answer);
+            $("#grade").html($infos.grade);
+            //("#question").html($infos.question);
+            // $("#answer").html($infos.answer);
         }, // success
         error: function (data) {
             if (data.status === 400) {
@@ -31,3 +32,4 @@ $(document).ready(function () {
         } // error
     }) // ajax
 });
+

@@ -37,11 +37,23 @@ class AccountViewSet(viewsets.ModelViewSet):
         stu.save()
         return Response({"success": True}, status=status.HTTP_202_ACCEPTED)
 
+    @list_route(methods=['post'])
+    def change_info(self, request):
+        if 'telephone' not in request.POST or 'email' not in request.POST:
+            return Response({"You should input telephone and email"}, status=status.HTTP_400_BAD_REQUEST)
+        user_account = Account.objects.get(user=request.user)
+        stu = get_object_or_404(Account, user__username=request.POST['username'])
+        stu.telephone = request.POST['telephone']
+        stu.email = request.POST['email']
+        stu.major = request.POST['major']
+        stu.save()
+        return Response({"success": True}, status=status.HTTP_202_ACCEPTED)
+
     @list_route(methods=['get'])
     def student(self, request):
         queryset = Account.objects.filter(role=ROLE.Student)
-        data = queryset.values('user__username', 'gender', 'email', 'telephone', 'student_id', 'major', 'role',
-                               'question', 'answer')
+        data = queryset.values('user__username', 'gender', 'email', 'telephone', 'student_id', 'major', 'role', 'grade'
+                               )
         return Response({"size": len(queryset), "data": data})
 
     @list_route(methods=['get'])
