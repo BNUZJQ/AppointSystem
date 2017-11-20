@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>我的预约</title>
+    <title>用户管理</title>
     <!-- Bootstrap core CSS -->
     <link href="{% static "assets/css/bootstrap.css" %}" rel="stylesheet">
     <!--external css-->
@@ -18,9 +18,9 @@
     <link rel="stylesheet" type="text/css" href="{% static "seat/jquery.seat-charts.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "seat/style.css" %}">
 
-
 </head>
 <body>
+<div class="hidden" id="account_id">{{ account.id }}</div>
 {% csrf_token %}
 <section id="container">
     <header class="header black-bg">
@@ -68,13 +68,13 @@
                 </li>
 
                 <li class="sub-menu">
-                    <a class="active" href="/myappointment">
+                    <a href="/myappointment">
                         <i class="fa fa-desktop"></i>
                         <span>我的预约</span>
                     </a>
                 </li>
                 <li class="sub-menu">
-                    <a href="/personal_info">
+                    <a class="active" href="/personal_info">
                         <i class="fa fa-cogs"></i>
                         <span>个人信息</span>
                     </a>
@@ -83,24 +83,79 @@
             <!-- sidebar menu end-->
         </div>
     </aside>
-    <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
     <section id="main-content">
         <section class="wrapper">
+            <div class="row mt">
+                <div class="col-md-6">
+                    <div class="form-panel">
+                        <h4 class="mb"><i class="fa fa-angle-right"></i> 添加黑名单</h4>
+                        <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+                        <div class="form-group">
+                            <label class=" control-label">学号*</label>
+
+                            <input type="text" id="re_telephone" class="form-control">
+                            <span class="help-block">（非常重要）.</span>
+
+                            <label class=" control-label">邮箱*</label>
+                            <input type="text" id="re_email" class="form-control">
+                            <label class=" control-label">密码提示问题</label>
+                            <input type="text" id="re_question" class="form-control">
+
+                            <label class=" control-label">密码提示问题答案</label>
+                            <input type="text" id="re_answer" class="form-control">
+                        </div>
+                        <button class="submit btn btn-success btn-block">submit &raquo;</button>
+                    </div>
+                </div>
+
+            </div>
             <div class="row mt">
                 <div class="col-md-12">
                     <div class="content-panel">
                         <table class="table table-striped table-advance table-hover">
-                            <h4><i class="fa fa-angle-right"></i> 我的预约</h4>
+                            <h4><i class="fa fa-angle-right"></i> 我的信息</h4>
                             <hr>
                             <thead>
-                            <th><i class="fa fa-bullhorn"></i> 会议室</th>
-                            <th><i class="fa fa-question-circle"></i> 日期</th>
-                            <th><i class="fa fa-bookmark"></i> 时间段</th>
-                            <th><i class=" fa fa-edit"></i> 预约原因</th>
-                            <th><i class=" fa fa-edit"></i> 负责人</th>
-                            <th></th>
+
+
                             </thead>
-                            <tbody id="myappinfo">
+                            <tbody>
+                            <tr>
+                                <th><i class="fa fa-pencil"></i> 用户名</th>
+                                <th id="username"></th>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-square"></i> 用户组</th>
+                                <th id="role"></th>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-sort-numeric-asc"></i> ID</th>
+                                <th id="student_id"></th>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-rocket"></i> 专业</th>
+                                <th id="major"></th>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-male"></i> 性别</th>
+                                <th id="gender"></th>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-envelope"></i> 邮箱</th>
+                                <th id="email"></th>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-mobile-phone"></i> 电话</th>
+                                <th id="telephone"></th>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-question"></i> 密码提示问题</th>
+                                <th id="question"></th>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-check"></i> 密码提示答案</th>
+                                <th id="answer"></th>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -124,6 +179,8 @@
 
 
 <!-- js placed at the end of the document so the pages load faster -->
+
+
 <script src="{% static "assets/js/jquery.js" %}"></script>
 <script src="{% static "assets/js/bootstrap.min.js" %}"></script>
 <script class="include" type="text/javascript" src="{% static "assets/js/jquery.dcjqaccordion.2.7.js" %}"></script>
@@ -133,7 +190,7 @@
 <script src="{% static "js/jquery-3.2.1.min.js" %}"></script>
 <script src="{% static "seat/jquery.seat-charts.js" %}"></script>
 <script src="{% static "assets/js/common-scripts.js" %}"></script>
-<script src="{% static "js/myappointment.js" %}"></script>
+<script src="{% static "js/personal_info.js" %}"></script>
 <script src="{% static "js/js.cookie.js" %}"></script>
 
 

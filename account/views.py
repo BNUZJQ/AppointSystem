@@ -1,10 +1,11 @@
 # coding=utf-8
-from django.contrib.auth import login as django_login, authenticate
-from account.decorator import login_required
+from django.contrib.auth import login as django_login
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+
+from account.decorator import login_required
 from account.models import Account
-from django.contrib.auth.models import User
 
 
 def login(request):
@@ -81,15 +82,52 @@ def forget(request):
 def change_info(request):
     user = request.user
     if request.method != 'POST':
-        return render(request, 'change_info.html', locals())
-    question = request.POST.get('question', '')
-    answer = request.POST.get('answer', '')
-    password = request.POST.get('password', '')
-    user.set_password(password)
-    user.save()
+        return render(request, 'personal_info.html', locals())
+    #    question = request.POST.get('question', '')
+    #    answer = request.POST.get('answer', '')
+    #    password = request.POST.get('password', '')
+    #    user.set_password(password)
+    #    user.save()
+    telephone = request.POST.get('re_telephone', '')
+    email = request.POST.get('re_mail', '')
+    grade = request.POST.get('re_grade', '')
+    major = request.POST.get('re_major', '')
+
     account = Account.objects.get(user=user)
-    account.question = question
-    account.answer = answer
+    #    account.question = question
+    #    account.answer = answer
+    account.telephone = telephone
+    account.email = email
+    account.grade = grade
+    account.major = major
     account.completed = True
     account.save()
-    return HttpResponseRedirect('/home/')
+    return HttpResponseRedirect('/index/')
+
+
+@login_required
+def personal_info(request):
+    account = Account.objects.get(user=request.user)
+    user = request.user
+    if request.method != 'POST':
+        return render(request, 'personal_info.html', locals())
+        #    question = request.POST.get('question', '')
+        #    answer = request.POST.get('answer', '')
+        #    password = request.POST.get('password', '')
+        #    user.set_password(password)
+        #    user.save()
+    telephone = request.POST.get('re_telephone', '')
+    email = request.POST.get('re_email', '')
+    grade = request.POST.get('re_grade', '')
+    major = request.POST.get('re_major', '')
+
+    account = Account.objects.get(user=user)
+    #    account.question = question
+    #    account.answer = answer
+    account.telephone = telephone
+    account.email = email
+    account.grade = grade
+    account.major = major
+    account.completed = True
+    account.save()
+    return render(request, 'personal_info.html', locals())

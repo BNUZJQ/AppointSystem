@@ -48,9 +48,11 @@ MAJOR_CHOICE = (
 class Account(models.Model):
     user = models.OneToOneField(User)
     role = models.CharField(max_length=10, choices=ROLE_CHOICE, default=ROLE.Student)
-    major = models.CharField(max_length=10, choices=MAJOR_CHOICE, default=MAJOR.EE)
+    major = models.CharField(max_length=10)
+    # major = models.CharField(max_length=10, choices=MAJOR_CHOICE, default=MAJOR.EE)
     student_id = models.CharField(max_length=12, blank=False)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICE, default=GENDER.Male)
+    grade = models.CharField(max_length=10, blank=True)
     email = models.EmailField(blank=False)
     telephone = models.CharField(max_length=11, blank=True)
     question = models.CharField(max_length=100, blank=True)

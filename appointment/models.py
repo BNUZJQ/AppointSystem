@@ -9,14 +9,6 @@ from classroom.models import Classroom
 
 
 class TIME:
-    HOUR0 = 0
-    HOUR1 = 1
-    HOUR2 = 2
-    HOUR3 = 3
-    HOUR4 = 4
-    HOUR5 = 5
-    HOUR6 = 6
-    HOUR7 = 7
     HOUR8 = 8
     HOUR9 = 9
     HOUR10 = 10
@@ -89,7 +81,7 @@ class Appointment(models.Model):
 
     class Meta:
         ordering = ('-date', 'start')
-        unique_together = (("classroom", "date", "start"), ("classroom", "date", "end"))
+        unique_together = (("classroom", "date", "start", "status"), ("classroom", "date", "end", "status"))
 
     def __unicode__(self):
         return u'{}, {}, {}, from {}h. to {}h.'.format(self.classroom.name, self.custom.user.username, self.date,
