@@ -28,6 +28,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
                                                   date__exact=data['date'],
                                                   status=STATUS.waiting)
 
+
         for appoint in appointments:
             if appoint.start < data['start'] < appoint.end:
                     raise serializers.ValidationError("start time unvalid!")
