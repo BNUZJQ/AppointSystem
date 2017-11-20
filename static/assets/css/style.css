@@ -1,5 +1,6 @@
+
 /* Import fonts */
-@import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);
+/*@import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);*/
 
 /* BASIC THEME CONFIGURATION */
 body {
@@ -19,13 +20,11 @@ a, a:hover, a:focus {
     text-decoration: none;
     outline: none;
 }
-
 ::selection {
 
     background: #68dff0;
     color: #fff;
 }
-
 ::-moz-selection {
     background: #68dff0;
     color: #fff;
@@ -43,7 +42,6 @@ a, a:hover, a:focus {
     font-size: 0;
     overflow: hidden;
 }
-
 /* Bootstrap Modifications */
 .modal-header {
     background: #68dff0;
@@ -71,6 +69,8 @@ a, a:hover, a:focus {
     text-decoration: none;
 }
 
+
+
 /*Theme Backgrounds*/
 
 .bg-theme {
@@ -88,7 +88,6 @@ a, a:hover, a:focus {
 .bg-theme04 {
     background-color: #ed5565;
 }
-
 /*Theme Buttons*/
 
 .btn-theme {
@@ -96,7 +95,6 @@ a, a:hover, a:focus {
     background-color: #68dff0;
     border-color: #48bcb4;
 }
-
 .btn-theme:hover,
 .btn-theme:focus,
 .btn-theme:active,
@@ -112,7 +110,6 @@ a, a:hover, a:focus {
     background-color: #ac92ec;
     border-color: #967adc;
 }
-
 .btn-theme02:hover,
 .btn-theme02:focus,
 .btn-theme02:active,
@@ -128,7 +125,6 @@ a, a:hover, a:focus {
     background-color: #48cfad;
     border-color: #37bc9b;
 }
-
 .btn-theme03:hover,
 .btn-theme03:focus,
 .btn-theme03:active,
@@ -144,7 +140,6 @@ a, a:hover, a:focus {
     background-color: #ed5565;
     border-color: #da4453;
 }
-
 .btn-theme04:hover,
 .btn-theme04:focus,
 .btn-theme04:active,
@@ -171,6 +166,8 @@ hr {
     border: 0;
     border-top: 1px solid #797979;
 }
+
+
 
 /*Helpers*/
 
@@ -228,6 +225,7 @@ ul.top-menu > li > .logout {
     margin-top: 15px;
 }
 
+
 /*sidebar navigation*/
 
 #sidebar {
@@ -259,7 +257,7 @@ ul.top-menu > li > .logout {
     height: 17px;
     width: 17px;
     display: inline-block;
-
+    background: url("../img/nav-expand.png") no-repeat top;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -267,14 +265,12 @@ ul.top-menu > li > .logout {
     right: 10px;
     top: 15px;
 }
-
 .active .dcjq-icon {
-
+    background: url("../img/nav-expand.png") no-repeat bottom;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-
 /*---*/
 
 .nav-collapse.collapse {
@@ -379,6 +375,7 @@ ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:fo
     transition: all 0.3s ease;
 }
 
+
 ul.sidebar-menu li a i {
     font-size: 15px;
     padding-right: 6px;
@@ -391,6 +388,7 @@ ul.sidebar-menu li a:hover i, ul.sidebar-menu li a:focus i {
 ul.sidebar-menu li a.active i {
     color: #fff;
 }
+
 
 .mail-info, .mail-info:hover {
     margin: -3px 6px 0 0;
@@ -449,6 +447,7 @@ a.logo:hover, a.logo:focus {
 a.logo span {
     color: #68dff0;
 }
+
 
 /*notification*/
 #top_menu .nav > li, ul.top-menu > li {
@@ -514,7 +513,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     }
 
 ;
-}
+    }
 
 .dropdown-menu.extended li p {
     background-color: #F1F2F7;
@@ -674,7 +673,6 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     background: none;
     margin-right: 0;
 }
-
 .top-nav ul.top-menu > li {
     margin-left: 10px;
 }
@@ -693,14 +691,13 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     border-bottom-color: #A4AABA;
     border-top-color: #A4AABA;
 }
-
 .top-nav ul.top-menu > li > a:hover .caret {
     border-bottom-color: #000;
     border-top-color: #000;
 }
 
 .log-arrow-up {
-    /*background: url("../img/arrow-up.png") no-repeat;*/
+    background: url("../img/arrow-up.png") no-repeat;
     width: 20px;
     height: 11px;
     position: absolute;
@@ -731,7 +728,6 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     border-bottom-color: #FCB322 !important;
     border-top-color: #FCB322 !important;
 }
-
 .notify-arrow-green {
     border-color: transparent transparent #68dff0;
     border-bottom-color: #68dff0 !important;
@@ -752,6 +748,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     font-size: 20px;
 }
 
+
 .sidebar-closed > #sidebar > ul {
     display: none;
 }
@@ -763,6 +760,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 .sidebar-closed #sidebar {
     margin-left: -180px;
 }
+
 
 /* Dash Side */
 
@@ -966,6 +964,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     width: 40px;
 }
 
+
 /*Donut Chart Main Page Conf*/
 .donut-main {
     display: block;
@@ -999,29 +998,24 @@ PANELS CONFIGURATIONS
     text-align: center;
     background: #dfdfe1;
 }
-
 .grey-panel .grey-header {
     background: #ccd1d9;
     padding: 3px;
     margin-bottom: 15px;
 }
-
 .grey-panel h5 {
     font-weight: 200;
     margin-top: 10px;
 }
-
 .grey-panel p {
     margin-left: 5px;
 }
-
 /* Specific Conf for Donut Charts*/
 .donut-chart p {
     margin-top: 5px;
     font-weight: 700;
     margin-left: 15px;
 }
-
 .donut-chart h2 {
     font-weight: 900;
     color: #FF6B6B;
@@ -1034,27 +1028,22 @@ PANELS CONFIGURATIONS
     text-align: center;
     background: #444c57;
 }
-
 .darkblue-panel .darkblue-header {
     background: transparent;
     padding: 3px;
     margin-bottom: 15px;
 }
-
 .darkblue-panel h1 {
     color: #f2f2f2;
 }
-
 .darkblue-panel h5 {
     font-weight: 200;
     margin-top: 10px;
     color: white;
 }
-
 .darkblue-panel footer {
     color: white;
 }
-
 .darkblue-panel footer h5 {
     margin-left: 10px;
     margin-right: 10px;
@@ -1066,24 +1055,20 @@ PANELS CONFIGURATIONS
     text-align: center;
     background: #68dff0;
 }
-
 .green-panel .green-header {
     background: #43b1a9;
     padding: 3px;
     margin-bottom: 15px;
 }
-
 .green-panel h5 {
     color: white;
     font-weight: 200;
     margin-top: 10px;
 }
-
 .green-panel h3 {
     color: white;
     font-weight: 100;
 }
-
 .green-panel p {
     color: white;
 }
@@ -1100,14 +1085,12 @@ PANELS CONFIGURATIONS
     font-weight: 700;
     margin-left: 15px;
 }
-
 .white-panel .white-header {
     background: #f4f4f4;
     padding: 3px;
     margin-bottom: 15px;
     color: #c6c6c6;
 }
-
 .white-panel .small {
     font-size: 10px;
     color: #ccd1d9;
@@ -1126,21 +1109,17 @@ PANELS CONFIGURATIONS
     margin-bottom: 1em;
     height: 250px;
 }
-
 .stock .stock-chart {
     background: #00c5de;
 }
-
 .stock .stock-chart #chart {
     height: 10.7em;
     background: url(http://i.imgbox.com/abmuNQx2) center bottom no-repeat;
 }
-
 .stock .current-price {
     background: #1d2122;
     padding: 10px;
 }
-
 .stock .current-price .info abbr {
     display: block;
     color: #f8f8f8;
@@ -1148,20 +1127,16 @@ PANELS CONFIGURATIONS
     font-weight: 600;
     margin-top: 0.18em;
 }
-
 .stock .current-price .changes {
     text-align: right;
 }
-
 .stock .changes .up {
     color: #4fd98b
 }
-
 .stock .current-price .changes .value {
     font-size: 1.8em;
     font-weight: 700;
 }
-
 .stock .summary {
     color: #2f2f2f;
     display: block;
@@ -1169,7 +1144,6 @@ PANELS CONFIGURATIONS
     padding: 10px;
     text-align: center;
 }
-
 .stock .summary strong {
     font-weight: 900;
     font-size: 14px;
@@ -1182,7 +1156,6 @@ PANELS CONFIGURATIONS
     padding-top: 15px;
     padding-bottom: 5px;
 }
-
 .content-panel h4 {
     margin-left: 10px;
 }
@@ -1195,17 +1168,14 @@ PANELS CONFIGURATIONS
     text-align: center;
     background-position: center center;
 }
-
 .weather i {
     color: white;
     margin-top: 45px;
 }
-
 .weather h2 {
     color: white;
     font-weight: 900;
 }
-
 .weather h4 {
     color: white;
     font-weight: 900;
@@ -1216,29 +1186,24 @@ PANELS CONFIGURATIONS
 .weather-2 {
     background: #e9f0f4;
 }
-
 .weather-2 .weather-2-header {
     background: #54bae6;
     padding-top: 5px;
     margin-bottom: 5px;
 }
-
 .weather-2 .weather-2-header p {
     color: white;
     margin-left: 5px;
     margin-right: 5px;
 }
-
 .weather-2 .weather-2-header p small {
     font-size: 10px;
 }
-
 .weather-2 .data {
     margin-right: 10px;
     margin-left: 10px;
     color: #272b34;
 }
-
 .weather-2 .data h5 {
     margin-top: 0px;
     font-weight: lighter;
@@ -1258,29 +1223,24 @@ PANELS CONFIGURATIONS
     margin-top: 30px;
     font-size: 70px;
 }
-
 .weather-3 h1 {
     margin-top: 10px;
     color: white;
     font-weight: 900;
 }
-
 .weather-3 .info {
     background: #f2f2f2;
 }
-
 .weather-3 .info i {
     font-size: 15px;
     color: #c2c2c2;
     margin-bottom: 0px;
     margin-top: 10px;
 }
-
 .weather-3 .info h3 {
     font-weight: 900;
     margin-bottom: 0px;
 }
-
 .weather-3 .info p {
     margin-left: 10px;
     margin-right: 10px;
@@ -1290,26 +1250,25 @@ PANELS CONFIGURATIONS
     font-weight: 700;
 }
 
+
 /*Twitter Panel*/
 .twitter-panel {
     background: #4fc1e9;
     text-align: center;
 }
-
 .twitter-panel i {
     color: white;
     margin-top: 40px;
 }
-
 .twitter-panel p {
     color: #f5f5f5;
     margin: 10px;
 }
-
 .twitter-panel .user {
     color: white;
     font-weight: 900;
 }
+
 
 /* Instagram Panel*/
 .instagram-panel {
@@ -1317,12 +1276,10 @@ PANELS CONFIGURATIONS
     text-align: center;
     background-position: center center;
 }
-
 .instagram-panel i {
     color: white;
     margin-top: 35px;
 }
-
 .instagram-panel p {
     margin: 5px;
     color: white;
@@ -1341,13 +1298,11 @@ PANELS CONFIGURATIONS
     background: #dadad2;
     text-align: center;
 }
-
 .product-panel-2 .badge {
     position: absolute;
     top: 20px;
     left: 35px;
 }
-
 .badge-hot {
     background: #ed5565;
     width: 70px;
@@ -1376,21 +1331,18 @@ PANELS CONFIGURATIONS
     -o-background-size: cover;
     background-size: cover;
 }
-
 #spotify .btn-clear-g {
     top: 15%;
     right: 10px;
     position: absolute;
     margin-top: 5px;
 }
-
 #spotify .sp-title {
     bottom: 15%;
     left: 25px;
     position: absolute;
     color: #efefef;
 }
-
 #spotify .sp-title h3 {
     font-weight: 900;
 }
@@ -1402,7 +1354,6 @@ PANELS CONFIGURATIONS
     color: #efefef;
     font-size: 20px
 }
-
 .followers {
     margin-left: 5px;
     margin-top: 5px;
@@ -1425,13 +1376,11 @@ PANELS CONFIGURATIONS
     -o-background-size: cover;
     background-size: cover;
 }
-
 #blog-bg .badge {
     position: absolute;
     top: 20px;
     left: 35px;
 }
-
 .badge-popular {
     background: #3498db;
     width: 70px;
@@ -1442,7 +1391,6 @@ PANELS CONFIGURATIONS
     text-align: center;
     border-radius: 100%;
 }
-
 .blog-title {
     background: rgba(0, 0, 0, 0.5);
     bottom: 100px;
@@ -1453,7 +1401,6 @@ PANELS CONFIGURATIONS
     display: block;
     width: 120px;
 }
-
 .blog-text {
     margin-left: 8px;
     margin-right: 8px;
@@ -1466,7 +1413,6 @@ PANELS CONFIGURATIONS
     color: white;
     padding: 0px !important;
 }
-
 .calendar-month-header {
     background: #43b1a9;
 }
@@ -1475,7 +1421,6 @@ PANELS CONFIGURATIONS
 .steps {
     display: block;
 }
-
 .steps input[type=checkbox] {
     display: none;
 }
@@ -1537,7 +1482,6 @@ PANELS CONFIGURATIONS
 .steps label:hover:before {
     border: 1px solid #46b7e5;
 }
-
 #op1:checked ~ label[for=op1]:before,
 #op2:checked ~ label[for=op2]:before,
 #op3:checked ~ label[for=op3]:before {
@@ -1563,26 +1507,22 @@ PANELS CONFIGURATIONS
     -o-background-size: cover;
     background-size: cover;
 }
-
 #profile-01 h3 {
     color: white;
     padding-top: 50px;
     margin: 0px;
     text-align: center;
 }
-
 #profile-01 h6 {
     color: white;
     text-align: center;
     margin-bottom: 0px;
     font-weight: 900;
 }
-
 .profile-01 {
     background: #68dff0;
     height: 50px;
 }
-
 .profile-01:hover {
     background: #2f2f2f;
     -webkit-transition: background-color 0.6s;
@@ -1591,7 +1531,6 @@ PANELS CONFIGURATIONS
     transition: background-color 0.6s;
     cursor: pointer;
 }
-
 .profile-01 p {
     color: white;
     padding-top: 15px;
@@ -1616,31 +1555,27 @@ PANELS CONFIGURATIONS
     -o-background-size: cover;
     background-size: cover;
 }
-
 #profile-02 .user {
     padding-top: 40px;
     text-align: center;
 }
-
 #profile-02 h4 {
     color: white;
     margin: 0px;
     padding-top: 8px;
 }
-
 .pr2-social a {
     color: #cdcdcd;
 }
-
 .pr2-social a:hover {
     color: #68dff0;
 }
-
 .pr2-social i {
     margin-top: 15px;
     margin-right: 12px;
     font-size: 20px;
 }
+
 
 /*spark line*/
 .chart {
@@ -1648,15 +1583,12 @@ PANELS CONFIGURATIONS
     text-align: center;
     width: 100%;
 }
-
 .chart .heading {
     text-align: left;
 }
-
 .chart .heading span {
     display: block;
 }
-
 .panel.green-chart .chart-tittle {
     font-size: 16px;
     padding: 15px;
@@ -1667,42 +1599,34 @@ PANELS CONFIGURATIONS
     -webkit-border-radius: 0px 0px 4px 4px;
     border-radius: 0px 0px 4px 4px;
 }
-
 #barchart {
     margin-bottom: -15px;
     display: inline-block;
 }
-
 .panel.green-chart .chart-tittle .value {
     float: right;
     color: #c0f080;
 }
-
 .panel.green-chart {
     background: #a9d96c;
     color: #fff;
 }
-
 .panel.terques-chart {
     background: transparent;
     color: #797979;
 }
-
 .panel.terques-chart .chart-tittle .value {
     float: right;
     color: #fff;
 }
-
 .panel.terques-chart .chart-tittle .value a {
     color: #2f2f2f;
     font-size: 12px;
 }
-
 .panel.terques-chart .chart-tittle .value a:hover, .panel.terques-chart .chart-tittle .value a.active {
     color: #68dff0;
     font-size: 12px;
 }
-
 .panel.terques-chart .chart-tittle {
     font-size: 16px;
     padding: 15px;
@@ -1713,7 +1637,6 @@ PANELS CONFIGURATIONS
     -webkit-border-radius: 0px 0px 4px 4px;
     border-radius: 0px 0px 4px 4px;
 }
-
 .inline-block {
     display: inline-block;
 }
@@ -1725,6 +1648,8 @@ PANELS CONFIGURATIONS
     margin-bottom: 15px;
     box-shadow: 0px 3px 2px #aab2bd;
 }
+
+
 
 /* Calendar Events - Calendar.html*/
 .external-event {
@@ -1760,7 +1685,6 @@ PANELS CONFIGURATIONS
     -o-transition: background-color 0.4s;
     transition: background-color 0.4s;
 }
-
 .project .overlay {
     position: absolute;
     text-align: center;
@@ -1785,20 +1709,20 @@ PANELS CONFIGURATIONS
     right: 0;
     position: relative;
 }
-
 .project:hover .photo {
     opacity: 10;
     filter: alpha(opacity=4000);
     opacity: 0.1;
     filter: alpha(opacity=40);
 }
-
 .project:hover .overlay {
     opacity: 100;
     filter: alpha(opacity=10000);
     opacity: 1;
     filter: alpha(opacity=100);
 }
+
+
 
 /* EZ Checklist */
 .ez-checkbox {
@@ -1813,6 +1737,7 @@ PANELS CONFIGURATIONS
 .brand-highlight {
     background: #fffbcc !important;
 }
+
 
 /* FORMS CONFIGURATION */
 .form-panel {
@@ -1879,24 +1804,20 @@ label {
     -o-user-select: none;
     user-select: none;
 }
-
 .has-switch.deactivate {
     opacity: 0.5;
     filter: alpha(opacity=50);
     cursor: default !important;
 }
-
 .has-switch.deactivate label,
 .has-switch.deactivate span {
     cursor: default !important;
 }
-
 .has-switch > div {
     width: 162%;
     position: relative;
     top: 0;
 }
-
 .has-switch > div.switch-animate {
     -webkit-transition: left 0.25s ease-out;
     -moz-transition: left 0.25s ease-out;
@@ -1904,11 +1825,9 @@ label {
     transition: left 0.25s ease-out;
     -webkit-backface-visibility: hidden;
 }
-
 .has-switch > div.switch-off {
     left: -63%;
 }
-
 .has-switch > div.switch-off label {
     background-color: #7f8c9a;
     border-color: #bdc3c7;
@@ -1916,19 +1835,15 @@ label {
     -moz-box-shadow: -1px 0 0 rgba(255, 255, 255, 0.5);
     box-shadow: -1px 0 0 rgba(255, 255, 255, 0.5);
 }
-
 .has-switch > div.switch-on {
     left: 0%;
 }
-
 .has-switch > div.switch-on label {
     background-color: #41cac0;
 }
-
 .has-switch input[type=checkbox] {
     display: none;
 }
-
 .has-switch span {
     cursor: pointer;
     font-size: 14.994px;
@@ -1952,25 +1867,21 @@ label {
     transition: 0.25s ease-out;
     -webkit-backface-visibility: hidden;
 }
-
 .has-switch span.switch-left {
     border-radius: 30px 0 0 30px;
     background-color: #2A3542;
     color: #41cac0;
     border-left: 1px solid transparent;
 }
-
 .has-switch span.switch-right {
     border-radius: 0 30px 30px 0;
     background-color: #bdc3c7;
     color: #ffffff;
     text-indent: 7px;
 }
-
 .has-switch span.switch-right [class*="fui-"] {
     text-indent: 0;
 }
-
 .has-switch label {
     border: 4px solid #2A3542;
     border-radius: 50%;
@@ -1989,35 +1900,28 @@ label {
     transition: 0.25s ease-out;
     -webkit-backface-visibility: hidden;
 }
-
 .switch-square {
     border-radius: 6px;
     -webkit-border-radius: 6px;
     -webkit-mask: url('../img/mask.png') 0 0 no-repeat;
     mask: url('../img/mask.png') 0 0 no-repeat;
 }
-
 .switch-square > div.switch-off label {
     border-color: #7f8c9a;
     border-radius: 6px 0 0 6px;
 }
-
 .switch-square span.switch-left {
     border-radius: 6px 0 0 6px;
 }
-
 .switch-square span.switch-left [class*="fui-"] {
     text-indent: -10px;
 }
-
 .switch-square span.switch-right {
     border-radius: 0 6px 6px 0;
 }
-
 .switch-square span.switch-right [class*="fui-"] {
     text-indent: 5px;
 }
-
 .switch-square label {
     border-radius: 0 6px 6px 0;
     border-color: #41cac0;
@@ -2044,20 +1948,18 @@ label {
     text-transform: uppercase;
     font-weight: 300;
 }
-
 .login-wrap {
     padding: 20px;
 }
-
 .login-wrap .registration {
     text-align: center;
 }
-
 .login-social-link {
     display: block;
     margin-top: 20px;
     margin-bottom: 15px;
 }
+
 
 /*LOCK SCREEN CONF*/
 #showtime {
@@ -2096,12 +1998,12 @@ label {
     border-radius: 5px;
 }
 
+
 .btn-facebook {
     color: #fff;
     background-color: #5193ea;
     border-color: #2775e2;
 }
-
 .btn-facebook:hover,
 .btn-facebook:focus,
 .btn-facebook:active,
@@ -2117,7 +2019,6 @@ label {
     background-color: #44ccfe;
     border-color: #2bb4e8;
 }
-
 .btn-twitter:hover,
 .btn-twitter:focus,
 .btn-twitter:active,
@@ -2127,6 +2028,7 @@ label {
     background-color: #2bb4e8;
     border-color: #2bb4e8;
 }
+
 
 /*badge*/
 .badge.bg-primary {
@@ -2152,6 +2054,7 @@ label {
 .badge.bg-inverse {
     background: #2A3542;
 }
+
 
 /*easy pie chart*/
 .easy-pie-chart {
@@ -2205,7 +2108,7 @@ label {
     }
 
 ;
-}
+    }
 
 .panel-footer.revenue-foot ul {
     margin: 0;
@@ -2250,7 +2153,6 @@ label {
     display: block;
     font-size: 16px;
 }
-
 .panel-footer.revenue-foot ul li a:hover i, .panel-footer.revenue-foot ul li.active a i {
     color: #ff6c60;
     display: block;
@@ -2269,12 +2171,10 @@ label {
     padding: 0;
     width: 100%;
 }
-
 #sortable li {
     padding-left: 3em;
     font-size: 12px;
 }
-
 #sortable li i {
     position: absolute;
     left: 6px;

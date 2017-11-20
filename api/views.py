@@ -75,6 +75,10 @@ class AppointmentViewSet(viewsets.GenericViewSet):
                                                status=STATUS.waiting).distinct().order_by('date', 'start')
         appointments = appointments.values('id',
                                            'classroom',
+
+                                           'classroom__name',
+                                           'boss',
+
                                            'reason',
                                            'date',
                                            'start',

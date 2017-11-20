@@ -133,9 +133,11 @@ var notification = function (title, text) {
 var get_appointments = function (classroom) {
     $.ajax({
         async: false,
-        url: '/api/classroom/' + classroom + '/',
+        url: '/api/appointment/',
         type: 'get',
-        data: {},
+        data: {
+            "classroom": classroom
+        },
         success: function (data) {
             appointments = data.appointments;
             display_appointments(appointments);
@@ -153,49 +155,13 @@ var get_appointments = function (classroom) {
     return appointments;
 };
 
-var delete_appointments = function (classroom, date, start) {
-    get_appointments(classroom);
-    var delete_id = -1;
-    for (var i = 0; i < appointments.length; i++) {
-        if (appointments[i].date === date && appointments[i].start === start) {
-            delete_id = appointments[i].id
-        }
-    }
-    if (delete_id === -1) {
-        notification("NOT FOUND", "请重新选择需要取消的预约");
-        return;
-    }
-    $.ajax({
-        async: false,
-        url: '/api/classroom/' + classroom + '/' + delete_id + '/delete_appoint/' ,
-        type: 'POST',
-        data: {
-            'id': delete_id,
-            'csrfmiddlewaretoken': $('#csrf_token').val()
-        },
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-        },
-        success: function (data) {
-            notification("操作成功", "已取消预约");
-            location.reload();
-        },
-        error: function (data) {
-            if (data.status === 400) {
-                notification("400 Error", data.msg);
-            }
-            if (data.status === 404) {
-                notification("404 NOT FOUND", data.msg)
-            }
-        }
-    })
-};
-
-
 //提交函数
 $(".submit").click(function () {
     var classroom = $("#classroom").val(),
         reason = $("#reason").val(),
+        boss = $("#boss").val(),
+        director = $("#director").val(),
+        director_phone = $("#director_phone").val(),
         multimedia = $('input[type="checkbox"]#multimedia').checked,
         desk = $('input[type="checkbox"]#desk').checked,
         d = new Date(),
@@ -205,7 +171,7 @@ $(".submit").click(function () {
         start = 0,
         end = 0,
         error_reason = '';
-    console.log("flag" + classroom + reason + multimedia + desk);
+    console.log("flag" + classroom + reason + boss + director + director_phone);
     console.log(duration);
     for (var i = 0; i < duration.length; i++) {
         temp.push(duration[i].split("_")[1].split("-")[0]);
@@ -238,10 +204,10 @@ $(".submit").click(function () {
     if (error_code !== 0)
         return false;
 
-    // 获取未来一个月内的预约情况
+    // post信息
     $.ajax({
         async: false,
-        url: '/api/classroom/' + classroom + '/',
+        url: '/api/appointment/',
         type: 'post',
         data: {
             'classroom': classroom,
@@ -251,7 +217,10 @@ $(".submit").click(function () {
             "end": end,
             "reason": reason,
             "multimedia": multimedia,
-            "desk": desk
+            "desk": desk,
+            "boss": boss,
+            "director": director,
+            "director_phone": director_phone
         },
         success: function (msg) {
             // To do 刷新
@@ -261,8 +230,8 @@ $(".submit").click(function () {
         },
         error: function () {
             console.log("post error!");
-            var title = '预约信息不合法！' + '    error_code = post error';
-            var text = '请务必填写预约原因！';
+            var title = '预约信息不合法！' + ' error_code = post error';
+            var text = '请检查必填项是否填写完整！';
             notification(title, text);
         }
     }); // ajax
