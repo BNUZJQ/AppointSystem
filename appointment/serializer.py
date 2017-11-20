@@ -28,14 +28,15 @@ class AppointmentSerializer(serializers.ModelSerializer):
                                                   date__exact=data['date'],
                                                   status=STATUS.waiting)
 
-
         for appoint in appointments:
             if appoint.start < data['start'] < appoint.end:
-                    raise serializers.ValidationError("start time unvalid!")
+                raise serializers.ValidationError("start time unvalid!")
             if appoint.start < data['end'] < appoint.end:
-                    raise serializers.ValidationError("end time unvalid!")
+                raise serializers.ValidationError("end time unvalid!")
         return data
 
     class Meta:
         model = Appointment
-        fields = ('date', 'start', 'end', 'reason', 'desk', 'multimedia', 'status', 'custom', 'classroom', 'boss', 'director', 'director_phone')
+        fields = (
+        'date', 'start', 'end', 'reason', 'desk', 'multimedia', 'status', 'custom', 'classroom', 'boss', 'director',
+        'director_phone')
