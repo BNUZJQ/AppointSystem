@@ -9,14 +9,6 @@ from classroom.models import Classroom
 
 
 class TIME:
-    HOUR0 = 0
-    HOUR1 = 1
-    HOUR2 = 2
-    HOUR3 = 3
-    HOUR4 = 4
-    HOUR5 = 5
-    HOUR6 = 6
-    HOUR7 = 7
     HOUR8 = 8
     HOUR9 = 9
     HOUR10 = 10
