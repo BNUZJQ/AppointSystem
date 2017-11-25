@@ -88,19 +88,23 @@ class AppointmentViewSet(viewsets.GenericViewSet):
                                                status=STATUS.waiting).distinct().order_by('date', 'start')
         appointments = appointments.values('id',
                                            'classroom',
-
                                            'classroom__name',
                                            'boss',
-
                                            'reason',
                                            'date',
                                            'start',
+                                           'director',
+                                           'director_phone',
                                            'end',
                                            'desk',
                                            'multimedia',
                                            'status',
                                            'custom__user__username',
-                                           'custom__telephone')
+                                           'custom__user__first_name',
+                                           'custom__grade',
+                                           'custom__major',
+                                           'custom__telephone'
+                                           )
         size = len(appointments)
         return Response({"success": True,
                          "size": size,

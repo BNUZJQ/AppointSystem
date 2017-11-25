@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('account', '0018_auto_20171120_2132'),
     ]
@@ -15,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='account',
             name='gender',
-            field=models.CharField(choices=[('\u7537', '\u7537'), ('\u5973', '\u5973')], default='\u7537', max_length=10),
+            field=models.CharField(choices=[('\u7537', '\u7537'), ('\u5973', '\u5973')], default='\u7537',
+                                   max_length=10),
         ),
     ]

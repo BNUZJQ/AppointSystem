@@ -21,13 +21,13 @@ ROLE_CHOICE = (
 
 
 class GENDER:
-    Male = 'Male'
-    Female = 'Female'
+    Male = '男'
+    Female = '女'
 
 
 GENDER_CHOICE = (
-    (GENDER.Male, 'Male'),
-    (GENDER.Female, 'Female')
+    (GENDER.Male, '男'),
+    (GENDER.Female, '女')
 )
 
 
