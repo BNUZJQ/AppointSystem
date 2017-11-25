@@ -30,7 +30,7 @@
     text-align: center;
     height: 30px;
     font: 23px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei", sans-serif;
-    color: #69696a;
+    color: #1e1e1e;
     line-height: 20px;
     padding: 0 0 35px 0;
 }
@@ -40,6 +40,15 @@
     height: 30px;
     font: 30px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei", sans-serif;
     color: #071aff;
+    line-height: 20px;
+    padding: 0 0 35px 0;
+}
+
+.logo_box h4 {
+    text-align: center;
+    height: 15px;
+    font: 15px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei", sans-serif;
+    color: #ff0001;
     line-height: 20px;
     padding: 0 0 35px 0;
 }
@@ -62,7 +71,7 @@
     margin-bottom: 30px;
     border-radius: 50px;
     position: relative;
-    border: rgba(0, 67, 255, 0.2) 2px solid !important;
+    border: rgba(48, 139, 255, 0.62) 2px solid !important;
 }
 
 .u_user {

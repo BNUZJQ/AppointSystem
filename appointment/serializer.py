@@ -30,9 +30,9 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
         for appoint in appointments:
             if appoint.start < data['start'] < appoint.end:
-                raise serializers.ValidationError("start time unvalid!")
+                    raise serializers.ValidationError("start time unvalid!")
             if appoint.start < data['end'] < appoint.end:
-                raise serializers.ValidationError("end time unvalid!")
+                    raise serializers.ValidationError("end time unvalid!")
         return data
 
     class Meta:

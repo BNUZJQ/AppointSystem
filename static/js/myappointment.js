@@ -95,8 +95,8 @@ $(document).ready(function () {
         for (var i = 0; i < appointments.length; i++) {
             if (appointments[i].id == id) {
                 notification("其他信息", "使用原因：" + appointments[i].reason + '<br>' +
-                    "使用者：" + appointments[i].directior + '<br>' +
-                    "使用者电话： " + appointments[i].directior_phone + '<br>' +
+                    "使用者：" + appointments[i].director + '<br>' +
+                    "使用者电话： " + appointments[i].director_phone + '<br>' +
                     "是否移动桌椅： " + appointments[i].desk + '<br>' +
                     "是否使用多媒体 ：" + appointments[i].multimedia);
             }

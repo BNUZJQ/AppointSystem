@@ -84,7 +84,8 @@ var create_sc = function (week) {
                 var msg = '占用信息：<br>' + "日期：" + this.settings.id.split("_")[0].split("-")[0] +
                     "月" + this.settings.id.split("_")[0].split("-")[1] + "日" +
                     '<br>' + infos[this.settings.id].split(";")[0] + '<br>' + infos[this.settings.id].split(";")[1]
-                    + '<br>' + infos[this.settings.id].split(";")[2] + '<br>' + infos[this.settings.id].split(";")[3];
+                    + '<br>' + infos[this.settings.id].split(";")[2] + '<br>' + infos[this.settings.id].split(";")[3]
+                    + '<br>' + infos[this.settings.id].split(";")[4] + '<br>' + infos[this.settings.id].split(";")[5];
 
                 notification(title, msg);
                 //seat has been already booked
@@ -109,9 +110,12 @@ var display_appointments = function (appointments_json) {
             temp_seatID = appointments_json[i].date.slice(5) + "_" + j + "-" + (j + 1);
             unavailables.push(temp_seatID);
             infos[temp_seatID] = "时间：" + appointments_json[i].start + "——" + appointments_json[i].end + "点;" +
-                "预约人：" + appointments_json[i].custom__user__username + ";" +
+                "预约人：" + appointments_json[i].custom__user__first_name + "[" + appointments_json[i].custom__grade + appointments_json[i].custom__major + "];" +
                 "电话:" + appointments_json[i].custom__telephone + ";" +
-                "预约原因：" + appointments_json[i].reason;
+                "预约原因：" + appointments_json[i].reason + ";" +
+                "负责老师：" + appointments_json[i].boss + ";" +
+                "负责人：" + appointments_json[i].director + "[电话:" + appointments_json[i].director_phone + "]";
+
         }
     }
     // console.log(unavailables);
@@ -234,10 +238,10 @@ $(".submit").click(function () {
             $("#classroom").val(classroom);
             $(".choose_classroom").trigger("click");
         },
-        error: function () {
+        error: function (msg) {
             console.log("post error!");
-            var title = '预约信息不合法！' + ' error_code = post error';
-            var text = '请检查必填项是否填写完整！';
+            var title = '预约信息不合法' + ' error_code = post error';
+            var text = msg;
             notification(title, text);
         }
     }); // ajax

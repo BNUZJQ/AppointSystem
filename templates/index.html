@@ -48,9 +48,9 @@
         </div>
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
-                <li><h3>{{ request.user }},您好！ </h3>
+                <li><br><h4>{{ account.student_id }},您好！ </h4>
 
-                <li><a class="logout" href="login.html">Logout</a></li>
+                <li><a class="logout" href="/logout/">Logout</a></li>
 
             </ul>
         </div>
@@ -63,9 +63,10 @@
                 <!-- 用户的头像，可以先预留好位置-->
                 <br>
                 <br>
-                <h1 class="centered">{{ account.user }}</h1>
-                <h4 class="centered">{{ account.student_id }}</h4>
-                <h4 class="centered">{{ account.major }}</h4>
+                <h3 class="centered" style="color: #FFFFFF !important">{{ account.student_id }}</h3>
+                <h4 class="centered" style="color: #FFFFFF !important">{{ request.user }}</h4>
+                <h4 class="centered" style="color: #FFFFFF !important">{{ account.grade }}</h4>
+                <h4 class="centered" style="color: #FFFFFF !important">{{ account.major }}</h4>
                 <li class="mt">
                     <a class="active" href="/index">
                         <i class="fa fa-th"></i>

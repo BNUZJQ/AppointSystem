@@ -41,9 +41,9 @@
         </div>
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
-                <li><h3>{{ request.user }},您好！ </h3>
+                <li><br><h4>{{ account.student_id }},您好！ </h4>
 
-                <li><a class="logout" href="login.html">Logout</a></li>
+                <li><a class="logout" href="/logout/">Logout</a></li>
 
             </ul>
         </div>
@@ -53,12 +53,13 @@
         <div id="sidebar" class="nav-collapse ">
             <!-- sidebar menu start-->
             <ul class="sidebar-menu" id="nav-accordion">
-                <br>
-                <br>
                 <!-- 用户的头像，可以先预留好位置-->
-                <h1 class="centered">{{ request.user }}</h1>
-                <h4 class="centered">{{ account.student_id }}</h4>
-                <h4 class="centered">{{ account.major }}</h4>
+                <br>
+                <br>
+                <h3 class="centered" style="color: #FFFFFF !important">{{ account.student_id }}</h3>
+                <h4 class="centered" style="color: #FFFFFF !important">{{ request.user }}</h4>
+                <h4 class="centered" style="color: #FFFFFF !important">{{ account.grade }}</h4>
+                <h4 class="centered" style="color: #FFFFFF !important">{{ account.major }}</h4>
                 <li class="mt">
                     <a href="/index">
                         <i class="fa fa-th"></i>
@@ -98,7 +99,7 @@
                             <th><i class="fa fa-bookmark"></i> 时间段</th>
                             <th><i class=" fa fa-edit"></i> 预约原因</th>
                             <th><i class=" fa fa-edit"></i> 负责人</th>
-                            <th></th>
+                            <th>详细信息/删除</th>
                             </thead>
                             <tbody id="myappinfo">
                             </tbody>
