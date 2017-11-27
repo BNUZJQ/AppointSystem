@@ -164,6 +164,11 @@ var get_appointments = function (classroom) {
 
 //提交函数
 $(".submit").click(function () {
+    if ($('input[type="checkbox"]#read').checked == false)
+    {
+        notification('请仔细阅读《会议室管理规定》！','请仔细阅读《会议室管理规定》！');
+        return false;
+    }
     if (duration[0] == null)
     {
         notification('请填写预约时间！','请填写预约时间！');
