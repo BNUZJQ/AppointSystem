@@ -74,8 +74,8 @@ class AppointmentViewSet(viewsets.GenericViewSet):
         endday = today + datetime.timedelta(28)
         #查找一下今天之前的记录，如果还有没有没结束的，变成finished
         today = date.today()
+        Appointment.objects.filter(date__lt=today,status=STATUS.waiting).update(status = STATUS.finished)
         appointments = Appointment.objects.all()
-        appointments = appointments.filter(date__lt=today,status=STATUS.waiting).update(status = STATUS.finished)
         # 根据request.GET的字段来筛选返回数据
         if 'classroom' in request.GET:
             classroom = Classroom.objects.get(name=request.GET['classroom'])
