@@ -6,7 +6,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
-
+from datetime import date
 from account.models import Account, ROLE
 from account.permissions import AccountPermission
 from account.serializer import AccountSerializer
@@ -72,8 +72,10 @@ class AppointmentViewSet(viewsets.GenericViewSet):
         user = request.user
         today = datetime.date.today()
         endday = today + datetime.timedelta(28)
-
+        #查找一下今天之前的记录，如果还有没有没结束的，变成finished
+        today = date.today()
         appointments = Appointment.objects.all()
+        appointments = appointments.filter(date__lt=today,status=STATUS.waiting).update(status = STATUS.finished)
         # 根据request.GET的字段来筛选返回数据
         if 'classroom' in request.GET:
             classroom = Classroom.objects.get(name=request.GET['classroom'])
