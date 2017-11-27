@@ -61,8 +61,8 @@ var create_sc = function (week) {
                     .attr('id', 'cart-item-' + this.settings.id)
                     .data('seatId', this.settings.id)
                     .appendTo($cart);
-
                 duration.push(this.settings.id);
+                console.log(duration);
                 /*
                  * Lets update the counter and total
                  *
@@ -76,7 +76,9 @@ var create_sc = function (week) {
                 $counter.text(sc.find('selected').length - 1);
                 //and total
                 $('#cart-item-' + this.settings.id).remove();
-                duration.pop(this.settings.id);
+                //console.log($cart);
+                duration.removeByValue(this.settings.id);
+                console.log(duration);
                 //seat has been vacated
                 return 'available';
             } else if (this.status() === 'unavailable') {
@@ -88,6 +90,7 @@ var create_sc = function (week) {
                     + '<br>' + infos[this.settings.id].split(";")[4] + '<br>' + infos[this.settings.id].split(";")[5];
 
                 notification(title, msg);
+                console.log(duration);
                 //seat has been already booked
                 return 'unavailable';
             } else {
@@ -161,6 +164,11 @@ var get_appointments = function (classroom) {
 
 //提交函数
 $(".submit").click(function () {
+    if (duration[0] == null)
+    {
+        notification('请填写预约时间！','请填写预约时间！');
+        return false;
+    }
     var classroom = $("#classroom").val(),
         reason = $("#reason").val(),
         boss = $("#boss").val(),
@@ -234,14 +242,24 @@ $(".submit").click(function () {
         },
         success: function (msg) {
             // To do 刷新
-            location.reload();
-            $("#classroom").val(classroom);
-            $(".choose_classroom").trigger("click");
+            if(confirm('预约成功！点击确定返回页面')) {
+                location.reload();
+                $("#classroom").val(classroom);
+                $(".choose_classroom").trigger("click");
+            }
+            else
+            {
+                location.reload();
+                $("#classroom").val(classroom);
+                $(".choose_classroom").trigger("click");
+            }
+
         },
         error: function (msg) {
             console.log("post error!");
-            var title = '预约信息不合法' + ' error_code = post error';
-            var text = msg;
+            console.log(msg.responseText);
+            var title = '预约信息不合法' + ' 错误代码 = post error';
+            var text = msg.responseText;
             notification(title, text);
         }
     }); // ajax
@@ -287,4 +305,14 @@ $(document).ready(function () {
     //let's pretend some seats have already been booked
     sc.get(unavailables).status('unavailable');
 
+
 });
+
+Array.prototype.removeByValue = function(val) {
+    for(var i=0; i<this.length; i++) {
+        if(this[i] == val) {
+            this.splice(i, 1);
+            break;
+        }
+    }
+};

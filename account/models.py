@@ -56,8 +56,14 @@ class Account(models.Model):
     telephone = models.CharField(max_length=11, blank=True)
     completed = models.BooleanField(default=False)
 
+#    def __unicode__(self):
+ #       return '{},{}'.format(self.user.username, self.role)
+    
+ #   def __str__(self):
+#        return '{},{}'.format(self.user.username, self.role)
     def __unicode__(self):
-        return '{},{}'.format(self.user.username, self.role)
+        return '{},{},{},{},{}'.format(self.student_id, self.user.username, self.grade, self.major, self.telephone)
 
     def __str__(self):
-        return '{},{}'.format(self.user.username, self.role)
+        return '{},{},{},{},{}'.format(self.student_id, self.user.username, self.grade, self.major, self.telephone)
+
