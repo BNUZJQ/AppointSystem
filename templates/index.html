@@ -139,41 +139,45 @@
                         <h4 class="mb"><i class="fa fa-angle-right"></i> 请继续完善预约信息</h4>
                             <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
                             <div class="form-group">
-                                <label class="col-sm-2 col-sm-2 control-label">预约原因*</label>
+                                <label class="col-sm-2 col-sm-2 control-label">*预约原因</label>
                                 <div class="col-sm-10">
                                     <input type="text" id="reason" class="form-control">
-                                    <span class="help-block">请明确说明使用会议室的原因（必填）.</span>
+                                    <span class="help-block" style="color:#ff000d">*请明确说明使用会议室的原因（必填）.</span>
                                 </div>
-                                <label class="col-sm-2 col-sm-2 control-label">负责老师姓名*</label>
+                                <label class="col-sm-2 col-sm-2 control-label">*负责老师姓名</label>
                                 <div class="col-sm-10">
                                     <input type="text" id="boss" class="form-control">
-                                    <span class="help-block">填写活动负责老师的姓名（必填）.</span>
+                                    <span class="help-block" style="color:#ff000d">*填写活动负责老师的姓名（必填）.</span>
                                 </div>
                                 <label class="col-sm-2 col-sm-2 control-label">使用者姓名</label>
                                 <div class="col-sm-4">
                                     <input type="text" id="director" class="form-control">
-                                    <span class="help-block">若非本人使用，请填写实际使用者姓名.</span>
+                                    <span class="help-block" style="color:#ff000d">如是本人使用，使用者姓名、电话可不填写；若非预约者本人使用会议室，请务必填写实际使用者姓名及电话。</span>
                                 </div>
+
                                 <label class="col-sm-2 col-sm-2 control-label">使用者电话</label>
                                 <div class="col-sm-4">
                                     <input type="text" id="director_phone" class="form-control">
                                     <span class="help-block">填写实际使用者的电话.</span>
                                 </div>
+                            </div>
 
-                            </div>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" id="multimedia"> 使用多媒体
-                            </label>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" id="desk"> 需要移动桌椅
-                            </label>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" id="read">
-                                    我已仔细阅读并承诺遵守《信息科学与技术学院会议室使用规定》&mdash;
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="multimedia"> 使用多媒体
                                 </label>
-                            </div>
-                            <button class="submit btn btn-success btn-block">submit &raquo;</button>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="desk"> 需要移动桌椅
+                                </label>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="read" style="color:#ff000d">
+                                        我已仔细阅读并承诺遵守《信息科学与技术学院会议室使用规定》&mdash;
+                                    </label>
+                                </div>
+
+
+                           <button class="submit btn btn-success btn-block">submit &raquo;</button>
                     </div>
                 </div><!-- col-lg-12-->
             </div><!-- /row -->

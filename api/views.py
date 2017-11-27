@@ -143,7 +143,6 @@ class AppointmentViewSet(viewsets.GenericViewSet):
     @csrf_exempt
     @detail_route(methods=['post'])
     def delete_appoint(self, request, pk):
-
         appointment = get_object_or_404(Appointment, id=pk)
         appointment.status = STATUS.canceled
         appointment.save()

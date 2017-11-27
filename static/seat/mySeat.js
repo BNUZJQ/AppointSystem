@@ -169,9 +169,8 @@ $(".submit").click(function () {
         notification('请仔细阅读《会议室管理规定》！','请仔细阅读《会议室管理规定》！');
         return false;
     }
-    if (duration[0] == null)
-    {
-        notification('请填写预约时间！','请填写预约时间！');
+    if (duration[0] == null) {
+        notification('请填写预约时间！', '请填写预约时间！');
         return false;
     }
     var classroom = $("#classroom").val(),
@@ -188,6 +187,13 @@ $(".submit").click(function () {
         start = 0,
         end = 0,
         error_reason = '';
+        //console.log(director);
+        //console.log(director_phone);
+        if(director.length!=0 && director_phone.length == 0)
+        {
+            notification('信息缺失', '请填写使用者电话');
+            return false;
+        }
     console.log("flag" + classroom + reason + boss + director + director_phone + multimedia + desk);
     console.log(duration);
     for (var i = 0; i < duration.length; i++) {
@@ -262,6 +268,7 @@ $(".submit").click(function () {
         },
         error: function (msg) {
             console.log("post error!");
+            console.log(msg)
             console.log(msg.responseText);
             var title = '预约信息不合法' + ' 错误代码 = post error';
             var text = msg.responseText;
