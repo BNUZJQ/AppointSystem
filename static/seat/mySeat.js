@@ -164,7 +164,7 @@ var get_appointments = function (classroom) {
 
 //提交函数
 $(".submit").click(function () {
-    if ($('input[type="checkbox"]#read').checked == false)
+    if ($('input[type="checkbox"]#read').is(':checked') == false)
     {
         notification('请仔细阅读《会议室管理规定》！','请仔细阅读《会议室管理规定》！');
         return false;
@@ -179,8 +179,8 @@ $(".submit").click(function () {
         boss = $("#boss").val(),
         director = $("#director").val(),
         director_phone = $("#director_phone").val(),
-        multimedia = $('input[type="checkbox"]#multimedia').checked,
-        desk = $('input[type="checkbox"]#desk').checked,
+        multimedia = $('input[type="checkbox"]#multimedia').is(':checked'),
+        desk = $('input[type="checkbox"]#desk').is(':checked'),
         d = new Date(),
         temp = [],
         thisdate = duration[0].split("_")[0],
@@ -188,7 +188,7 @@ $(".submit").click(function () {
         start = 0,
         end = 0,
         error_reason = '';
-    console.log("flag" + classroom + reason + boss + director + director_phone);
+    console.log("flag" + classroom + reason + boss + director + director_phone + multimedia + desk);
     console.log(duration);
     for (var i = 0; i < duration.length; i++) {
         temp.push(duration[i].split("_")[1].split("-")[0]);
