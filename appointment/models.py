@@ -86,7 +86,7 @@ class Appointment(models.Model):
     def __unicode__(self):
         return u'{}, {}, {}, from {}h. to {}h.'.format(self.classroom.name, self.custom.user.username, self.date,
                                                        self.start, self.end)
-    
+
     def __str__(self):
         return u'{}, {}, {}, from {}h. to {}h.'.format(self.classroom.name, self.custom.user.username, self.date,
                                                        self.start, self.end)

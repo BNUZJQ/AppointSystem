@@ -99,6 +99,7 @@ def forget(request):
     msg = user.first_name + u'的账户已被重置，请使用初始密码重新登录'
     return HttpResponseRedirect('/')
 
+
 @login_required
 def personal_info(request):
     account = Account.objects.get(user=request.user)
