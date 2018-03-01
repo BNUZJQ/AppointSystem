@@ -58,6 +58,6 @@ class Account(models.Model):
 
     def __unicode__(self):
         return '{},{}'.format(self.user.username, self.role)
-    
+
     def __str__(self):
         return '{},{}'.format(self.user.username, self.role)
