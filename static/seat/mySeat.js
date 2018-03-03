@@ -164,8 +164,8 @@ var get_appointments = function (classroom) {
 
 //提交函数
 $(".submit").click(function () {
-    if ($('input[type="checkbox"]#read').is(':checked') == false)
-    {
+        if ($('input[type="checkbox"]#read').is(':checked') == false)
+        {
         notification('请仔细阅读《会议室管理规定》！','请仔细阅读《会议室管理规定》！');
         return false;
     }
@@ -301,9 +301,16 @@ $('a[data-toggle="tab"]').on("click", function (e) {
     }
 
 });
-
 $(document).ready(function () {
+    var oMyBar1 = new MyScrollBar({
+        selId: 'wrapper1',
+        enterColor: '#424a5d',
+        enterShow: true,
+        borderRadius: 2,
+        hasX:true
+    });
     create_sc(0);
+
     $(".choose_classroom").click(function () {
         var classroom = $("#classroom").val();
         get_appointments(classroom);
@@ -328,3 +335,6 @@ Array.prototype.removeByValue = function(val) {
         }
     }
 };
+
+
+

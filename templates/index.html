@@ -3,13 +3,22 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
     <meta name="description" content="">
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
     <title>会议室自助预约系统</title>
-
+    <style>
+            .box {
+                width: 75vw;
+                margin: 1vw;
+                padding: 0;
+                overflow-y: hidden;
+            }
+    </style>
 
 {#    <link rel="stylesheet" type="text/css" href="{% static "assets/css/jq22.css" %}"/>#}
     <!-- Bootstrap core CSS -->
@@ -110,8 +119,9 @@
                     <button class=" choose_classroom btn btn-theme" type="button">确认</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-8 col-sm-8 mb">
+
+                <div class="row">
+                    <div class="col-md-8 col-sm-8 mb">
                     <h1 class="title" id="title" style="display:inline"></h1>
                     <ul id="myTab" class="nav nav-tabs">
                         <li class="active"><a href="#thisweek" data-toggle="tab">未来7天</a></li>
@@ -119,9 +129,12 @@
                         <li><a href="#nextnext" data-toggle="tab">15-21天</a></li>
                         <li><a href="#nextnextnext" data-toggle="tab">22-28天</a></li>
                     </ul>
-                    <div id="seat-map">
-
-                    </div>
+                        <div class="box" id="wrapper1">
+                            <div class="scroll" id="scrollOne">
+                                <div id="seat-map">
+                                </div>
+                            </div>
+                        </div>
                 </div>
                 <div class="col-md-4 col-sm-4 mb">
                     <div class="booking-details">
@@ -205,6 +218,7 @@
 <script src="{% static "assets/js/jquery.nicescroll.js" %}" type="text/javascript"></script>
 <script src="{% static "assets/js/jquery.sparkline.js" %}"></script>
 <script src="{% static "js/jquery-3.2.1.min.js" %}"></script>
+<script src="{% static "js/my_scrollbar.js" %}"></script>
 <script src="{% static "seat/jquery.seat-charts.js" %}"></script>
 <script src="{% static "assets/js/common-scripts.js" %}"></script>
 <script src="{% static "seat/mySeat.js" %}"></script>
