@@ -1,5 +1,5 @@
 var appointments;
-
+var picture_contents;
 
 $(document).ready(function () {
     $.ajax({
@@ -28,9 +28,18 @@ $(document).ready(function () {
                     "<button name=\"" +
                     appointments[i].id +
                     "\" class=\" delete btn btn-danger btn-xs\"><i class=\" fa fa-trash-o\"></i></button>" +
+                    "<button name=\"" +
+                    appointments[i].id +
+                    "\" class=\" picture btn btn-primary btn-xs\"><i class=\" fa fa-picture-o\"></i></button>" +
                     "</td>" +
                     "</tr>");
                 //$("#appointments").html(appointments[i].classroom__name + appointments[i].date);
+                picture_contents[i]="<p>预约申请人：" + appointments[i].custom__user__first_name + "[" + appointments_json[i].custom__grade + appointments_json[i].custom__major + "]</p>" +
+                    "<p>教室：" + appointments[i].classroom__name + "</p>" +
+                    "<p>预约日期：" + appointments[i].date + "</p>" +
+                    "<p>预约时间：" + appointments[i].start + "-" + appointments[i].end + "点</p>" +
+                    "<p>预约原因：" + appointments[i].reason + "</p>" +
+                    "<p>负责教师姓名：" + appointments[i].boss + "</p>";
             }
 
             console.log(appointments);
@@ -45,6 +54,26 @@ $(document).ready(function () {
         } // error
     }); // ajax
 
+    $(".picture").click(function () {
+        var id = $(this).attr("name");
+        var content;
+        for (var i = 0; i < appointments.length; i++)
+        {
+            if (id==appointments[i].id) {
+                content = picture_contents[i];
+            }
+        }
+        html2canvas(content, {
+            onrendered: function(canvas) {
+                //添加属性
+                canvas.setAttribute('id','thecanvas');
+                //读取属性值
+                // var value= canvas.getAttribute('id');
+                document.getElementById('images').innerHTML = '';
+                document.getElementById('images').appendChild(canvas);
+            }
+        });
+    });
     $(".delete").click(function () {
         var id = $(this).attr("name");
         console.log(id);
