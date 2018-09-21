@@ -91,13 +91,15 @@ def forget(request):
     account = Account.objects.get(user=user)
     if account.telephone != telephone:
         msg = u'用户不存在或用户名与电话不匹配'
+        flag = 0
         return render(request, 'forget.html', locals())
     user = account.user
     account.completed = False
     user.set_password(user.username)
     user.save()
     msg = user.first_name + u'的账户已被重置，请使用初始密码重新登录'
-    return HttpResponseRedirect('/')
+    flag = 1
+    return render(request, 'forget.html', locals())
 
 
 @login_required
