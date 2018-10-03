@@ -8,6 +8,5 @@ from appointment.views import ShowLove
 urlpatterns = [
     url(r'^index/$', index),
     url(r'^post_appointment/$', post_appointment),
-    url(r'^myappointment/$', myappointment),
-    url(r'^JianqiLoveXinshan/$', ShowLove)
+    url(r'^myappointment/$', myappointment)
 ]
