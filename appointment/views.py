@@ -20,10 +20,6 @@ def myappointment(request):
     account = Account.objects.get(user=request.user)
     return render(request, 'myappointment.html', locals())
 
-def ShowLove(request):
-    return render(request, 'JianqiLoveXinshan.html', locals())
-
-
 @require_POST
 @login_required
 def post_appointment(request):
